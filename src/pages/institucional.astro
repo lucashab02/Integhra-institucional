@@ -1,0 +1,240 @@
+---
+import NavArq from '../components/shared/NavArq';
+import Institucional from '../components/institucional/Institucional';
+---
+
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Integhra — Conectamos proveedores, distribuidores y minoristas en un solo espacio." />
+  <title>Integhra — Integrando tus negocios</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style is:global>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: #fff; color: #111; -webkit-font-smoothing: antialiased; }
+    section { min-height: auto !important; display: block !important; }
+    a { text-decoration: none; }
+
+    .inst-nav {
+      position: fixed; top: 0; left: 0; width: 100%; z-index: 50;
+      background: rgba(255,255,255,0.92); backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+    }
+    .inst-nav-inner {
+      max-width: 1100px; margin: 0 auto; padding: 0 2rem;
+      display: flex; align-items: center; justify-content: space-between; height: 68px;
+    }
+    .inst-nav-logo { display: flex; align-items: center; gap: 10px; }
+    .inst-nav-logo img { height: 36px; width: auto; }
+    .inst-nav-links { display: flex; align-items: center; gap: 2rem; }
+    .inst-nav-link {
+      font-size: 0.82rem; font-weight: 500; color: #555; letter-spacing: 0.02em;
+      transition: color .2s;
+    }
+    .inst-nav-link:hover { color: #02836c; }
+    .inst-nav-link.active { color: #02836c; font-weight: 600; }
+    .inst-btn-nav {
+      font-size: 0.82rem; font-weight: 600; color: #fff; background: #02836c;
+      padding: 0.55rem 1.4rem; border-radius: 100px;
+      transition: background .2s, transform .15s;
+    }
+    .inst-btn-nav:hover { background: #016b57; transform: translateY(-1px); }
+
+    .inst-wrap { max-width: 1100px; margin: 0 auto; padding: 0 2rem; }
+    .inst-wrap-sm { max-width: 900px; margin: 0 auto; padding: 0 2rem; }
+
+    .inst-hero {
+      position: relative; min-height: 100vh;
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+      text-align: center; overflow: hidden; padding: 7rem 2rem 5rem;
+    }
+    .inst-hero-bg {
+      position: absolute; inset: 0;
+      background-image: url('/images/institucional/assets_task_01jz872rz3frtatpe4qkc72sq7_1751548881_img_0.webp');
+      background-size: cover; background-position: center;
+    }
+    .inst-hero-overlay { position: absolute; inset: 0; background: linear-gradient(160deg, rgba(0,0,0,0.62) 0%, rgba(0,0,0,0.38) 60%, rgba(2,131,108,0.18) 100%); }
+    .inst-hero-content { position: relative; z-index: 2; max-width: 820px; }
+    .inst-hero-logo { width: 72px; height: 72px; object-fit: contain; margin: 0 auto 2rem; filter: drop-shadow(0 4px 24px rgba(0,0,0,0.4)); }
+    .inst-hero h1 {
+      font-size: clamp(2.8rem, 7vw, 5.5rem); font-weight: 800; line-height: 1.08;
+      color: #fff; letter-spacing: -0.02em; margin-bottom: 1.25rem;
+    }
+    .inst-hero h1 .green { color: #4ecba8; }
+    .inst-hero h1 .purple { color: #c4a0ff; }
+    .inst-hero-sub {
+      font-size: 1.1rem; font-weight: 400; color: rgba(255,255,255,0.82);
+      max-width: 520px; margin: 0 auto 2.5rem; line-height: 1.65;
+    }
+    .inst-btn-primary {
+      display: inline-block; font-size: 0.9rem; font-weight: 600;
+      color: #fff; background: #02836c; padding: 0.85rem 2.25rem; border-radius: 100px;
+      transition: background .2s, transform .15s; box-shadow: 0 4px 20px rgba(2,131,108,0.35);
+    }
+    .inst-btn-primary:hover { background: #016b57; transform: translateY(-2px); }
+    .inst-btn-outline {
+      display: inline-block; font-size: 0.9rem; font-weight: 600;
+      color: #02836c; border: 2px solid #02836c; padding: 0.85rem 2.25rem; border-radius: 100px;
+      transition: background .2s, color .2s, transform .15s;
+    }
+    .inst-btn-outline:hover { background: #02836c; color: #fff; transform: translateY(-2px); }
+
+    .wave-white { line-height: 0; }
+    .wave-white svg { display: block; }
+
+    .inst-impacto { padding: 7rem 0; background: #fff; }
+    .inst-impacto-title { text-align: center; margin-bottom: 3.5rem; }
+    .inst-impacto-title h2 { font-size: clamp(1.9rem, 4vw, 2.75rem); font-weight: 800; color: #111; letter-spacing: -0.02em; }
+    .inst-impacto-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+    .inst-card {
+      border-radius: 16px; padding: 2.5rem 2rem;
+      display: flex; flex-direction: column; gap: 1rem;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08); transition: transform .2s, box-shadow .2s;
+    }
+    .inst-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.14); }
+    .inst-card--light { background: #fff; border: 1px solid #d9f0eb; color: #111; }
+    .inst-card--dark  { background: linear-gradient(135deg, #02836c, #015f4f); color: #fff; }
+    .inst-card--accent { background: linear-gradient(135deg, #016b57, #014940); color: #fff; }
+    .inst-card-icon {
+      width: 52px; height: 52px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .inst-card-icon--green { background: #eaf6f3; }
+    .inst-card-icon--white { background: rgba(255,255,255,0.18); }
+    .inst-card h3 { font-size: 1.1rem; font-weight: 700; line-height: 1.3; }
+    .inst-card--light h3 { color: #111; }
+    .inst-card--dark h3, .inst-card--accent h3 { color: #fff; }
+    .inst-card p { font-size: 0.88rem; line-height: 1.65; }
+    .inst-card--light p { color: #555; }
+    .inst-card--dark p, .inst-card--accent p { opacity: 0.88; }
+
+    .inst-logos { padding: 3.5rem 0; background: #f8f8f8; border-top: 1px solid #eee; border-bottom: 1px solid #eee; }
+    .inst-logos p { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #aaa; text-align: center; margin-bottom: 2.5rem; }
+    .inst-logos-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 3rem; }
+    .inst-logos-row img { height: 30px; object-fit: contain; filter: grayscale(1) opacity(0.45); transition: filter .3s; }
+    .inst-logos-row img:hover { filter: grayscale(0) opacity(1); }
+
+    .inst-features { padding: 7rem 0; background: #f9fafb; }
+    .inst-features-header { margin-bottom: 3.5rem; }
+    .inst-features-header h2 { font-size: clamp(1.9rem, 4vw, 2.75rem); font-weight: 800; color: #111; letter-spacing: -0.02em; line-height: 1.15; }
+    .inst-features-header h2 span { color: #02836c; }
+    .inst-feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
+    .inst-feature-card {
+      background: #fff; border-radius: 16px; overflow: hidden;
+      border: 1px solid #eee; transition: box-shadow .25s, transform .2s;
+    }
+    .inst-feature-card:hover { box-shadow: 0 12px 40px rgba(0,0,0,0.1); transform: translateY(-3px); }
+    .inst-feature-card-img { aspect-ratio: 16/9; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+    .inst-feature-card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s; }
+    .inst-feature-card-img svg { transition: transform .4s ease; }
+    .inst-feature-card:hover .inst-feature-card-img svg { transform: scale(1.03); }
+    .inst-feature-card-body { padding: 1.5rem 1.75rem; }
+    .inst-feature-card-tag { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 0.6rem; display: block; }
+    .inst-feature-card-body h3 { font-size: 1.05rem; font-weight: 700; color: #111; margin-bottom: 0.5rem; line-height: 1.35; }
+    .inst-feature-card-body p { font-size: 0.84rem; color: #666; line-height: 1.65; }
+
+    .inst-grid6 { padding: 7rem 0; background: #fff; }
+    .inst-grid6-header { text-align: center; margin-bottom: 3.5rem; }
+    .inst-grid6-header h2 { font-size: clamp(1.9rem, 4vw, 2.75rem); font-weight: 800; color: #111; letter-spacing: -0.02em; line-height: 1.15; }
+    .inst-grid6-header h2 span { color: #02836c; }
+    .inst-grid6-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; }
+    .inst-feat {
+      display: flex; gap: 1.25rem; align-items: flex-start;
+      padding: 1.75rem; border: 1px solid #eee; border-radius: 16px;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .inst-feat:hover { border-color: #02836c; box-shadow: 0 4px 20px rgba(2,131,108,0.08); }
+    .inst-feat-icon {
+      width: 44px; height: 44px; border-radius: 12px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .inst-feat h3 { font-size: 0.95rem; font-weight: 700; color: #111; margin-bottom: 0.35rem; }
+    .inst-feat p { font-size: 0.82rem; color: #777; line-height: 1.6; }
+
+    .inst-footer { background: #111; padding: 3.5rem 0 2.5rem; }
+    .inst-footer-inner { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1.5rem; margin-bottom: 2.5rem; }
+    .inst-footer-logo { display: flex; align-items: center; gap: 10px; }
+    .inst-footer-logo img { height: 32px; width: auto; filter: brightness(0) invert(1); }
+    .inst-footer-logo span { font-size: 1rem; font-weight: 700; color: #fff; letter-spacing: 0.04em; }
+    .inst-footer-links { display: flex; gap: 2rem; }
+    .inst-footer-links a { font-size: 0.82rem; color: #666; transition: color .2s; }
+    .inst-footer-links a:hover { color: #fff; }
+    .inst-footer-email { font-size: 0.85rem; color: #4ecba8; transition: color .2s; }
+    .inst-footer-email:hover { color: #fff; }
+    .inst-footer-copy { font-size: 0.72rem; color: #333; text-align: center; padding-top: 2rem; border-top: 1px solid #1e1e1e; letter-spacing: 0.05em; }
+
+    /* Logos big section */
+    .inst-logos-big {
+      padding: 6rem 0 5rem;
+      background: #f9fafb;
+      border-top: 1px solid #eee;
+      overflow: hidden;
+    }
+    .inst-logos-heading {
+      text-align: center;
+      margin-bottom: 4rem;
+      padding: 0 2rem;
+    }
+    .inst-logos-eyebrow {
+      font-size: 0.68rem; font-weight: 700; letter-spacing: 0.18em;
+      text-transform: uppercase; color: #02836c; margin-bottom: 0.75rem; display: block;
+    }
+    .inst-logos-heading h2 {
+      font-size: clamp(1.9rem, 4vw, 2.75rem); font-weight: 800;
+      color: #111; letter-spacing: -0.02em; margin-bottom: 0.75rem;
+    }
+    .inst-logos-sub {
+      font-size: 0.95rem; color: #777; max-width: 480px; margin: 0 auto; line-height: 1.65;
+    }
+
+    /* Marquee */
+    .inst-marquee-wrap {
+      position: relative;
+      overflow: hidden;
+    }
+    .inst-marquee-fade {
+      position: absolute; top: 0; bottom: 0; width: 120px; z-index: 2; pointer-events: none;
+    }
+    .inst-marquee-fade-l { left: 0; background: linear-gradient(to right, #f9fafb, transparent); }
+    .inst-marquee-fade-r { right: 0; background: linear-gradient(to left, #f9fafb, transparent); }
+
+    .inst-marquee-track {
+      display: flex;
+      gap: 0;
+      width: max-content;
+      will-change: transform;
+      cursor: grab;
+    }
+    .inst-marquee-track.dragging { cursor: grabbing; }
+
+    .inst-marquee-item {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem 3.5rem;
+      flex-shrink: 0;
+      user-select: none;
+    }
+    .inst-marquee-item img {
+      height: 56px;
+      width: auto;
+      max-width: 220px;
+      object-fit: contain;
+      filter: grayscale(1) opacity(0.55);
+      transition: filter 0.3s, transform 0.3s;
+    }
+    .inst-marquee-item img:hover {
+      filter: grayscale(0) opacity(1);
+      transform: scale(1.08);
+    }
+  </style>
+</head>
+<body>
+  <NavArq client:load />
+  <Institucional client:load />
+</body>
+</html>

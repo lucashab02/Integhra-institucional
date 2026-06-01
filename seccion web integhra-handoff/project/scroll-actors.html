@@ -1,0 +1,657 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>INTEGHRA — Scroll Actors</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<style>
+  :root {
+    --bg: #fbfaf8;
+    --ink: #1f1d1a;        /* "negro claro" - soft black for body */
+    --ink-strong: #14120f;
+    --muted: #6b665f;
+    --soft: #4a463f;
+    --gold: #b8964e;       /* slightly deeper gold for readability on light bg */
+    --gold-soft: rgba(184, 150, 78, 0.18);
+    --grid: rgba(184, 150, 78, 0.10);
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--ink); }
+  body { font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; }
+
+  .serif { font-family: 'Cormorant Garamond', serif; }
+  .tracking-loose { letter-spacing: 0.35em; }
+  .tracking-xtra  { letter-spacing: 0.4em; }
+  .label-gold { color: var(--gold); font-weight: 700; text-transform: uppercase; }
+
+  /* ---------- Pinned section ---------- */
+  #actors-section { position: relative; width: 100%; height: 500vh; background: var(--bg); }
+  #actors-sticky  { position: relative; width: 100%; height: 100vh; overflow: hidden; }
+
+  .arch-grid {
+    position: absolute; inset: 0; pointer-events: none;
+    background-image:
+      linear-gradient(to right, var(--grid) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--grid) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+  .arch-vignette {
+    position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(ellipse at center,
+      rgba(251,250,248,0) 0%,
+      rgba(232,225,213,0.35) 60%,
+      rgba(218,208,189,0.55) 100%);
+  }
+
+  .stage {
+    position: relative; z-index: 2;
+    height: 100%; width: 100%;
+    max-width: 1360px;
+    margin: 0 auto;
+    padding: 0 4rem;
+    display: grid;
+    grid-template-columns: 0.7fr 1.3fr;
+    align-items: center;
+    gap: 5rem;
+  }
+  @media (max-width: 900px) {
+    .stage { grid-template-columns: 1fr; padding: 0 2rem; gap: 2rem; }
+  }
+
+  /* ---------- LEFT (fixed copy) ---------- */
+  .left-col { display: flex; flex-direction: column; gap: 1.75rem; }
+  .left-col .label { font-size: 11px; }
+  .left-col h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600;
+    font-size: clamp(1.85rem, 3.2vw, 3rem);
+    line-height: 1.08;
+    color: var(--ink-strong);
+    margin: 0;
+    text-wrap: balance;
+  }
+  .left-col h2 em {
+    color: var(--gold);
+    font-style: italic;
+    font-weight: 600;
+  }
+  .left-col p {
+    color: var(--muted);
+    font-weight: 300;
+    line-height: 1.6;
+    font-size: 0.95rem;
+    max-width: 22rem;
+    margin: 0;
+  }
+
+  /* ---------- RIGHT (actors + connecting line) ---------- */
+  .plane {
+    position: relative;
+    width: 100%;
+    height: clamp(460px, 68vh, 620px);
+  }
+  .plane svg.connector {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    overflow: visible;
+    pointer-events: none;
+  }
+  .connector .seg {
+    fill: none;
+    stroke: var(--gold);
+    stroke-width: 1.25;
+    stroke-linecap: round;
+    vector-effect: non-scaling-stroke;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    pathLength: 1;
+  }
+  .connector .node {
+    fill: var(--bg);
+    stroke: var(--gold);
+    stroke-width: 1.5;
+    opacity: 0;
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+  .connector .node.inner {
+    fill: var(--gold);
+    stroke: none;
+  }
+
+  /* Actor cards positioned in zigzag */
+  .actor {
+    position: absolute;
+    width: clamp(210px, 28%, 280px);
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  .actor .num {
+    color: var(--gold);
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 0.4em;
+    font-family: 'Inter', sans-serif;
+  }
+  .actor .rule {
+    height: 1px;
+    width: 56px;
+    background: var(--gold);
+    opacity: 0.55;
+  }
+  .actor h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600;
+    color: var(--ink-strong);
+    font-size: clamp(1.5rem, 2.4vw, 2.25rem);
+    line-height: 1.02;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+  }
+  .actor p {
+    color: var(--soft);
+    font-weight: 300;
+    font-size: 0.85rem;
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  /* Zigzag positions — alternating left/right, text always LTR.
+     Each card has the node anchored at its inner-top corner, so the
+     connector line runs cleanly through the empty middle channel
+     without ever crossing a card. */
+  .a01 { top: 2%;   left: 0%;  }
+  .a02 { top: 30%;  left: 62%; }
+  .a03 { top: 58%;  left: 0%;  }
+  .a04 { top: 82%;  left: 62%; }
+
+  /* ---------- Outer spacers (for preview only) ---------- */
+  .spacer {
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center;
+    padding: 0 2rem;
+    background: var(--bg);
+    border-top: 1px solid rgba(0,0,0,0.04);
+  }
+  .spacer h1, .spacer h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600;
+    color: var(--ink-strong);
+    margin: 1rem 0 0;
+  }
+  .spacer p { color: var(--muted); font-weight: 300; max-width: 520px; margin-top: 1rem; }
+  .scroll-hint {
+    position: absolute; left: 50%; bottom: 2.5rem; transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+    color: var(--gold); font-size: 11px; letter-spacing: 0.4em; font-weight: 700; opacity: 0.85;
+  }
+  .scroll-hint .bar {
+    width: 1px; height: 28px; background: var(--gold); opacity: 0.5;
+    animation: bar 1.8s ease-in-out infinite; transform-origin: top;
+  }
+  @keyframes bar {
+    0%   { transform: scaleY(0.2); opacity: 0.15; }
+    50%  { transform: scaleY(1);   opacity: 0.85; }
+    100% { transform: scaleY(0.2); opacity: 0.15; }
+  }
+
+  /* ---------- Progress (bottom of pinned section) ---------- */
+  .progress-row {
+    position: absolute; left: 50%; transform: translateX(-50%);
+    bottom: 2rem;
+    display: flex; gap: 0.75rem;
+    z-index: 3;
+  }
+  .progress-row .tick {
+    width: 36px; height: 1px;
+    background: rgba(184,150,78,0.25);
+    transition: background 0.35s ease;
+  }
+  .progress-row .tick.active { background: var(--gold); }
+
+  /* ---------- Tweaks panel ---------- */
+  #tweaks {
+    position: fixed; right: 1.25rem; bottom: 1.25rem;
+    width: 280px;
+    background: rgba(255,255,255,0.96);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 12px;
+    box-shadow: 0 18px 40px -12px rgba(20,18,15,0.18);
+    font-family: 'Inter', sans-serif;
+    color: var(--ink);
+    padding: 14px 16px 16px;
+    display: none;
+    z-index: 999;
+  }
+  #tweaks.open { display: block; }
+  #tweaks header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  #tweaks h4 {
+    margin: 0;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+  #tweaks .close {
+    background: transparent; border: 0; cursor: pointer;
+    color: var(--muted); font-size: 18px; line-height: 1; padding: 0 4px;
+  }
+  #tweaks .row { margin-top: 12px; }
+  #tweaks label {
+    display: block;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  #tweaks .swatches { display: flex; gap: 8px; }
+  #tweaks .swatches button {
+    width: 28px; height: 28px; border-radius: 50%;
+    border: 1.5px solid rgba(0,0,0,0.1); cursor: pointer;
+    background: var(--c, #fff); padding: 0;
+    transition: transform 0.15s ease, border-color 0.15s ease;
+  }
+  #tweaks .swatches button:hover { transform: scale(1.08); }
+  #tweaks .swatches button.active { border-color: var(--ink); transform: scale(1.1); }
+  #tweaks .toggle {
+    display: flex; align-items: center; justify-content: space-between;
+    font-size: 13px; color: var(--ink);
+  }
+  #tweaks .toggle .switch {
+    width: 36px; height: 20px; border-radius: 999px;
+    background: rgba(0,0,0,0.15); position: relative;
+    cursor: pointer; transition: background 0.2s ease;
+  }
+  #tweaks .toggle .switch::after {
+    content: ""; position: absolute;
+    top: 2px; left: 2px;
+    width: 16px; height: 16px; border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    transition: left 0.2s ease;
+  }
+  #tweaks .toggle.on .switch { background: var(--gold); }
+  #tweaks .toggle.on .switch::after { left: 18px; }
+  #tweaks .segment {
+    display: flex; background: rgba(0,0,0,0.04); border-radius: 8px; padding: 2px;
+  }
+  #tweaks .segment button {
+    flex: 1; background: transparent; border: 0; cursor: pointer;
+    padding: 6px 8px; font-size: 11px; font-weight: 500;
+    color: var(--muted); border-radius: 6px;
+    transition: all 0.2s ease;
+  }
+  #tweaks .segment button.active {
+    background: #fff; color: var(--ink);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  }
+</style>
+</head>
+<body>
+
+  <!-- Intro spacer -->
+  <section class="spacer" style="position:relative;">
+    <span class="label-gold tracking-loose" style="font-size:11px;">INTEGHRA</span>
+    <h1 style="font-size:clamp(2.5rem,6vw,5rem);">
+      Arquitectura argentina, <em style="color:var(--gold); font-style: italic;">conectada.</em>
+    </h1>
+    <p>Hacé scroll para conocer a los cuatro actores que dan vida a una obra.</p>
+    <div class="scroll-hint">
+      <span>SCROLL</span>
+      <span class="bar"></span>
+    </div>
+  </section>
+
+  <!-- PINNED SECTION -->
+  <section id="actors-section">
+    <div id="actors-sticky">
+      <div class="arch-grid"></div>
+      <div class="arch-vignette"></div>
+
+      <div class="stage">
+
+        <!-- LEFT — fixed copy -->
+        <div class="left-col">
+          <span class="label-gold tracking-loose label">Qué es Integhra</span>
+          <h2>
+            Todos los que hacen posible <em>una obra.</em> En un solo lugar.
+          </h2>
+          <p>
+            Integhra es la plataforma donde clientes, arquitectos, proveedores y gremialistas
+            se encuentran en el momento exacto en que se necesitan.
+            No reemplaza la confianza del mercado argentino — la amplifica.
+          </p>
+        </div>
+
+        <!-- RIGHT — plane with actors + connecting line -->
+        <div class="plane" id="plane">
+
+          <!-- SVG connector layer.
+               Nodes sit at the inner-top corner of each card so the line
+               runs cleanly through the empty middle channel.
+               Nodes (viewBox 0..100 x 0..100):
+                 N1 (01): (30, 6)   — right of card 01
+                 N2 (02): (62, 32)  — left of card 02
+                 N3 (03): (30, 62)  — right of card 03
+                 N4 (04): (62, 86)  — left of card 04
+          -->
+          <svg class="connector" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <!-- segments -->
+            <path class="seg" id="seg1" d="M 30 6  L 62 32" pathLength="1"/>
+            <path class="seg" id="seg2" d="M 62 32 L 30 62" pathLength="1"/>
+            <path class="seg" id="seg3" d="M 30 62 L 62 86" pathLength="1"/>
+
+            <!-- nodes (outer ring + inner dot per anchor) -->
+            <g id="nodes">
+              <circle class="node n1"        cx="30" cy="6"  r="1.6"/>
+              <circle class="node inner n1i" cx="30" cy="6"  r="0.7"/>
+
+              <circle class="node n2"        cx="62" cy="32" r="1.6"/>
+              <circle class="node inner n2i" cx="62" cy="32" r="0.7"/>
+
+              <circle class="node n3"        cx="30" cy="62" r="1.6"/>
+              <circle class="node inner n3i" cx="30" cy="62" r="0.7"/>
+
+              <circle class="node n4"        cx="62" cy="86" r="1.6"/>
+              <circle class="node inner n4i" cx="62" cy="86" r="0.7"/>
+            </g>
+          </svg>
+
+          <!-- Actor cards (positioned to roughly align with node anchors) -->
+          <div class="actor a01" id="actor-1">
+            <span class="num">01</span>
+            <span class="rule"></span>
+            <h3>Cliente</h3>
+            <p>Buscás inspiración. Encontrás al equipo que la hace realidad. Filtrás por estilo, zona y tipo de obra. Cuando algo te representa, el arquitecto que lo hizo está a un mensaje.</p>
+          </div>
+
+          <div class="actor a02" id="actor-2">
+            <span class="num">02</span>
+            <span class="rule"></span>
+            <h3>Arquitecto</h3>
+            <p>Tus proyectos trabajan para vos mientras dormís. Subís tu trabajo una vez. La plataforma lo muestra a quienes están buscando exactamente lo que hacés.</p>
+          </div>
+
+          <div class="actor a03" id="actor-3">
+            <span class="num">03</span>
+            <span class="rule"></span>
+            <h3>Proveedor</h3>
+            <p>Tu catálogo, en el momento en que se decide. Los arquitectos ven tus productos cuando están especificando materiales para una obra real. Sin intermediarios.</p>
+          </div>
+
+          <div class="actor a04" id="actor-4">
+            <span class="num">04</span>
+            <span class="rule"></span>
+            <h3>Gremialista</h3>
+            <p>Tu oficio, visible para quien construye. Cuando un arquitecto necesita tu rubro en tu zona, aparecés. El trabajo llega a vos, no al revés.</p>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- progress -->
+      <div class="progress-row" id="progress-row">
+        <span class="tick active"></span>
+        <span class="tick"></span>
+        <span class="tick"></span>
+        <span class="tick"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Outro spacer -->
+  <section class="spacer">
+    <span class="label-gold tracking-loose" style="font-size:11px;">SIGUE LA PÁGINA</span>
+    <h2 style="font-size: clamp(2rem, 4.5vw, 3.5rem);">
+      La sección se liberó. <em style="color: var(--gold); font-style: italic;">Continuá scrolleando.</em>
+    </h2>
+    <p>Acá iría el siguiente bloque de la home — features, casos, footer, etc.</p>
+  </section>
+
+  <!-- ============== TWEAKS PANEL ============== -->
+  <div id="tweaks" role="dialog" aria-label="Tweaks">
+    <header>
+      <h4>Tweaks</h4>
+      <button class="close" id="tweaks-close" aria-label="Cerrar">×</button>
+    </header>
+
+    <div class="row">
+      <label>Fondo</label>
+      <div class="swatches" data-tweak="bg">
+        <button data-value="#fbfaf8" style="--c:#fbfaf8" title="Crema"></button>
+        <button data-value="#f1ede4" style="--c:#f1ede4" title="Arena"></button>
+        <button data-value="#ffffff" style="--c:#ffffff" title="Blanco"></button>
+        <button data-value="#1a1a1a" style="--c:#1a1a1a" title="Carbón"></button>
+      </div>
+    </div>
+
+    <div class="row">
+      <label>Acento</label>
+      <div class="swatches" data-tweak="gold">
+        <button data-value="#b8964e" style="--c:#b8964e" title="Dorado"></button>
+        <button data-value="#8a6b2c" style="--c:#8a6b2c" title="Bronce"></button>
+        <button data-value="#2a4d3a" style="--c:#2a4d3a" title="Verde"></button>
+        <button data-value="#7a3b2e" style="--c:#7a3b2e" title="Terracota"></button>
+      </div>
+    </div>
+
+    <div class="row">
+      <label>Grilla</label>
+      <div class="toggle" id="t-grid" data-tweak="grid">
+        <span>Papel milimetrado</span>
+        <span class="switch"></span>
+      </div>
+    </div>
+
+    <div class="row">
+      <label>Vignette</label>
+      <div class="toggle" id="t-vignette" data-tweak="vignette">
+        <span>Luz focal</span>
+        <span class="switch"></span>
+      </div>
+    </div>
+
+    <div class="row">
+      <label>Velocidad de scroll</label>
+      <div class="segment" data-tweak="speed">
+        <button data-value="300">Rápido</button>
+        <button data-value="500">Normal</button>
+        <button data-value="800">Lento</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+  /* =========================================================
+     1. TWEAK STATE (persisted via host postMessage protocol)
+     ========================================================= */
+  const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+    "bg": "#fbfaf8",
+    "gold": "#b8964e",
+    "grid": true,
+    "vignette": true,
+    "speed": "500"
+  }/*EDITMODE-END*/;
+
+  const tweaks = { ...TWEAK_DEFAULTS };
+
+  function applyTweaks() {
+    const root = document.documentElement;
+    root.style.setProperty('--bg', tweaks.bg);
+    root.style.setProperty('--gold', tweaks.gold);
+
+    // Recompute ink contrast for dark vs. light backgrounds
+    const isDark = isDarkColor(tweaks.bg);
+    root.style.setProperty('--ink',         isDark ? '#f3efe6' : '#1f1d1a');
+    root.style.setProperty('--ink-strong',  isDark ? '#ffffff' : '#14120f');
+    root.style.setProperty('--muted',       isDark ? '#9a948a' : '#6b665f');
+    root.style.setProperty('--soft',        isDark ? '#cfc8bb' : '#4a463f');
+    root.style.setProperty('--grid',        isDark ? 'rgba(200,169,110,0.07)' : 'rgba(184,150,78,0.10)');
+
+    document.querySelectorAll('.arch-grid')[0]?.style.setProperty('display', tweaks.grid ? 'block' : 'none');
+    document.querySelectorAll('.arch-vignette')[0]?.style.setProperty('display', tweaks.vignette ? 'block' : 'none');
+
+    // Reflect active state on tweak controls
+    document.querySelectorAll('[data-tweak]').forEach(el => {
+      const key = el.dataset.tweak;
+      if (el.classList.contains('swatches') || el.classList.contains('segment')) {
+        el.querySelectorAll('button').forEach(btn => {
+          btn.classList.toggle('active', String(btn.dataset.value) === String(tweaks[key]));
+        });
+      } else if (el.classList.contains('toggle')) {
+        el.classList.toggle('on', !!tweaks[key]);
+      }
+    });
+
+    // Refresh ScrollTrigger so pin distance picks up the new speed
+    if (window.ScrollTrigger) {
+      const section = document.getElementById('actors-section');
+      if (section) section.style.height = `${parseInt(tweaks.speed,10)}vh`;
+      ScrollTrigger.refresh();
+    }
+  }
+
+  function isDarkColor(hex) {
+    const h = hex.replace('#','');
+    const r = parseInt(h.substring(0,2),16);
+    const g = parseInt(h.substring(2,4),16);
+    const b = parseInt(h.substring(4,6),16);
+    const yiq = (r*299 + g*587 + b*114) / 1000;
+    return yiq < 128;
+  }
+
+  function setTweak(key, value) {
+    tweaks[key] = value;
+    applyTweaks();
+    try {
+      window.parent.postMessage({ type: '__edit_mode_set_keys', edits: { [key]: value } }, '*');
+    } catch(e) {}
+  }
+
+  /* =========================================================
+     2. TWEAK PANEL — host protocol
+     ========================================================= */
+  const panel = document.getElementById('tweaks');
+  const closeBtn = document.getElementById('tweaks-close');
+
+  window.addEventListener('message', (ev) => {
+    const d = ev.data || {};
+    if (d.type === '__activate_edit_mode')   panel.classList.add('open');
+    if (d.type === '__deactivate_edit_mode') panel.classList.remove('open');
+  });
+
+  closeBtn.addEventListener('click', () => {
+    panel.classList.remove('open');
+    try { window.parent.postMessage({ type: '__edit_mode_dismissed' }, '*'); } catch(e) {}
+  });
+
+  // Wire controls
+  document.querySelectorAll('.swatches, .segment').forEach(group => {
+    const key = group.dataset.tweak;
+    group.querySelectorAll('button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        let val = btn.dataset.value;
+        if (key === 'speed') val = String(val);
+        setTweak(key, val);
+      });
+    });
+  });
+  document.querySelectorAll('.toggle').forEach(t => {
+    const key = t.dataset.tweak;
+    t.addEventListener('click', () => setTweak(key, !tweaks[key]));
+  });
+
+  try { window.parent.postMessage({ type: '__edit_mode_available' }, '*'); } catch(e) {}
+
+  /* =========================================================
+     3. SCROLL ANIMATION — actors + connecting line
+     ========================================================= */
+  gsap.registerPlugin(ScrollTrigger);
+
+  const actors = ['#actor-1','#actor-2','#actor-3','#actor-4'].map(s => document.querySelector(s));
+  const segs   = ['#seg1','#seg2','#seg3'].map(s => document.querySelector(s));
+  const nodes  = [
+    ['.n1', '.n1i'],
+    ['.n2', '.n2i'],
+    ['.n3', '.n3i'],
+    ['.n4', '.n4i']
+  ].map(pair => pair.map(s => document.querySelector(s)));
+
+  // Initial state
+  gsap.set(actors, { opacity: 0, y: 14 });
+  gsap.set(segs,   { strokeDashoffset: 1 });           // segments are hidden (pathLength=1)
+  nodes.forEach(([outer, inner]) => {
+    gsap.set([outer, inner], { opacity: 0, scale: 0.4 });
+  });
+
+  // Build the timeline
+  // Phases (over scrub progress 0..1):
+  //   0.00 - 0.10  appear actor 01 + node 01
+  //   0.10 - 0.22  draw seg 1->2
+  //   0.22 - 0.32  appear actor 02 + node 02
+  //   0.32 - 0.46  draw seg 2->3
+  //   0.46 - 0.56  appear actor 03 + node 03
+  //   0.56 - 0.70  draw seg 3->4
+  //   0.70 - 0.82  appear actor 04 + node 04
+  //   0.82 - 1.00  hold everything
+  const tl = gsap.timeline({
+    scrollTrigger: {
+      trigger: '#actors-section',
+      start: 'top top',
+      end: 'bottom bottom',
+      pin: '#actors-sticky',
+      scrub: 0.6,
+      anticipatePin: 1,
+      onUpdate: (self) => {
+        const p = self.progress;
+        const ticks = document.querySelectorAll('#progress-row .tick');
+        let active = 0;
+        if (p >= 0.22) active = 1;
+        if (p >= 0.46) active = 2;
+        if (p >= 0.70) active = 3;
+        ticks.forEach((t, i) => t.classList.toggle('active', i <= active));
+      }
+    }
+  });
+
+  const appearActor = (i, at, dur) => {
+    tl.to(nodes[i][0], { opacity: 1, scale: 1, duration: dur, ease: 'power2.out' }, at)
+      .to(nodes[i][1], { opacity: 1, scale: 1, duration: dur * 0.8, ease: 'power2.out' }, at + dur * 0.2)
+      .to(actors[i],   { opacity: 1, y: 0,   duration: dur, ease: 'power2.out' }, at);
+  };
+  const drawSeg = (i, at, dur) => {
+    tl.to(segs[i], { strokeDashoffset: 0, duration: dur, ease: 'none' }, at);
+  };
+
+  appearActor(0, 0.00, 0.10);
+  drawSeg   (0, 0.10, 0.12);
+  appearActor(1, 0.22, 0.10);
+  drawSeg   (1, 0.32, 0.14);
+  appearActor(2, 0.46, 0.10);
+  drawSeg   (2, 0.56, 0.14);
+  appearActor(3, 0.70, 0.12);
+
+  // Final apply (after timeline registered so we don't reset the height before pin)
+  applyTweaks();
+</script>
+</body>
+</html>

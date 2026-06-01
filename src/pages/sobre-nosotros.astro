@@ -1,0 +1,146 @@
+---
+import NavArq from '../components/shared/NavArq';
+import SobreNosotros from '../components/sobre-nosotros/SobreNosotros';
+---
+
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Integhra — Nuestra misión, visión y valores." />
+  <title>Sobre Nosotros — Integhra</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style is:global>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: #fff; color: #111; -webkit-font-smoothing: antialiased; }
+    section { min-height: auto !important; display: block !important; }
+    a { text-decoration: none; }
+
+    .inst-nav {
+      position: fixed; top: 0; left: 0; width: 100%; z-index: 50;
+      background: rgba(255,255,255,0.92); backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+    }
+    .inst-nav-inner {
+      max-width: 1100px; margin: 0 auto; padding: 0 2rem;
+      display: flex; align-items: center; justify-content: space-between; height: 68px;
+    }
+    .inst-nav-logo img { height: 36px; width: auto; }
+    .inst-nav-links { display: flex; align-items: center; gap: 2rem; }
+    .inst-nav-link { font-size: 0.82rem; font-weight: 500; color: #555; letter-spacing: 0.02em; transition: color .2s; }
+    .inst-nav-link:hover { color: #02836c; }
+    .inst-nav-link.active { color: #02836c; font-weight: 600; }
+    .inst-btn-nav {
+      font-size: 0.82rem; font-weight: 600; color: #fff; background: #02836c;
+      padding: 0.55rem 1.4rem; border-radius: 100px; transition: background .2s;
+    }
+    .inst-btn-nav:hover { background: #016b57; }
+
+    .inst-wrap { max-width: 1100px; margin: 0 auto; padding: 0 2rem; }
+
+    .sn-hero {
+      padding: 9rem 2rem 7rem; text-align: center;
+      background: linear-gradient(155deg, #02836c 0%, #025f4f 50%, #7b33cc 100%);
+      position: relative; overflow: hidden;
+    }
+    .sn-hero::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 75% 30%, rgba(255,255,255,0.08) 0%, transparent 55%);
+    }
+    .sn-hero-inner { position: relative; z-index: 1; max-width: 700px; margin: 0 auto; }
+    .sn-eyebrow {
+      display: inline-block; font-size: 0.7rem; font-weight: 700;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: rgba(255,255,255,0.55); margin-bottom: 1.25rem;
+    }
+    .sn-hero h1 {
+      font-size: clamp(2.5rem, 6vw, 4rem); font-weight: 800; color: #fff;
+      line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 1.25rem;
+    }
+    .sn-hero p { font-size: 1.05rem; color: rgba(255,255,255,0.72); line-height: 1.7; }
+    .wave-white { line-height: 0; }
+    .wave-white svg { display: block; }
+
+    .sn-mv { padding: 6rem 0; background: #fff; }
+    .sn-mv-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; }
+    @media (max-width: 700px) { .sn-mv-grid { grid-template-columns: 1fr; } }
+    .sn-mv-card { padding: 2.5rem; border-radius: 20px; border: 1px solid #eee; }
+    .sn-mv-card-icon {
+      width: 48px; height: 48px; border-radius: 14px;
+      display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;
+    }
+    .sn-mv-card h2 { font-size: 1.5rem; font-weight: 800; color: #111; margin-bottom: 1rem; letter-spacing: -0.01em; }
+    .sn-mv-card p { font-size: 0.9rem; color: #555; line-height: 1.75; }
+
+    .sn-obj { padding: 6rem 0; background: #f9fafb; }
+    .sn-section-header { text-align: center; margin-bottom: 3.5rem; }
+    .sn-section-header h2 {
+      font-size: clamp(1.9rem, 4vw, 2.75rem); font-weight: 800; color: #111;
+      letter-spacing: -0.02em; line-height: 1.15;
+    }
+    .sn-section-header h2 span { color: #02836c; }
+    .sn-obj-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; }
+    .sn-obj-item {
+      background: #fff; border-radius: 16px; padding: 2rem; border: 1px solid #eee;
+      display: flex; gap: 1.25rem; align-items: flex-start;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .sn-obj-item:hover { border-color: #02836c; box-shadow: 0 4px 20px rgba(2,131,108,0.08); }
+    .sn-obj-num {
+      width: 40px; height: 40px; border-radius: 12px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.72rem; font-weight: 800; letter-spacing: 0.05em;
+    }
+    .sn-obj-item h4 { font-size: 0.95rem; font-weight: 700; color: #111; margin-bottom: 0.35rem; line-height: 1.35; }
+    .sn-obj-item p { font-size: 0.82rem; color: #777; line-height: 1.6; }
+
+    .sn-vals { padding: 6rem 0; background: #fff; }
+    .sn-vals-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1.25rem; }
+    @media (max-width: 900px) { .sn-vals-grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 560px) { .sn-vals-grid { grid-template-columns: repeat(2, 1fr); } }
+    .sn-val {
+      padding: 2rem 1.25rem; border-radius: 20px; border: 1px solid #eee;
+      text-align: center; transition: border-color .2s, box-shadow .2s;
+    }
+    .sn-val:hover { box-shadow: 0 4px 24px rgba(0,0,0,0.07); }
+    .sn-val-icon {
+      width: 52px; height: 52px; border-radius: 16px; margin: 0 auto 1.25rem;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .sn-val h4 { font-size: 0.92rem; font-weight: 700; color: #111; margin-bottom: 0.5rem; }
+    .sn-val p { font-size: 0.78rem; color: #888; line-height: 1.55; }
+
+    .sn-cta {
+      padding: 6rem 2rem; text-align: center;
+      background: linear-gradient(135deg, #02836c, #7b33cc);
+    }
+    .sn-cta h2 { font-size: clamp(1.8rem, 4vw, 2.75rem); font-weight: 800; color: #fff; margin-bottom: 1rem; letter-spacing: -0.02em; }
+    .sn-cta p { font-size: 1rem; color: rgba(255,255,255,0.72); margin-bottom: 2.5rem; max-width: 480px; margin-left: auto; margin-right: auto; line-height: 1.65; }
+    .sn-btn-white {
+      display: inline-block; font-size: 0.9rem; font-weight: 700; color: #02836c;
+      background: #fff; padding: 0.9rem 2.25rem; border-radius: 100px;
+      transition: background .2s, transform .15s; box-shadow: 0 4px 20px rgba(0,0,0,0.18);
+    }
+    .sn-btn-white:hover { background: #f0f0f0; transform: translateY(-2px); }
+
+    .inst-footer { background: #111; padding: 3.5rem 0 2.5rem; }
+    .inst-footer-inner { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1.5rem; margin-bottom: 2.5rem; }
+    .inst-footer-logo { display: flex; align-items: center; gap: 10px; }
+    .inst-footer-logo img { height: 32px; width: auto; filter: brightness(0) invert(1); }
+    .inst-footer-logo span { font-size: 1rem; font-weight: 700; color: #fff; }
+    .inst-footer-links { display: flex; gap: 2rem; }
+    .inst-footer-links a { font-size: 0.82rem; color: #666; transition: color .2s; }
+    .inst-footer-links a:hover { color: #fff; }
+    .inst-footer-email { font-size: 0.85rem; color: #4ecba8; transition: color .2s; }
+    .inst-footer-email:hover { color: #fff; }
+    .inst-footer-copy { font-size: 0.72rem; color: #333; text-align: center; padding-top: 2rem; border-top: 1px solid #1e1e1e; }
+  </style>
+</head>
+<body>
+  <NavArq client:load />
+  <SobreNosotros client:load />
+</body>
+</html>

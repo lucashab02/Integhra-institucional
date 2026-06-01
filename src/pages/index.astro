@@ -1,0 +1,53 @@
+---
+import '../styles/global.css';
+import NavArq from '../components/shared/NavArq';
+import Hero from '../components/arquitectura/Hero';
+import Problem from '../components/arquitectura/Problem';
+import ScrollActors from '../components/arquitectura/ScrollActors';
+import HowItWorks from '../components/arquitectura/HowItWorks';
+import WhyArgentina from '../components/arquitectura/WhyArgentina';
+import Waitlist from '../components/arquitectura/Waitlist';
+import Footer from '../components/shared/Footer';
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Integhra — La plataforma que conecta clientes, arquitectos, proveedores y gremialistas en Argentina." />
+    <meta property="og:title" content="Integhra — La arquitectura argentina, conectada." />
+    <meta property="og:description" content="El lugar donde la idea de remodelar se convierte en una obra real." />
+    <meta property="og:type" content="website" />
+    <title>Integhra — La arquitectura argentina, conectada.</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..500;1,6..72,300..500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <main class="w-full">
+      <NavArq client:load />
+      <Hero client:load />
+      {/* <WhyArgentina client:visible /> */}
+      {/* <Problem client:visible /> */}
+      {/* <ScrollActors client:visible /> */}
+      <div class="hiw-peek">
+        <HowItWorks client:visible />
+      </div>
+      <Waitlist client:visible />
+      <Footer />
+    </main>
+    <style>
+      .hiw-peek {
+        position: relative;
+        z-index: 1;
+        margin-top: -32vh;
+      }
+      @media (max-width: 767px) {
+        .hiw-peek {
+          margin-top: 0;
+        }
+      }
+    </style>
+  </body>
+</html>
