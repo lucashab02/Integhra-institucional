@@ -1,11 +1,9 @@
-import { useState, useRef, useEffect } from 'react';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-gsap.registerPlugin(ScrollTrigger);
+import { useState } from 'react';
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const LOGO = '/images/logo-integhra-blanco.png';
+const BASE = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+const LOGO = `${BASE}images/logo-integhra-blanco.png`;
+const FORMSPREE_ID = 'xzdwlyva';
 
 const CSS = `
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200;0,300;0,800&display=swap');
@@ -20,6 +18,13 @@ const CSS = `
   padding: 6rem 2rem;
   position: relative;
   overflow: hidden;
+}
+
+@media (max-width: 767px) {
+  .wl-section {
+    min-height: unset;
+    padding: 5rem 1.5rem;
+  }
 }
 
 .wl-logo {
@@ -195,30 +200,36 @@ function Check() {
 export default function Waitlist() {
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const [done, setDone] = useState(false);
-  const sectionRef = useRef<HTMLElement>(null);
-  const contentRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.from(contentRef.current, {
-        opacity: 0,
-        y: 30,
-        duration: 1.1,
-        ease: 'power3.out',
-        scrollTrigger: { trigger: sectionRef.current, start: 'top 78%' },
-      });
-    }, sectionRef);
-    return () => ctx.revert();
-  }, []);
-
-  const submit = (e: { preventDefault(): void }) => {
+  const submit = async (e: { preventDefault(): void }) => {
     e.preventDefault();
     const v = email.trim();
     if (!v) { setError('Escribí tu mail para anotarte.'); return; }
     if (!EMAIL_RE.test(v)) { setError('Ese mail no parece válido.'); return; }
     setError('');
-    setDone(true);
+    setLoading(true);
+    try {
+      const res = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          email: v,
+          _subject: 'INTEGHRA ARQ - ANOTARME',
+          mensaje: 'INTEGHRA ARQ - ANOTARME',
+        }),
+      });
+      if (res.ok) {
+        setDone(true);
+      } else {
+        const data = await res.json().catch(() => ({}));
+        setError(data?.error || 'Hubo un error. Intentá de nuevo.');
+      }
+    } catch {
+      setError('Sin conexión. Intentá de nuevo.');
+    }
+    setLoading(false);
   };
 
   const reset = () => { setDone(false); setEmail(''); setError(''); };
@@ -226,15 +237,15 @@ export default function Waitlist() {
   return (
     <>
       <style>{CSS}</style>
-      <section ref={sectionRef} className="wl-section">
-        <div ref={contentRef} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
+      <section className="wl-section">
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
 
           <img src={LOGO} alt="Integhra" className="wl-logo" />
 
           {!done ? (
             <>
               <h2 className="wl-title">
-                Construimos <strong>Integhra.</strong>
+                Construyendo <strong>  Integhra ARQ</strong>
               </h2>
 
               <div className="wl-divider" />
@@ -249,11 +260,13 @@ export default function Waitlist() {
                     aria-label="Tu dirección de email"
                     onChange={e => { setEmail(e.target.value); error && setError(''); }}
                   />
-                  <button className="wl-btn" type="submit">
-                    Anotarme
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M5 12h14M13 6l6 6-6 6"/>
-                    </svg>
+                  <button className="wl-btn" type="submit" disabled={loading}>
+                    {loading ? 'Enviando...' : 'Anotarme'}
+                    {!loading && (
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M5 12h14M13 6l6 6-6 6"/>
+                      </svg>
+                    )}
                   </button>
                 </div>
                 {error && <p className="wl-error">{error}</p>}
@@ -264,7 +277,7 @@ export default function Waitlist() {
               <Check />
               <h3 className="wl-success-title">Quedaste anotado.</h3>
               <p className="wl-success-sub">
-                Te escribimos a <span className="wl-email">{email}</span> cuando abramos.
+                Te escribimos a <span className="wl-email">{email}</span> cuando lancemos.
               </p>
               <button className="wl-again" onClick={reset}>Usar otro mail</button>
             </div>

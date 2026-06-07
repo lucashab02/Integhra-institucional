@@ -183,7 +183,7 @@ export default function ContactModal({ onClose }: Props) {
       const res = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify({ email, mensaje }),
+        body: JSON.stringify({ email, _subject: 'INTEGHRA - CONTACTARME', mensaje }),
       });
       if (res.ok) { setDone(true); }
       else { setError('Hubo un error. Intentá de nuevo.'); }

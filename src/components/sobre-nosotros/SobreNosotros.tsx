@@ -6,6 +6,8 @@ const objetivos = [
   { n: '05', color: '#fc852a', bg: '#fff4ed', title: 'Expandir a distintos sectores y regiones', body: 'Crecer más allá de la industria veterinaria hacia nuevos mercados.' },
 ];
 
+const BASE = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+
 export default function SobreNosotros() {
   return (
     <>
@@ -117,7 +119,7 @@ export default function SobreNosotros() {
         <div className="inst-wrap">
           <div className="inst-footer-inner">
             <div className="inst-footer-logo">
-              <img src="/images/institucional/INTEGHRA-LOGO-sin-nube-HD.png" alt="Integhra" />
+              <img src={`${BASE}images/institucional/INTEGHRA-LOGO-sin-nube-HD.png`} alt="Integhra" />
               <span>Integhra</span>
             </div>
             <div className="inst-footer-links">
@@ -126,7 +128,7 @@ export default function SobreNosotros() {
             </div>
             <a href="mailto:hola@integhra.com" className="inst-footer-email">hola@integhra.com</a>
           </div>
-          <p className="inst-footer-copy">© 2025 Integhra. Todos los derechos reservados.</p>
+          <p className="inst-footer-copy">© 2026 Integhra. Todos los derechos reservados.</p>
         </div>
       </footer>
     </>

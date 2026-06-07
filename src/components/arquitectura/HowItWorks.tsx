@@ -870,7 +870,7 @@ export default function HowItWorks() {
               { pos: { top: -28, left: 0 },   text: 'RES — 001 / 25' },
               { pos: { top: -28, right: 0 },   text: 'PLANTA · ESC 1:50' },
               { pos: { bottom: -28, left: 0 }, text: 'LIVING · COCINA · 2 DORM · BAÑO' },
-              { pos: { bottom: -28, right: 0 }, text: 'INTEGHRA · 2025' },
+              { pos: { bottom: -28, right: 0 }, text: 'INTEGHRA · 2026' },
             ].map((m, i) => (
               <div
                 key={i}

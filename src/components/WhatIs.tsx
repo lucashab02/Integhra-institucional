@@ -113,8 +113,7 @@ export default function WhatIs() {
               className="opacity-0 font-['Inter'] font-light text-[#888888] leading-relaxed"
               style={{ fontSize: '1.05rem' }}
             >
-              Integhra es la plataforma donde clientes, arquitectos,
-              proveedores y gremialistas se encuentran en el momento
+              Integhra es la plataforma donde proveedores, distribuidores, minoristas, profesionales, gremios, inmobiliarias, artistas y consumidores finales se encuentran en el momento
               exacto en que se necesitan. No reemplaza la confianza
               del mercado argentino — la amplifica.
             </p>

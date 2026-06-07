@@ -8,18 +8,23 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
+    "build:prod": "cross-env SITE_PATH=institucional astro build",
     "preview": "astro preview",
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/react": "^5.0.4",
+    "@astrojs/react": "^5.0.7",
     "@tailwindcss/vite": "^4.3.0",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
-    "astro": "^6.3.1",
+    "astro": "^6.4.4",
     "gsap": "^3.15.0",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
     "tailwindcss": "^4.3.0"
+  },
+  "devDependencies": {
+    "@types/node": "^25.9.2",
+    "cross-env": "^10.1.0"
   }
 }

@@ -4,14 +4,16 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
+const BASE = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+
 const LOGOS: { src: string; alt: string; w?: number }[] = [
-  { src: '/images/institucional/logo-zoetis.png', alt: 'Zoetis' },
-  { src: '/images/institucional/Boehringer_Ingelheim_Logo_RGB_Accent_Green.svg.png', alt: 'Boehringer Ingelheim' },
-  { src: '/images/institucional/dfv_logo.png', alt: 'DFV' },
-  { src: '/images/institucional/logo-bago-n.png', alt: 'Bagó' },
-  { src: '/images/institucional/logo-brouwer.png', alt: 'Brouwer', w: 100 },
-  { src: '/images/institucional/Logo-Konig.jpg', alt: 'König', w: 100 },
-  { src: '/images/institucional/Artboard-4logos.png', alt: 'Holliday', w: 180 },
+  { src: `${BASE}images/institucional/logo-zoetis.png`, alt: 'Zoetis' },
+  { src: `${BASE}images/institucional/Boehringer_Ingelheim_Logo_RGB_Accent_Green.svg.png`, alt: 'Boehringer Ingelheim' },
+  { src: `${BASE}images/institucional/dfv_logo.png`, alt: 'DFV' },
+  { src: `${BASE}images/institucional/logo-bago-n.png`, alt: 'Bagó' },
+  { src: `${BASE}images/institucional/logo-brouwer.png`, alt: 'Brouwer', w: 100 },
+  { src: `${BASE}images/institucional/Logo-Konig.jpg`, alt: 'König', w: 100 },
+  { src: `${BASE}images/institucional/Artboard-4logos.png`, alt: 'Holliday', w: 180 },
 ];
 
 export default function Institucional() {
@@ -160,7 +162,7 @@ export default function Institucional() {
         <div className="inst-hero-bg"></div>
         <div className="inst-hero-overlay"></div>
         <div className="inst-hero-content">
-          <img ref={heroLogoRef} src="/images/institucional/INTEGHRA-LOGO-sin-nube-HD.png" alt="Integhra" className="inst-hero-logo" style={{ opacity: 0 }} />
+          <img ref={heroLogoRef} src={`${BASE}images/institucional/INTEGHRA-LOGO-sin-nube-HD.png`} alt="Integhra" className="inst-hero-logo" style={{ opacity: 0 }} />
           <h1 ref={heroTitleRef} style={{ opacity: 0 }}>
             Con <span className="green">INTEGHRA</span><br />
             <span className="purple">crecer es fácil</span>
@@ -217,7 +219,7 @@ export default function Institucional() {
 
             <div className="inst-feature-card">
               <div className="inst-feature-card-img" style={{ background: '#eef9f6' }}>
-                <img src="/images/institucional/storyset-campanas.svg" alt="Campañas" style={{ objectFit: 'contain', padding: '1rem' }} />
+                <img src={`${BASE}images/institucional/storyset-campanas.svg`} alt="Campañas" style={{ objectFit: 'contain', padding: '1rem' }} />
               </div>
               <div className="inst-feature-card-body">
                 <span className="inst-feature-card-tag" style={{ color: '#02836c' }}>Campañas</span>
@@ -228,7 +230,7 @@ export default function Institucional() {
 
             <div className="inst-feature-card">
               <div className="inst-feature-card-img" style={{ background: '#eef9f6' }}>
-                <img src="/images/institucional/storyset-publicidad.svg" alt="Publicidad" style={{ objectFit: 'contain', padding: '1rem' }} />
+                <img src={`${BASE}images/institucional/storyset-publicidad.svg`} alt="Publicidad" style={{ objectFit: 'contain', padding: '1rem' }} />
               </div>
               <div className="inst-feature-card-body">
                 <span className="inst-feature-card-tag" style={{ color: '#02836c' }}>Publicidad</span>
@@ -239,7 +241,7 @@ export default function Institucional() {
 
             <div className="inst-feature-card">
               <div className="inst-feature-card-img" style={{ background: '#eef9f6' }}>
-                <img src="/images/institucional/storyset-comunicacion.svg" alt="Comunicación" style={{ objectFit: 'contain', padding: '1rem' }} />
+                <img src={`${BASE}images/institucional/storyset-comunicacion.svg`} alt="Comunicación" style={{ objectFit: 'contain', padding: '1rem' }} />
               </div>
               <div className="inst-feature-card-body">
                 <span className="inst-feature-card-tag" style={{ color: '#02836c' }}>Comunicación</span>
@@ -304,7 +306,7 @@ export default function Institucional() {
         <div className="inst-wrap">
           <div className="inst-footer-inner">
             <div className="inst-footer-logo">
-              <img src="/images/institucional/INTEGHRA-LOGO-sin-nube-HD.png" alt="Integhra" />
+              <img src={`${BASE}images/institucional/INTEGHRA-LOGO-sin-nube-HD.png`} alt="Integhra" />
               <span>Integhra</span>
             </div>
             <div className="inst-footer-links">
@@ -313,7 +315,7 @@ export default function Institucional() {
             </div>
             <a href="mailto:integhra@gmail.com" className="inst-footer-email">integhra@gmail.com</a>
           </div>
-          <p className="inst-footer-copy">© 2025 Integhra. Todos los derechos reservados.</p>
+          <p className="inst-footer-copy">© 2026 Integhra. Todos los derechos reservados.</p>
         </div>
       </footer>
     </>
