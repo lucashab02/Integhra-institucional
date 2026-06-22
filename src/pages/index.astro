@@ -14,11 +14,22 @@ import Footer from '../components/shared/Footer';
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Integhra — La plataforma tecnológica que digitaliza y conecta cada industria. Integhra Vete (en producción) e Integhra ARQ (próximamente)." />
+    <meta name="description" content="Integhra — La plataforma tecnológica que digitaliza y conecta cada industria. Integhra VET (en producción) e Integhra ARQ (próximamente)." />
     <meta property="og:title" content="Integhra — Conectamos cada industria." />
     <meta property="og:description" content="Plataforma tecnológica que digitaliza y conecta proveedores, profesionales y consumidores en Argentina y el mundo." />
     <meta property="og:type" content="website" />
     <title>Integhra — Conectamos cada industria.</title>
+
+    <!-- 👇 GOOGLE ANALYTICS -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-X6934N6WRC"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-X6934N6WRC');
+    </script>
+    <!-- GOOGLE ANALYTICS -->
+
     <link rel="icon" type="image/png" href={`${import.meta.env.BASE_URL}/logo-integhra.png`.replace('//', '/')} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

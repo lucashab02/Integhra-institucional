@@ -447,7 +447,7 @@ export default function ProductsEcosystem({ onArqWaitlistClick }: ProductsEcosys
 
           <div className="pe-grid">
 
-            {/* ── Integhra Vete ───────────────────────────────── */}
+            {/* ── Integhra Vet ───────────────────────────────── */}
             <div className="pe-card pe-card--vete">
               <div className="pe-card-glow pe-glow--vete" />
               <span className="pe-industry">Industria veterinaria</span>
@@ -466,7 +466,7 @@ export default function ProductsEcosystem({ onArqWaitlistClick }: ProductsEcosys
                 </svg>
               </div>
 
-              <div className="pe-card-name">Integhra Vete</div>
+              <div className="pe-card-name">Integhra VET</div>
               <div className="pe-card-tagline">El ecosistema digital de la industria veterinaria.</div>
 
               <div className="pe-divider" />
@@ -485,9 +485,9 @@ export default function ProductsEcosystem({ onArqWaitlistClick }: ProductsEcosys
                 ))}
               </ul>
 
-              {/* TODO: Replace href with the actual Integhra Vete production URL */}
+              {/* TODO: Replace href with the actual Integhra VET production URL */}
               <a href="#" className="pe-cta pe-cta--vete">
-                Conocer Integhra Vete
+                Conocer Integhra VET
                 <ArrowIcon />
               </a>
 
@@ -567,7 +567,7 @@ export default function ProductsEcosystem({ onArqWaitlistClick }: ProductsEcosys
                   <div className="pe-stat-label">Mercado inicial</div>
                 </div>
                 <div>
-                  <div className="pe-stat-value pe-stat-value--arq">Agosto 2026</div>
+                  <div className="pe-stat-value pe-stat-value--arq">Septiembre 2026</div>
                   <div className="pe-stat-label">Lanzamiento</div>
                 </div>
               </div>

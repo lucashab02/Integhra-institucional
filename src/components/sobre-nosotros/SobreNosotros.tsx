@@ -1,3 +1,6 @@
+import { useState } from 'react';
+import ContactModal from '../shared/ContactModal';
+
 const objetivos = [
   { n: '01', color: '#02836c', bg: '#e6f4f0', title: 'Integrar a todos los actores del mercado', body: 'Proveedores, distribuidores, minoristas y profesionales en un solo ecosistema.' },
   { n: '02', color: '#fc852a', bg: '#fff4ed', title: 'Impulsar la innovación tecnológica', body: 'Herramientas de última generación para transformar la industria.' },
@@ -9,6 +12,7 @@ const objetivos = [
 const BASE = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 
 export default function SobreNosotros() {
+  const [contactOpen, setContactOpen] = useState(false);
   return (
     <>
       <section className="sn-hero">
@@ -112,8 +116,10 @@ export default function SobreNosotros() {
       <section className="sn-cta">
         <h2>¿Listo para ser parte de Integhra?</h2>
         <p>Sumate a la plataforma que está transformando la cadena comercial de la industria veterinaria.</p>
-        <a href="mailto:hola@integhra.com" className="sn-btn-white">Contactanos</a>
+        <button className="sn-btn-white" onClick={() => setContactOpen(true)}>Contactanos</button>
       </section>
+
+      {contactOpen && <ContactModal onClose={() => setContactOpen(false)} />}
 
       <footer className="inst-footer">
         <div className="inst-wrap">
@@ -126,7 +132,7 @@ export default function SobreNosotros() {
               <a href="/institucional">Inicio</a>
               <a href="/sobre-nosotros">Sobre nosotros</a>
             </div>
-            <a href="mailto:hola@integhra.com" className="inst-footer-email">hola@integhra.com</a>
+            <a href="mailto:integhra@gmail.com" className="inst-footer-email">integhra@gmail.com</a>
           </div>
           <p className="inst-footer-copy">© 2026 Integhra. Todos los derechos reservados.</p>
         </div>

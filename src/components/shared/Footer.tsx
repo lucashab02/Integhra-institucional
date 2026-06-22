@@ -198,10 +198,10 @@ export default function Footer() {
                 Soluciones verticales para sectores completos.
               </p>
               <div className="arq-footer-products">
-                {/* TODO: Replace href with actual Integhra Vete production URL */}
+                {/* TODO: Replace href with actual Integhra VET production URL */}
                 <a href="#" className="arq-footer-product-chip arq-footer-chip--vete">
                   <span className="arq-footer-live-dot" />
-                  Integhra Vete
+                  Integhra VET
                 </a>
                 <span className="arq-footer-product-chip arq-footer-chip--arq">
                   <span className="arq-footer-soon-dot" />
@@ -220,8 +220,8 @@ export default function Footer() {
               </div>
               <div className="arq-footer-nav-col">
                 <span className="arq-footer-nav-title">Productos</span>
-                {/* TODO: Replace href with actual Integhra Vete production URL */}
-                <a href="#" className="arq-footer-nav-link">Integhra Vete</a>
+                {/* TODO: Replace href with actual Integhra VET production URL */}
+                <a href="#" className="arq-footer-nav-link">Integhra VET</a>
                 <a href={`${BASE}#productos`} className="arq-footer-nav-link">Integhra ARQ</a>
                 <a href={`${BASE}#waitlist`} className="arq-footer-nav-link">Lista de espera</a>
               </div>

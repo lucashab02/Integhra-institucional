@@ -146,7 +146,7 @@ export default function NavArq() {
               }}
             >
               <span className="arq-nav-live-dot" />
-              Vete · ARQ
+              VET · ARQ
             </a>
 
             <button

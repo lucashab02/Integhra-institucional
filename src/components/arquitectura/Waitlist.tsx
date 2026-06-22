@@ -53,6 +53,21 @@ const CSS = `
   color: rgba(237,232,221,0.6);
 }
 
+.wl-sub {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(0.9rem, 1.4vw, 1.1rem);
+  font-weight: 400;
+  color: rgba(237,232,221,0.5);
+  max-width: 540px;
+  margin: 0 auto 3.25rem;
+  line-height: 1.75;
+}
+
+.wl-sub strong {
+  color: rgba(237,232,221,0.75);
+  font-weight: 500;
+}
+
 .wl-divider {
   width: 24px;
   height: 1px;
@@ -249,6 +264,10 @@ export default function Waitlist() {
               </h2>
 
               <div className="wl-divider" />
+              
+              <p className="wl-sub">
+                Sumate como <strong>Early Adopter</strong> y recibí novedades del lanzamiento.
+              </p>
 
               <form className="wl-form" onSubmit={submit} noValidate>
                 <div className="wl-row">

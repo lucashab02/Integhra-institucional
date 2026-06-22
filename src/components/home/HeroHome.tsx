@@ -390,7 +390,7 @@ export default function HeroHome({ onArqWaitlistClick }: HeroHomeProps) {
                 <path d="M6 8.5c0-1 .3-2.5 1-3M11 8.5c0-1-.3-2.5-1-3" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/>
                 <path d="M4.5 5.5C3.5 4.5 2.5 3.5 2 3M12.5 5.5c1-1 2-2 2.5-2.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/>
               </svg>
-              Conocé Integhra Vete
+              Conocé Integhra VET
             </button>
             <button className="ih-btn-arq" onClick={scrollToWaitlist}>
               Lista de espera ARQ
@@ -403,7 +403,7 @@ export default function HeroHome({ onArqWaitlistClick }: HeroHomeProps) {
           <div className="ih-products-badges">
             <span className="ih-badge ih-badge-vete">
               <span className="ih-badge-vete-dot" />
-              Integhra Vete — En producción
+              Integhra VET — En producción
             </span>
             <span className="ih-badge-separator">·</span>
             <span className="ih-badge ih-badge-arq">
