@@ -1,0 +1,353 @@
+---
+import Isologo from '../marca/Isologo.astro';
+---
+
+<section id="inicio" class="ph" aria-labelledby="ph-title">
+  <div class="ph__stage">
+    <div class="ph__copy wrap">
+      <h1 id="ph-title" class="display ph__title">Conectamos<br />cada industria</h1>
+      <p class="lede ph__lede">
+        Integhra digitaliza y conecta proveedores, profesionales y consumidores. Una plataforma por industria, sin intermediarios.
+      </p>
+    </div>
+
+    <div class="ph__split">
+      <!-- ARQ's ground: the diagonal seam that opens with the mark -->
+      <div class="ph__night" aria-hidden="true"></div>
+
+      <div class="ph__mark" aria-hidden="true">
+        <Isologo part="vet" fullFrame class="ph__half ph__half--vet" />
+        <Isologo part="arq" fullFrame class="ph__half ph__half--arq" />
+      </div>
+
+      <a class="door door--vet" href="#vet">
+        <span class="door__name">Integhra VET</span>
+        <span class="door__line">La industria veterinaria, conectada.</span>
+        <span class="door__state">En servicio desde 2024</span>
+        <span class="door__go">
+          Entrar a VET
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+        </span>
+      </a>
+
+      <a class="door door--arq" href="#arq">
+        <span class="door__name">Integhra ARQ</span>
+        <span class="door__line">Construcción y diseño.</span>
+        <span class="door__state">En obra · Apertura 09/2026</span>
+        <span class="door__go">
+          Entrar a ARQ
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+        </span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* The resting (CSS) state is the opened mark: readable without JS and with reduced motion.
+     The script plays the opening from the closed mark, scrubbed by scroll. */
+  .ph {
+    --S: min(58vh, 38vw);
+    position: relative;
+    background: var(--paper);
+    border-bottom: 2px solid var(--ink);
+  }
+  .ph__stage {
+    position: relative;
+    height: calc(100dvh - 72px);
+    min-height: 620px;
+    overflow: hidden;
+  }
+  .ph__copy {
+    position: relative;
+    z-index: 3;
+    padding-top: clamp(2.5rem, 7vh, 5rem);
+    pointer-events: none;
+  }
+  .ph__title {
+    font-size: clamp(2.8rem, 5.2vw, 5.25rem);
+    max-width: 11ch;
+  }
+  .ph__lede {
+    margin-top: 1.4rem;
+    max-width: 36ch;
+  }
+
+  .ph__split {
+    position: absolute;
+    inset: 0;
+  }
+  .ph__night {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: #121419;
+    clip-path: polygon(52% 0, 100% 0, 100% 100%, 74% 100%);
+  }
+
+  .ph__mark {
+    position: absolute;
+    z-index: 2;
+    left: 70%;
+    top: 52%;
+    width: var(--S);
+    aspect-ratio: 860 / 872;
+    translate: -50% -50%;
+  }
+  .ph__mark :global(.ph__half) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    will-change: transform;
+  }
+  /* Opened positions, in viewport terms so the halves land in their own worlds */
+  .ph__mark :global(.ph__half--vet) {
+    transform: translate(-30vw, 19vh) scale(0.66) rotate(-6deg);
+  }
+  .ph__mark :global(.ph__half--arq) {
+    transform: translate(7vw, -15vh) scale(0.66) rotate(6deg);
+  }
+
+  .door {
+    position: absolute;
+    z-index: 3;
+    display: grid;
+    gap: 0.35rem;
+    justify-items: start;
+    text-decoration: none;
+    max-width: 290px;
+  }
+  .door__name {
+    font-size: clamp(1.6rem, 2.3vw, 2.25rem);
+    line-height: 1;
+  }
+  .door__line {
+    font-size: 1.0625rem;
+  }
+  .door__state {
+    font-size: 0.875rem;
+    margin-bottom: 0.6rem;
+  }
+  .door__go {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    min-height: 48px;
+    padding: 0 1.25rem 0 1.4rem;
+    border-radius: 999px;
+    font-weight: 700;
+    transition: transform 0.3s var(--ease-out), background-color 0.2s ease, color 0.2s ease;
+  }
+  .door__go svg {
+    width: 18px;
+    height: 18px;
+    transition: transform 0.3s var(--ease-out);
+  }
+  .door:hover .door__go svg {
+    transform: translateX(4px);
+  }
+  .door:active .door__go {
+    transform: scale(0.98);
+  }
+
+  /* VET door: Figtree, warm, round */
+  .door--vet {
+    left: max(var(--gutter), 47vw);
+    bottom: 13%;
+    font-family: 'Figtree', var(--font);
+    color: var(--ink);
+  }
+  .door--vet .door__name {
+    font-weight: 800;
+    letter-spacing: -0.025em;
+  }
+  .door--vet .door__state {
+    color: #0b6e77;
+    font-weight: 600;
+  }
+  .door--vet .door__go {
+    background: var(--vet);
+    color: var(--ink);
+  }
+
+  /* ARQ door: Archivo + mono, cold, square */
+  .door--arq {
+    right: var(--gutter);
+    top: 58%;
+    color: #eef1f6;
+    text-align: right;
+    justify-items: end;
+  }
+  .door--arq .door__name {
+    font-weight: 800;
+    font-variation-settings: 'wdth' 120;
+    letter-spacing: -0.03em;
+  }
+  .door--arq .door__line {
+    color: #c3c9d4;
+  }
+  .door--arq .door__state {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 0.8125rem;
+    letter-spacing: 0.02em;
+    color: #8fc8f8;
+    text-transform: uppercase;
+  }
+  .door--arq .door__go {
+    border-radius: 0;
+    border: 2px solid #eef1f6;
+    color: #eef1f6;
+  }
+  .door--arq:hover .door__go {
+    background: #eef1f6;
+    color: #121419;
+  }
+  .door--arq:focus-visible {
+    outline-color: #eef1f6;
+  }
+
+  /* Desktop: the stage pins while the mark opens */
+  @media (min-width: 761px) {
+    .ph {
+      height: calc(210vh);
+    }
+    .ph__stage {
+      position: sticky;
+      top: 72px;
+    }
+  }
+
+  /* Phones: copy first, then a square stage where the mark opens as it passes */
+  @media (max-width: 760px) {
+    .ph {
+      --S: min(70vw, 300px);
+    }
+    .ph__stage {
+      height: auto;
+      min-height: 0;
+      overflow: visible;
+    }
+    .ph__copy {
+      padding-bottom: 1.5rem;
+    }
+    .ph__split {
+      position: relative;
+      inset: auto;
+      height: 128vw;
+      max-height: 640px;
+      overflow: hidden;
+    }
+    .ph__night {
+      clip-path: polygon(0 0, 100% 0, 100% 38%, 0 62%);
+    }
+    .ph__mark {
+      left: 50%;
+      top: 50%;
+    }
+    .ph__mark :global(.ph__half--vet) {
+      transform: translate(-16vw, 22vw) scale(0.62) rotate(-6deg);
+    }
+    .ph__mark :global(.ph__half--arq) {
+      transform: translate(16vw, -26vw) scale(0.62) rotate(6deg);
+    }
+    .door {
+      max-width: 62%;
+    }
+    .door--arq {
+      top: 1.25rem;
+      right: auto;
+      left: var(--gutter);
+      text-align: left;
+      justify-items: start;
+    }
+    .door--vet {
+      left: auto;
+      right: var(--gutter);
+      bottom: 1.25rem;
+      text-align: right;
+      justify-items: end;
+    }
+    .door__line {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  const root = document.querySelector<HTMLElement>('.ph');
+  if (root) {
+    const mm = gsap.matchMedia();
+    const parts = {
+      vet: root.querySelector('.ph__half--vet'),
+      arq: root.querySelector('.ph__half--arq'),
+      night: root.querySelector('.ph__night'),
+      doors: root.querySelectorAll('.door'),
+      copy: root.querySelector('.ph__copy'),
+    };
+
+    const closed = { x: 0, y: 0, xPercent: 0, yPercent: 0, scale: 1, rotate: 0 };
+    const petal = (name: string) => root.querySelector('.iso__p--' + name);
+
+    // Each petal bends on its own while the pairs separate (rotate and stretch only;
+    // x and y stay free for the pointer)
+    const shape = (tl: gsap.core.Timeline, at: number) =>
+      tl
+        .to(petal('naranja'), { rotate: -9, scaleY: 1.05, duration: 1 }, at)
+        .to(petal('turquesa'), { rotate: 12, scale: 0.94, duration: 1 }, at)
+        .to(petal('azul'), { rotate: 14, scaleY: 1.08, duration: 1 }, at)
+        .to(petal('violeta'), { rotate: -7, scale: 1.04, duration: 1 }, at);
+
+    // Desktop: pinned stage, the opening scrubs across the extra scroll height
+    mm.add('(min-width: 761px) and (prefers-reduced-motion: no-preference)', () => {
+      const tl = gsap.timeline({
+        defaults: { ease: 'power2.inOut' },
+        scrollTrigger: { trigger: root, start: 'top 72px', end: 'bottom bottom', scrub: 0.6, invalidateOnRefresh: true },
+      });
+      tl.from([parts.vet, parts.arq], { ...closed, duration: 1 }, 0.15)
+        .from(parts.night, { clipPath: 'polygon(100% 0, 100% 0, 100% 100%, 100% 100%)', duration: 1 }, 0.15)
+        .fromTo(parts.doors, { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, stagger: 0.12, duration: 0.45, immediateRender: true }, 0.75);
+      shape(tl, 0.15);
+    });
+
+    // Fine pointers: the petals drift toward the cursor, each at its own depth
+    mm.add('(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)', () => {
+      const depth: [string, number][] = [['naranja', 16], ['turquesa', -11], ['azul', 22], ['violeta', -14]];
+      const movers = depth.map(([n, d]) => {
+        const el = petal(n);
+        return { d, x: gsap.quickTo(el, 'x', { duration: 0.9, ease: 'power3.out' }), y: gsap.quickTo(el, 'y', { duration: 0.9, ease: 'power3.out' }) };
+      });
+      const onMove = (e: PointerEvent) => {
+        const r = root.getBoundingClientRect();
+        const nx = (e.clientX - r.left) / r.width - 0.5;
+        const ny = (e.clientY - Math.max(r.top, 0)) / window.innerHeight - 0.5;
+        movers.forEach((m) => { m.x(nx * m.d); m.y(ny * m.d); });
+      };
+      const onLeave = () => movers.forEach((m) => { m.x(0); m.y(0); });
+      root.addEventListener('pointermove', onMove);
+      root.addEventListener('pointerleave', onLeave);
+      return () => {
+        root.removeEventListener('pointermove', onMove);
+        root.removeEventListener('pointerleave', onLeave);
+      };
+    });
+
+    // Phones: no pin, the mark opens while its square passes through the viewport
+    mm.add('(max-width: 760px) and (prefers-reduced-motion: no-preference)', () => {
+      const tl = gsap.timeline({
+        defaults: { ease: 'power2.inOut' },
+        scrollTrigger: { trigger: root.querySelector('.ph__split'), start: 'top 85%', end: 'center 45%', scrub: 0.5 },
+      });
+      tl.from([parts.vet, parts.arq], { ...closed, duration: 1 }, 0)
+        .from(parts.night, { clipPath: 'polygon(0 0, 100% 0, 100% 0, 0 0)', duration: 1 }, 0)
+        .fromTo(parts.doors, { autoAlpha: 0, y: 16 }, { autoAlpha: 1, y: 0, stagger: 0.1, duration: 0.4, immediateRender: true }, 0.6);
+      shape(tl, 0);
+    });
+  }
+</script>

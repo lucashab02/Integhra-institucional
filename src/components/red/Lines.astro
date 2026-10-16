@@ -1,0 +1,418 @@
+---
+const BASE = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+const IMG = `${BASE}images/institucional/`;
+
+const vetStops = [
+  'Conexión directa sin intermediarios',
+  'Catálogos digitales para distribuidores y laboratorios',
+  'Red de veterinarias conectadas',
+  'Pedidos, cotizaciones y gestión comercial unificada',
+];
+const arqStops = [
+  'Portfolio digital para arquitectos y diseñadores',
+  'Especificación inteligente de materiales y productos',
+  'Conexión con proveedores, gremios y especialistas',
+  'Del proyecto a la obra, en una sola plataforma',
+];
+const arqActors = ['Proveedores', 'Distribuidores', 'Minoristas', 'Profesionales', 'Gremios', 'Inmobiliarias', 'Artistas', 'Clientes'];
+const PAD = 'clamp(5rem, 12vh, 8.5rem)';
+---
+
+<section id="productos" class="lines" aria-labelledby="lines-title" data-seg data-stn style={`--seg: var(--ink); --stn: calc(${PAD} + 2.2rem)`}>
+  <header class="lines__head wrap">
+    <h2 id="lines-title" class="heading" data-reveal>Dos plataformas.<br />Una visión.</h2>
+    <p class="lede" data-reveal style="--i: 1">
+      Soluciones verticales que transforman industrias completas. Cada una diseñada para su sector, todas bajo la filosofía Integhra.
+    </p>
+  </header>
+
+  <!-- The fork: the route splits into the two lines, each one a link to its field -->
+  <nav class="fork" aria-label="Las dos plataformas">
+    <a href="#linea-vet" class="fork__branch fork__branch--vet">
+      <span class="fork__bullet">VET</span>
+      <span class="fork__name">Integhra VET</span>
+      <span class="fork__state">En servicio</span>
+    </a>
+    <a href="#linea-arq" class="fork__branch fork__branch--arq">
+      <span class="fork__bullet">ARQ</span>
+      <span class="fork__name">Integhra ARQ</span>
+      <span class="fork__state">En obra</span>
+    </a>
+  </nav>
+</section>
+
+<!-- Línea VET -->
+<article id="linea-vet" class="field field--vet" aria-labelledby="vet-title" data-seg data-stn style="--seg: var(--ink); --stn: calc(clamp(4rem, 10vh, 7rem) + 36px)">
+  <div class="field__grid wrap">
+    <div class="field__copy">
+      <div class="bullet" aria-hidden="true">VET</div>
+      <h3 id="vet-title" class="display field__title">Integhra VET</h3>
+      <p class="field__tag">El ecosistema digital de la industria veterinaria.</p>
+      <p class="field__body">
+        Conecta laboratorios, distribuidores y veterinarias en una plataforma diseñada para impulsar la transformación digital del sector y fortalecer toda su cadena de valor. Desde la promoción de productos hasta la gestión comercial, todo integrado.
+      </p>
+
+      <dl class="board field__board" style="--b: var(--vet)" aria-label="Estado de la línea VET">
+        <div><dt>Estado</dt><dd>Operativo</dd></div>
+        <div><dt>Mercado</dt><dd>Argentina</dd></div>
+        <div><dt>En servicio desde</dt><dd>2024</dd></div>
+      </dl>
+
+      <ol class="stops">
+        {vetStops.map((s, i) => <li data-reveal style={`--i: ${i}`}>{s}</li>)}
+      </ol>
+
+      <a class="pill" href={`${BASE}general`}>
+        Conocé Integhra VET
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+      </a>
+    </div>
+
+    <figure class="screens" data-reveal>
+      <img
+        class="screens__a"
+        src={`${IMG}Captura-de-pantalla-2025-07-08-121809.png`}
+        alt="Integhra VET: página de un laboratorio con banners de productos y ofertas exclusivas con porcentaje de bonificación y vencimiento."
+        width="1919"
+        height="969"
+        loading="lazy"
+        decoding="async"
+      />
+      <img
+        class="screens__b"
+        src={`${IMG}vademecum.jpg`}
+        alt="Integhra VET: catálogo de productos con filtros por laboratorio y por categoría."
+        width="1600"
+        height="800"
+        loading="lazy"
+        decoding="async"
+      />
+      <figcaption>La app en uso: página de laboratorio y catálogo de productos.</figcaption>
+    </figure>
+  </div>
+</article>
+
+<!-- Línea ARQ -->
+<article id="linea-arq" class="field field--arq seg-works" aria-labelledby="arq-title" data-seg data-stn style="--stn: calc(clamp(4rem, 10vh, 7rem) + 36px)">
+  <div class="field__grid field__grid--flip wrap">
+    <div class="field__copy">
+      <div class="bullet bullet--works" aria-hidden="true">ARQ</div>
+      <h3 id="arq-title" class="display field__title">Integhra ARQ</h3>
+      <p class="field__tag">El ecosistema digital de la construcción y el diseño.</p>
+      <p class="field__body">
+        Conecta proveedores, distribuidores, minoristas, profesionales, gremios, inmobiliarias, artistas y consumidores finales en una única plataforma. Desde la inspiración y el diseño hasta la ejecución de la obra.
+      </p>
+
+      <ol class="stops stops--works">
+        {arqStops.map((s, i) => <li data-reveal style={`--i: ${i}`}>{s}</li>)}
+      </ol>
+
+      <a class="pill pill--paper" href="#waitlist">Lista de espera ARQ</a>
+    </div>
+
+    <div class="works" data-reveal>
+      <p class="works__date display tnum" aria-label="Apertura: septiembre 2026">
+        <span>Septiembre</span>
+        <span>2026</span>
+      </p>
+      <dl class="board" style="--b: #f0b8f6" aria-label="Estado de la línea ARQ">
+        <div><dt>Estado</dt><dd>Desarrollo</dd></div>
+        <div><dt>Mercado inicial</dt><dd>Argentina</dd></div>
+      </dl>
+      <ul class="works__actors" aria-label="Actores que conecta">
+        {arqActors.map((a) => <li class="sign">{a}</li>)}
+      </ul>
+    </div>
+  </div>
+</article>
+
+<style>
+  .lines {
+    border-top: 0;
+  }
+  .lines__head {
+    padding-block: clamp(5rem, 12vh, 8.5rem) clamp(2.5rem, 6vh, 4rem);
+    display: grid;
+    gap: 1.5rem;
+  }
+  .lines__head .heading {
+    font-size: clamp(2.5rem, 5.6vw, 5rem);
+  }
+
+  /* Fork: two branches leave the route toward their fields */
+  .fork {
+    display: grid;
+    gap: 0;
+    padding-bottom: clamp(3rem, 7vh, 4.5rem);
+  }
+  .fork__branch {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.1rem var(--wrap-x) 1.1rem calc(var(--wrap-x) + 1rem);
+    text-decoration: none;
+    font-size: clamp(1.25rem, 2.2vw, 2rem);
+    font-weight: 780;
+    font-variation-settings: 'wdth' 112;
+    letter-spacing: -0.02em;
+  }
+  .fork__branch::before {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    left: calc(var(--rx) + var(--rw) / 2);
+    right: 0;
+    top: 50%;
+    height: 16px;
+    translate: 0 -50%;
+    background: var(--c);
+    transition: transform 0.35s var(--ease-out);
+  }
+  .fork__branch:hover::before,
+  .fork__branch:focus-visible::before {
+    transform: scaleY(1.5);
+  }
+  .fork__branch--vet { --c: var(--vet); }
+  .fork__branch--arq { --c: var(--arq); }
+  .fork__branch--arq::after {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    left: calc(var(--rx) + var(--rw) / 2);
+    right: 0;
+    top: 50%;
+    height: 5px;
+    translate: 0 -50%;
+    background: repeating-linear-gradient(to right, #fff 0 16px, transparent 16px 30px);
+  }
+  .fork__bullet {
+    display: grid;
+    place-items: center;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--ink);
+    color: #fff;
+    font-size: 0.9rem;
+    font-weight: 850;
+    border: 4px solid var(--paper);
+    flex: none;
+  }
+  .fork__name,
+  .fork__state {
+    background: var(--paper);
+    padding: 0.2rem 0.75rem;
+    border: 2px solid var(--ink);
+    border-radius: 999px;
+  }
+  .fork__state {
+    margin-left: auto;
+    font-size: 0.9375rem;
+    font-weight: 650;
+    font-variation-settings: 'wdth' 80;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .field {
+    padding-block: clamp(4rem, 10vh, 7rem);
+    border-top: 2px solid var(--ink);
+  }
+  .field--vet {
+    background: var(--vet);
+    color: var(--ink);
+  }
+  .field--arq {
+    background: var(--arq);
+    color: #fff;
+  }
+
+  .field__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: clamp(2rem, 5vw, 5rem);
+    align-items: start;
+  }
+  .field__grid--flip {
+    grid-template-columns: minmax(0, 6fr) minmax(0, 6fr);
+  }
+  .field__copy {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.25rem;
+  }
+
+  /* Line bullet: the identity disc a transit line carries */
+  .bullet {
+    display: grid;
+    place-items: center;
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: var(--ink);
+    color: var(--vet);
+    font-weight: 850;
+    font-size: 1.25rem;
+    font-variation-settings: 'wdth' 112;
+    letter-spacing: 0.02em;
+  }
+  .bullet--works {
+    background: #fff;
+    color: var(--arq);
+    outline: 4px dashed #fff;
+    outline-offset: 5px;
+  }
+
+  .field__title {
+    font-size: clamp(3rem, 6.4vw, 5.75rem);
+  }
+  .field__tag {
+    font-size: clamp(1.25rem, 1.8vw, 1.6rem);
+    font-weight: 650;
+    font-variation-settings: 'wdth' 108;
+    letter-spacing: -0.015em;
+    line-height: 1.2;
+    max-width: 24ch;
+  }
+  .field__body {
+    max-width: 52ch;
+    font-size: 1.0625rem;
+  }
+  .field--vet .field__body { color: #2a0c03; }
+  .field--arq .field__body { color: #f6e6f8; }
+  .field__board {
+    width: min(100%, 380px);
+    margin-block: 0.5rem;
+  }
+
+  /* Stops along a vertical line */
+  .stops {
+    list-style: none;
+    position: relative;
+    padding-left: 2.6rem;
+    margin-block: 0.5rem 1rem;
+    display: grid;
+    gap: 1.1rem;
+  }
+  .stops::before {
+    content: '';
+    position: absolute;
+    left: 11px;
+    top: 0.55rem;
+    bottom: 0.55rem;
+    width: 8px;
+    border-radius: 8px;
+    background: var(--ink);
+  }
+  .stops li {
+    position: relative;
+    font-weight: 600;
+    font-size: 1.0625rem;
+    line-height: 1.35;
+    max-width: 40ch;
+  }
+  .stops li::before {
+    content: '';
+    position: absolute;
+    left: calc(-2.6rem + 3px);
+    top: 0.05rem;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #fff;
+    border: 4px solid var(--ink);
+  }
+  .stops--works::before {
+    background: repeating-linear-gradient(to bottom, #fff 0 14px, transparent 14px 24px);
+  }
+  .stops--works li::before {
+    border-color: #fff;
+    background: var(--arq);
+  }
+
+  /* Screens: framed with the ink rule, no lift */
+  .screens {
+    position: relative;
+    margin: 0;
+  }
+  .screens img {
+    width: 100%;
+    height: auto;
+    background: #fff;
+    border: 2px solid var(--ink);
+  }
+  .screens__a {
+    position: relative;
+    z-index: 2;
+  }
+  .screens__b {
+    position: relative;
+    z-index: 1;
+    width: 78% !important;
+    margin: -14% 0 0 auto;
+  }
+  .screens figcaption {
+    margin-top: 1rem;
+    font-size: 0.9375rem;
+    font-weight: 560;
+    color: #2a0c03;
+  }
+
+  /* Works sign */
+  .works {
+    background: #fff;
+    color: var(--ink);
+    border: 2px solid var(--ink);
+    padding: clamp(1.5rem, 3vw, 2.5rem);
+    padding-top: calc(clamp(1.5rem, 3vw, 2.5rem) + 14px);
+    display: grid;
+    gap: 1.25rem;
+    position: relative;
+    container-type: inline-size;
+    min-width: 0;
+  }
+  .works::before {
+    content: '';
+    position: absolute;
+    inset: -2px -2px auto;
+    height: 14px;
+    background: repeating-linear-gradient(-45deg, var(--arq) 0 14px, #fff 14px 28px);
+    border-bottom: 2px solid var(--ink);
+  }
+  .works__date {
+    color: var(--arq);
+    font-size: min(6rem, 15.5cqi);
+    display: grid;
+  }
+  .works__actors {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+  }
+  .works__actors li {
+    font-size: 0.95rem;
+    padding: 0.35rem 0.75rem;
+    border: 2px solid var(--ink);
+    border-radius: 999px;
+  }
+
+  @media (max-width: 960px) {
+    .field__grid,
+    .field__grid--flip {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (max-width: 600px) {
+    .fork__state {
+      display: none;
+    }
+    .fork__bullet {
+      width: 46px;
+      height: 46px;
+      font-size: 0.8rem;
+    }
+  }
+</style>

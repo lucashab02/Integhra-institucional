@@ -1,0 +1,117 @@
+---
+import Isologo from '../marca/Isologo.astro';
+---
+
+<section class="swap" aria-label="De la industria veterinaria a la construcción">
+  <div class="swap__stage">
+    <div class="swap__day">
+      <Isologo part="vet" fullFrame class="swap__pair swap__pair--vet" />
+      <p class="swap__text">Misma plataforma.<br />Otra industria.</p>
+    </div>
+    <div class="swap__night" aria-hidden="true">
+      <Isologo part="arq" fullFrame class="swap__pair swap__pair--arq" />
+      <p class="swap__text">Misma plataforma.<br />Otra industria.</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .swap {
+    position: relative;
+  }
+  .swap__stage {
+    position: relative;
+    height: calc(100dvh - 72px);
+    min-height: 520px;
+    overflow: hidden;
+  }
+  .swap__day,
+  .swap__night {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+  }
+  .swap__day {
+    z-index: 0;
+    isolation: isolate;
+    background: #fff;
+    color: var(--ink);
+  }
+  .swap__night {
+    z-index: 1;
+    isolation: isolate;
+    background: #121419;
+    color: #eef1f6;
+    clip-path: polygon(-40% 0, 100% 0, 100% 100%, 0% 100%);
+  }
+  .swap__text {
+    position: relative;
+    z-index: 2;
+    font-size: clamp(2.6rem, 6.4vw, 6rem);
+    font-weight: 800;
+    font-variation-settings: 'wdth' 118;
+    letter-spacing: -0.035em;
+    line-height: 0.98;
+    text-align: center;
+    padding-inline: var(--gutter);
+  }
+  .swap__stage :global(.swap__pair) {
+    position: absolute;
+    width: min(62vh, 44vw);
+    max-width: none;
+    left: 50%;
+    top: 50%;
+    translate: -50% -50%;
+    opacity: 0.9;
+  }
+  .swap__stage :global(.swap__pair--vet) {
+    transform: translate(-34vw, 22vh) rotate(-12deg) scale(0.7);
+  }
+
+  @media (min-width: 761px) {
+    .swap {
+      height: 190vh;
+    }
+    .swap__stage {
+      position: sticky;
+      top: 72px;
+    }
+  }
+  @media (max-width: 760px) {
+    .swap__stage {
+      height: 92vw;
+      min-height: 360px;
+    }
+    .swap__stage :global(.swap__pair) {
+      width: 70vw;
+    }
+  }
+</style>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  const root = document.querySelector<HTMLElement>('.swap');
+  if (root) {
+    const night = root.querySelector('.swap__night');
+    const vet = root.querySelector('.swap__pair--vet');
+    const arq = root.querySelector('.swap__pair--arq');
+    const mm = gsap.matchMedia();
+    const build = (trigger: gsap.DOMTarget, start: string, end: string) => {
+      gsap
+        .timeline({
+          defaults: { ease: 'power2.inOut' },
+          scrollTrigger: { trigger, start, end, scrub: 0.6, invalidateOnRefresh: true },
+        })
+        .fromTo(vet, { x: 0, y: 0, rotate: 0, scale: 1 }, { x: '-34vw', y: '22vh', rotate: -12, scale: 0.7, duration: 1 }, 0)
+        .from(night, { clipPath: 'polygon(100% 0, 100% 0, 100% 100%, 140% 100%)', duration: 1 }, 0.15)
+        .from(arq, { x: '30vw', y: '-30vh', rotate: 14, scale: 0.6, duration: 1 }, 0.3);
+    };
+    mm.add('(min-width: 761px) and (prefers-reduced-motion: no-preference)', () => build(root, 'top 72px', 'bottom bottom'));
+    mm.add('(max-width: 760px) and (prefers-reduced-motion: no-preference)', () => build(root, 'top 80%', 'bottom 30%'));
+  }
+</script>

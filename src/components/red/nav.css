@@ -1,0 +1,214 @@
+.nv-sentinel {
+  position: absolute;
+  top: 0;
+  height: 24px;
+  width: 1px;
+}
+
+.nv {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: var(--paper);
+  border-bottom: 2px solid transparent;
+  transition: border-color 0.3s ease;
+}
+.nv.is-lifted {
+  border-bottom-color: var(--ink);
+}
+
+.nv-bar {
+  max-width: var(--max);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+  height: 72px;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.nv-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  text-decoration: none;
+  margin-right: auto;
+}
+.nv-brand img {
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
+}
+.nv-brand span {
+  font-weight: 800;
+  font-size: 1.375rem;
+  letter-spacing: -0.03em;
+  font-variation-settings: 'wdth' 112;
+}
+
+.nv-links {
+  display: flex;
+  align-items: center;
+  gap: 1.75rem;
+}
+
+.nv-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  font-weight: 560;
+  font-size: 0.975rem;
+  text-decoration: none;
+  color: var(--ink-2);
+  transition: color 0.2s ease;
+}
+.nv-link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 6px;
+  height: 4px;
+  border-radius: 4px;
+  background: var(--l, var(--ink));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s var(--ease-out);
+}
+.nv-link:hover {
+  color: var(--ink);
+}
+.nv-link:hover::after,
+.nv-link[aria-current='page']::after {
+  transform: scaleX(1);
+}
+.nv-link[aria-current='page'] {
+  color: var(--ink);
+}
+.nv-link--lines::after {
+  display: none;
+}
+
+.nv-swatch {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.nv-swatch i {
+  display: block;
+  width: 18px;
+  height: 5px;
+  border-radius: 5px;
+}
+
+.nv-cta {
+  min-height: 44px;
+  padding-inline: 1.25rem;
+  font-size: 0.95rem;
+}
+
+.nv-burger {
+  display: none;
+  width: 48px;
+  height: 48px;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  background: var(--paper);
+  cursor: pointer;
+  position: relative;
+}
+.nv-burger span {
+  position: absolute;
+  left: 13px;
+  right: 13px;
+  height: 2.5px;
+  background: var(--ink);
+  border-radius: 2px;
+  transition: transform 0.35s var(--ease-out), top 0.35s var(--ease-out);
+}
+.nv-burger span:first-child { top: 18px; }
+.nv-burger span:last-child { top: 25px; }
+.nv.is-open .nv-burger span:first-child { top: 21.5px; transform: rotate(45deg); }
+.nv.is-open .nv-burger span:last-child { top: 21.5px; transform: rotate(-45deg); }
+
+.nv-menu {
+  height: calc(100dvh - 72px);
+  padding: 2rem var(--gutter) 2.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: var(--paper);
+  border-top: 2px solid var(--ink);
+}
+.nv-menu[hidden] {
+  display: none;
+}
+.nv-menu-line {
+  list-style: none;
+  position: relative;
+  padding-left: 2.25rem;
+}
+.nv-menu-line::before {
+  content: '';
+  position: absolute;
+  left: 9px;
+  top: 1.4rem;
+  bottom: 1.4rem;
+  width: 6px;
+  border-radius: 6px;
+  background: var(--ink);
+}
+.nv-menu-line li {
+  position: relative;
+}
+.nv-menu-line li::before {
+  content: '';
+  position: absolute;
+  left: -2.25rem;
+  top: 50%;
+  width: 24px;
+  height: 24px;
+  translate: 0 -50%;
+  border-radius: 50%;
+  background: var(--paper);
+  border: 4px solid var(--l);
+}
+.nv-menu-line a {
+  display: block;
+  padding: 0.7rem 0;
+  font-size: clamp(2rem, 9vw, 2.75rem);
+  font-weight: 780;
+  font-variation-settings: 'wdth' 112;
+  letter-spacing: -0.03em;
+  text-decoration: none;
+}
+.nv-menu-line a[aria-current='page'] {
+  text-decoration: underline;
+  text-decoration-thickness: 4px;
+  text-decoration-color: var(--l);
+  text-underline-offset: 0.18em;
+}
+.nv-menu-cta {
+  justify-content: center;
+  width: 100%;
+  min-height: 56px;
+  font-size: 1.0625rem;
+}
+
+@media (max-width: 900px) {
+  .nv-links,
+  .nv-cta {
+    display: none;
+  }
+  .nv-burger {
+    display: inline-block;
+  }
+  .nv-bar {
+    height: 64px;
+  }
+  .nv-menu {
+    height: calc(100dvh - 64px);
+  }
+}

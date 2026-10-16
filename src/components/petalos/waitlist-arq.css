@@ -1,0 +1,113 @@
+.wla {
+  margin-top: clamp(5rem, 12vh, 8rem);
+  padding-bottom: clamp(5rem, 12vh, 8rem);
+  scroll-margin-top: 72px;
+}
+.wla-tape {
+  height: 18px;
+  background: repeating-linear-gradient(-45deg, #c04fd3 0 18px, #121419 18px 36px);
+  border-block: 1px solid #2a303b;
+}
+.wla-inner {
+  padding-top: clamp(3rem, 8vh, 5rem);
+  max-width: var(--max);
+}
+.wla-title {
+  font-size: clamp(2.6rem, 6vw, 5.5rem);
+  font-weight: 800;
+  font-variation-settings: 'wdth' 120;
+  letter-spacing: -0.035em;
+  line-height: 0.95;
+  max-width: 12ch;
+}
+.wla-sub {
+  margin-top: 1.25rem;
+  font-size: clamp(1.0625rem, 1.3vw, 1.25rem);
+  color: #c3c9d4;
+  max-width: 44ch;
+}
+.wla-sub strong {
+  color: #eef1f6;
+}
+.wla-form {
+  margin-top: 2rem;
+  max-width: 620px;
+  display: grid;
+  gap: 0.5rem;
+}
+.wla-form label {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.8125rem;
+  text-transform: uppercase;
+  color: #a9b1be;
+}
+.wla-row {
+  display: flex;
+}
+.wla-row input {
+  flex: 1;
+  min-width: 0;
+  min-height: 58px;
+  padding: 0 1rem;
+  font: inherit;
+  font-size: 1.0625rem;
+  color: #eef1f6;
+  background: #171a21;
+  border: 1px solid #5b6474;
+  border-right: 0;
+  border-radius: 0;
+  outline: none;
+}
+.wla-row input::placeholder {
+  color: #8a93a2;
+}
+.wla-row input:focus-visible {
+  border-color: #3aa3f5;
+  box-shadow: inset 0 0 0 1px #3aa3f5;
+}
+.wla-row input[aria-invalid='true'] {
+  border-color: #ff8a7a;
+}
+.wla-row button {
+  min-height: 58px;
+  padding: 0 1.75rem;
+  border: 1px solid #eef1f6;
+  border-radius: 0;
+  background: #eef1f6;
+  color: #121419;
+  font-weight: 750;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+.wla-row button:hover {
+  background: #3aa3f5;
+  border-color: #3aa3f5;
+}
+.wla-row button[disabled] {
+  opacity: 0.6;
+  cursor: progress;
+}
+.wla-error {
+  color: #ffb4a8;
+  font-size: 0.9375rem;
+}
+.wla-again {
+  margin-top: 1.5rem;
+  min-height: 48px;
+  padding: 0 1.25rem;
+  background: none;
+  border: 1px solid #eef1f6;
+  color: #eef1f6;
+  cursor: pointer;
+  font-weight: 650;
+}
+@media (max-width: 560px) {
+  .wla-row {
+    flex-direction: column;
+  }
+  .wla-row input {
+    border-right: 1px solid #5b6474;
+    border-bottom: 0;
+  }
+}

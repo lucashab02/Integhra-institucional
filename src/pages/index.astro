@@ -1,50 +1,21 @@
 ---
-import '../styles/global.css';
-import NavArq from '../components/shared/NavArq';
-import HeroHome from '../components/home/HeroHome';
-import ProductsEcosystem from '../components/home/ProductsEcosystem';
-import ArqBridge from '../components/home/ArqBridge';
-import HowItWorks from '../components/arquitectura/HowItWorks';
-import Waitlist from '../components/arquitectura/Waitlist';
-import Footer from '../components/shared/Footer';
+import Base from '../layouts/Base.astro';
+import PetalHero from '../components/petalos/PetalHero.astro';
+import MundoVet from '../components/petalos/MundoVet.astro';
+import Swap from '../components/petalos/Swap.astro';
+import MundoArq from '../components/petalos/MundoArq.astro';
 ---
 
-<!doctype html>
-<html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Integhra — La plataforma tecnológica que digitaliza y conecta cada industria. Integhra VET (en producción) e Integhra ARQ (próximamente)." />
-    <meta property="og:title" content="Integhra — Conectamos cada industria." />
-    <meta property="og:description" content="Plataforma tecnológica que digitaliza y conecta proveedores, profesionales y consumidores en Argentina y el mundo." />
-    <meta property="og:type" content="website" />
-    <title>Integhra — Conectamos cada industria.</title>
-
-    <!-- 👇 GOOGLE ANALYTICS -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-X6934N6WRC"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-X6934N6WRC');
-    </script>
-    <!-- GOOGLE ANALYTICS -->
-
-    <link rel="icon" type="image/png" href={`${import.meta.env.BASE_URL}/logo-integhra.png`.replace('//', '/')} />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200;0,300;0,700;0,800;1,300&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-  </head>
-  <body>
-    <main class="w-full">
-      <NavArq client:load />
-      <HeroHome client:load />
-      <ProductsEcosystem client:visible />
-      <ArqBridge client:visible />
-      <HowItWorks client:visible />
-      <div id="waitlist"></div>
-      <Waitlist client:visible />
-      <Footer />
-    </main>
-  </body>
-</html>
+<Base
+  title="Integhra | Conectamos cada industria"
+  description="Integhra es la plataforma tecnológica que digitaliza y conecta cada industria. Integhra VET (en producción) e Integhra ARQ (próximamente)."
+  ogDescription="Plataforma tecnológica que digitaliza y conecta proveedores, profesionales y consumidores en Argentina."
+  line="vet"
+  world="petalos"
+  stations={[]}
+>
+  <PetalHero />
+  <MundoVet />
+  <Swap />
+  <MundoArq />
+</Base>

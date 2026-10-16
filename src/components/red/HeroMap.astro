@@ -1,0 +1,359 @@
+---
+const BASE = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+const MARK = `${BASE}images/institucional/INTEGHRA-LOGO-sin-nube-HD-e1751471928291.png`;
+
+type Stop = { x: number; y: number; label: string; anchor: 'start' | 'middle' | 'end'; dx: number; dy: number };
+type Board = {
+  vb: string;
+  par: string;
+  vet: string[];
+  arq: string[];
+  inst: string;
+  nos: string;
+  vetStops: Stop[];
+  arqStops: Stop[];
+  instTerm: [number, number, number];
+  nosTerm: [number, number, number];
+  hub: [number, number];
+  hubR: number;
+  label: [number, number, 'start' | 'end'];
+};
+
+// Transit-diagram geometry. Only 0, 45 and 90 degree runs. All four lines meet at the hub.
+const wide: Board = {
+  vb: '0 0 1440 900',
+  par: 'xMaxYMax slice',
+  vet: ['M -40 800 H 380 L 490 690 H 1160', 'M 1160 690 H 1300 L 1500 490'],
+  arq: ['M 1500 160 H 1330 L 1160 330 V 690', 'M 1160 690 V 740 L 1250 830 H 1500'],
+  inst: 'M 1000 900 V 850 L 1160 690',
+  nos: 'M 1500 760 H 1300 L 1230 690 H 1160',
+  vetStops: [
+    { x: 200, y: 800, label: 'Laboratorio', anchor: 'middle', dx: 0, dy: 48 },
+    { x: 640, y: 690, label: 'Distribuidor', anchor: 'middle', dx: 0, dy: 48 },
+    { x: 900, y: 690, label: 'Veterinaria', anchor: 'middle', dx: 0, dy: 48 },
+  ],
+  arqStops: [
+    { x: 1245, y: 245, label: 'Arquitecto', anchor: 'start', dx: 26, dy: 8 },
+    { x: 1160, y: 440, label: 'Proveedor', anchor: 'end', dx: -26, dy: 8 },
+    { x: 1160, y: 560, label: 'Gremio', anchor: 'end', dx: -26, dy: 8 },
+    { x: 1380, y: 830, label: 'Cliente', anchor: 'middle', dx: 0, dy: 46 },
+  ],
+  instTerm: [1000, 850, 156],
+  nosTerm: [1392, 760, 124],
+  hub: [1160, 690],
+  hubR: 58,
+  label: [1086, 640, 'end'],
+};
+
+// Portrait board for phones: the VET trunk rises from the bottom-left, where the page route continues it.
+const tall: Board = {
+  vb: '0 0 390 600',
+  par: 'xMinYMax meet',
+  vet: ['M 14 620 V 470 L 184 300 H 236'],
+  arq: ['M 420 40 H 330 L 236 134 V 300', 'M 236 300 V 330 L 316 410 H 420'],
+  inst: 'M 236 300 V 520',
+  nos: 'M 420 300 H 236',
+  vetStops: [
+    { x: 14, y: 560, label: 'Laboratorio', anchor: 'start', dx: 22, dy: 6 },
+    { x: 14, y: 490, label: 'Distribuidor', anchor: 'start', dx: 22, dy: 6 },
+    { x: 99, y: 385, label: 'Veterinaria', anchor: 'start', dx: 20, dy: 18 },
+  ],
+  arqStops: [
+    { x: 283, y: 87, label: 'Arquitecto', anchor: 'end', dx: -18, dy: 6 },
+    { x: 236, y: 180, label: 'Proveedor', anchor: 'end', dx: -18, dy: 6 },
+    { x: 236, y: 240, label: 'Gremio', anchor: 'end', dx: -18, dy: 6 },
+    { x: 340, y: 410, label: 'Cliente', anchor: 'end', dx: 6, dy: 32 },
+  ],
+  instTerm: [236, 520, 128],
+  nosTerm: [318, 300, 96],
+  hub: [236, 300],
+  hubR: 34,
+  label: [180, 290, 'end'],
+};
+
+const boards = [
+  { b: wide, cls: 'map map--wide' },
+  { b: tall, cls: 'map map--tall' },
+];
+---
+
+<section class="hero" id="inicio" aria-labelledby="hero-title" data-seg style="--seg: var(--vet)">
+  <div class="hero__copy wrap">
+    <h1 id="hero-title" class="display hero__title">
+      Conectamos<br /><span>cada industria</span>
+    </h1>
+    <p class="lede hero__lede">
+      Integhra es la plataforma que digitaliza y conecta proveedores, profesionales y consumidores. Sector por sector, sin intermediarios.
+    </p>
+    <div class="hero__ctas">
+      <a class="pill pill--vet" href="#linea-vet">
+        Conocé Integhra VET
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+      </a>
+      <a class="pill pill--arq pill--ghost" href="#waitlist">Lista de espera ARQ</a>
+    </div>
+  </div>
+
+  <div class="hero__map">
+    {boards.map(({ b, cls }, k) => (
+      <svg class={cls} viewBox={b.vb} preserveAspectRatio={b.par} role="img" aria-labelledby={`map-t-${k} map-d-${k}`}>
+        <title id={`map-t-${k}`}>Mapa de la red Integhra</title>
+        <desc id={`map-d-${k}`}>
+          La línea VET une laboratorio, distribuidor y veterinaria. La línea ARQ, en obra, une arquitecto, proveedor, gremio y cliente. Las cuatro líneas se combinan en la estación Integhra.
+        </desc>
+
+        <g class="ln ln--inst">
+          <a href={`${BASE}general`} aria-label="Línea Institucional: ir a la página Institucional">
+            <path class="ln__path" d={b.inst} pathLength="1" style="--d: 0.9s" />
+            <path class="ln__hit" d={b.inst} />
+            <g class="term" transform={`translate(${b.instTerm[0]} ${b.instTerm[1]})`}>
+              <rect x={-b.instTerm[2] / 2} y="-22" width={b.instTerm[2]} height="44" rx="22" />
+              <text class="sign" text-anchor="middle" y="7">Institucional</text>
+            </g>
+          </a>
+        </g>
+
+        <g class="ln ln--nos">
+          <a href={`${BASE}sobre-nosotros`} aria-label="Línea Nosotros: ir a la página Sobre nosotros">
+            <path class="ln__path" d={b.nos} pathLength="1" style="--d: 1s" />
+            <path class="ln__hit" d={b.nos} />
+            <g class="term" transform={`translate(${b.nosTerm[0]} ${b.nosTerm[1]})`}>
+              <rect x={-b.nosTerm[2] / 2} y="-22" width={b.nosTerm[2]} height="44" rx="22" />
+              <text class="sign" text-anchor="middle" y="7">Nosotros</text>
+            </g>
+          </a>
+        </g>
+
+        <g class="ln ln--vet">
+          <a href="#linea-vet" aria-label="Línea VET, en servicio: laboratorio, distribuidor y veterinaria">
+            {b.vet.map((d, i) => <path class="ln__path" d={d} pathLength="1" style={`--d: ${0.15 + i}s`} />)}
+            {b.vet.map((d) => <path class="ln__hit" d={d} />)}
+            {b.vetStops.map((s, i) => (
+              <g class="stop" style={`--i: ${i}; transform-origin: ${s.x}px ${s.y}px`}>
+                <circle cx={s.x} cy={s.y} r="13" />
+                <text class="sign" x={s.x + s.dx} y={s.y + s.dy} text-anchor={s.anchor}>{s.label}</text>
+              </g>
+            ))}
+          </a>
+        </g>
+
+        <g class="ln ln--arq">
+          <a href="#linea-arq" aria-label="Línea ARQ, en obra: arquitecto, proveedor, gremio y cliente">
+            {b.arq.map((d, i) => <path class="ln__path" d={d} pathLength="1" style={`--d: ${0.45 + i * 0.6}s`} />)}
+            {b.arq.map((d) => <path class="ln__works" d={d} />)}
+            {b.arq.map((d) => <path class="ln__hit" d={d} />)}
+            {b.arqStops.map((s, i) => (
+              <g class="stop" style={`--i: ${i + 3}; transform-origin: ${s.x}px ${s.y}px`}>
+                <circle cx={s.x} cy={s.y} r="13" />
+                <text class="sign" x={s.x + s.dx} y={s.y + s.dy} text-anchor={s.anchor}>{s.label}</text>
+              </g>
+            ))}
+          </a>
+        </g>
+
+        <g class="hub" transform={`translate(${b.hub[0]} ${b.hub[1]})`}>
+          <circle class="hub__cap" r={b.hubR} />
+          <image href={MARK} x={-b.hubR * 0.68} y={-b.hubR * 0.68} width={b.hubR * 1.36} height={b.hubR * 1.36} />
+        </g>
+        <text class="hub__name" x={b.label[0]} y={b.label[1]} text-anchor={b.label[2]}>Integhra</text>
+      </svg>
+    ))}
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    min-height: calc(100dvh - 72px);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    overflow: hidden;
+    border-bottom: 2px solid var(--ink);
+  }
+  .hero__copy {
+    position: relative;
+    z-index: 2;
+    grid-area: 1 / 1;
+    align-self: start;
+    padding-top: clamp(2.5rem, 7vh, 5.5rem);
+    pointer-events: none;
+  }
+  .hero__copy > * {
+    pointer-events: auto;
+  }
+  .hero__title {
+    font-size: clamp(3rem, 6.6vw, 6rem);
+    max-width: 11ch;
+  }
+  .hero__title span {
+    display: inline-block;
+    padding-bottom: 0.04em;
+  }
+  .hero__lede {
+    margin-top: clamp(1.25rem, 2.4vh, 2rem);
+    max-width: 40ch;
+  }
+  .hero__ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: clamp(1.5rem, 3vh, 2.25rem);
+  }
+
+  .hero__map {
+    grid-area: 1 / 1;
+    position: relative;
+    z-index: 1;
+  }
+  .map--wide {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+  }
+  .map--tall {
+    display: none;
+  }
+
+  /* Map grammar */
+  .ln__path {
+    fill: none;
+    stroke-width: 16;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .ln--vet .ln__path { stroke: var(--vet); }
+  .ln--arq .ln__path { stroke: var(--arq); }
+  .ln--inst .ln__path { stroke: var(--inst); }
+  .ln--nos .ln__path { stroke: var(--nos); }
+  .ln__works {
+    fill: none;
+    stroke: #fff;
+    stroke-width: 5;
+    stroke-dasharray: 16 14;
+  }
+  .ln__hit {
+    fill: none;
+    stroke: transparent;
+    stroke-width: 44;
+  }
+  .stop circle {
+    fill: #fff;
+    stroke: var(--ink);
+    stroke-width: 5;
+  }
+  .sign {
+    font-family: var(--font);
+    font-size: 21px;
+    fill: var(--ink);
+    paint-order: stroke;
+    stroke: var(--paper);
+    stroke-width: 7px;
+    stroke-linejoin: round;
+  }
+  .term rect {
+    fill: var(--paper);
+    stroke: var(--ink);
+    stroke-width: 4;
+  }
+  .term .sign {
+    stroke: none;
+    font-size: 19px;
+  }
+  /* The interchange: a white capsule holding the isologotipo, every line enters it */
+  .hub__cap {
+    fill: #fff;
+    stroke: var(--ink);
+    stroke-width: 7;
+  }
+  .hub__name {
+    font-family: var(--font);
+    font-weight: 800;
+    font-size: 32px;
+    letter-spacing: -0.02em;
+    font-variation-settings: 'wdth' 112;
+    fill: var(--ink);
+    paint-order: stroke;
+    stroke: var(--paper);
+    stroke-width: 8px;
+  }
+
+  /* Hover or focus on a line lights it and recedes the rest */
+  .ln a {
+    cursor: pointer;
+    outline: none;
+  }
+  .ln {
+    transition: opacity 0.35s ease;
+  }
+  svg:has(.ln:hover, .ln:focus-within) .ln:not(:hover, :focus-within) {
+    opacity: 0.18;
+  }
+  .ln:focus-within .stop circle,
+  .ln:focus-within .term rect {
+    stroke-width: 7;
+  }
+
+  /* Opening: lines draw, then stations land */
+  @media (prefers-reduced-motion: no-preference) {
+    .ln__path {
+      stroke-dasharray: 1;
+      stroke-dashoffset: 1;
+      animation: draw 1.3s var(--ease-out) forwards;
+      animation-delay: var(--d, 0s);
+    }
+    .ln__works,
+    .term {
+      opacity: 0;
+      animation: fade 0.6s ease forwards;
+      animation-delay: 1.6s;
+    }
+    .stop {
+      transform: scale(0);
+      animation: pop 0.6s var(--ease-out) forwards;
+      animation-delay: calc(0.7s + var(--i) * 0.09s);
+    }
+    .hub,
+    .hub__name {
+      opacity: 0;
+      animation: fade 0.5s ease forwards 1.2s;
+    }
+  }
+  @keyframes draw { to { stroke-dashoffset: 0; } }
+  @keyframes fade { to { opacity: 1; } }
+  @keyframes pop { to { transform: scale(1); } }
+
+  @media (max-width: 600px) {
+    .hero {
+      min-height: auto;
+      grid-template-rows: auto auto;
+    }
+    .hero__title {
+      font-size: clamp(2.4rem, 11vw, 3.6rem);
+      font-variation-settings: 'wdth' 112;
+    }
+    .hero__map {
+      grid-area: 2 / 1;
+      margin-top: 1.5rem;
+    }
+    .map--wide {
+      display: none;
+    }
+    .map--tall {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+    .map--tall .ln__path { stroke-width: 10; }
+    .map--tall .ln__works { stroke-width: 3; stroke-dasharray: 10 9; }
+    .map--tall .stop circle { r: 8; stroke-width: 4; }
+    .map--tall .sign { font-size: 15px; stroke-width: 5px; }
+    .map--tall .term .sign { font-size: 14px; }
+    .map--tall .term rect { stroke-width: 3; }
+    .map--tall .hub__cap { stroke-width: 5; }
+    .map--tall .hub__name { font-size: 22px; stroke-width: 6px; }
+    .map--tall .term rect { y: -16px; height: 32px; rx: 16px; }
+    .map--tall .term .sign { translate: 0 -2px; }
+  }
+</style>

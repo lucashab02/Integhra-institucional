@@ -1,0 +1,98 @@
+---
+import '../styles/global.css';
+import Nav from '../components/red/Nav';
+import Footer from '../components/red/Footer.astro';
+import Route from '../components/red/Route.astro';
+
+export type Line = 'vet' | 'arq' | 'inst' | 'nos';
+export interface Station { id: string; label: string; line?: Line }
+
+interface Props {
+  title: string;
+  description: string;
+  ogTitle?: string;
+  ogDescription?: string;
+  line: Line;
+  stations: Station[];
+  /** 'red' keeps the transit-map route; 'petalos' is the split-mark world (no route line). */
+  world?: 'red' | 'petalos';
+}
+
+const { title, description, ogTitle, ogDescription, line, stations, world = 'red' } = Astro.props;
+const BASE = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+---
+
+<!doctype html>
+<html lang="es-AR" data-line={line} data-world={world}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta property="og:title" content={ogTitle ?? title} />
+    <meta property="og:description" content={ogDescription ?? description} />
+    <meta property="og:type" content="website" />
+    <meta name="theme-color" content="#f4f5f7" />
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-X6934N6WRC"></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-X6934N6WRC');
+      document.documentElement.classList.add('js');
+    </script>
+
+    <link rel="icon" type="image/png" href={`${BASE}logo-integhra.png`} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&display=swap"
+      rel="stylesheet"
+    />
+    {world === 'petalos' && (
+      <link
+        href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,400..800;1,400..800&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet"
+      />
+    )}
+  </head>
+  <body>
+    <Nav client:load />
+    {world === 'red' && <Route stations={stations} line={line} />}
+    <main id="contenido">
+      <slot />
+    </main>
+    <Footer />
+
+    <script>
+      // Reveal on enter. Content is visible without JS and with reduced motion.
+      const els = document.querySelectorAll<HTMLElement>('[data-reveal]');
+      if ('IntersectionObserver' in window) {
+        const io = new IntersectionObserver(
+          (entries) => {
+            for (const e of entries) {
+              if (e.isIntersecting) {
+                e.target.classList.add('is-in');
+                io.unobserve(e.target);
+              }
+            }
+          },
+          { rootMargin: '0px 0px -12% 0px', threshold: 0.08 },
+        );
+        els.forEach((el) => io.observe(el));
+      } else {
+        els.forEach((el) => el.classList.add('is-in'));
+      }
+
+      // Any element with data-contact opens the contact modal owned by the Nav island.
+      document.addEventListener('click', (ev) => {
+        const t = (ev.target as HTMLElement).closest('[data-contact]');
+        if (t) {
+          ev.preventDefault();
+          window.dispatchEvent(new CustomEvent('integhra:contact'));
+        }
+      });
+    </script>
+  </body>
+</html>

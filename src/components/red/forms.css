@@ -1,0 +1,123 @@
+/* Fields: square, ink-ruled, label above */
+.fld {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+.fld label {
+  font-weight: 620;
+  font-size: 0.9375rem;
+  color: var(--ink);
+}
+.fld input,
+.fld textarea {
+  width: 100%;
+  font: inherit;
+  font-size: 1.0625rem;
+  color: var(--ink);
+  background: #fff;
+  border: 2px solid var(--ink);
+  border-radius: 0;
+  padding: 0.85rem 1rem;
+  outline: none;
+  resize: vertical;
+  transition: box-shadow 0.2s ease;
+}
+.fld input::placeholder,
+.fld textarea::placeholder {
+  color: var(--ink-3);
+}
+.fld input:focus-visible,
+.fld textarea:focus-visible {
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--inst) 45%, transparent);
+}
+.fld input[aria-invalid='true'] {
+  border-color: #c4161c;
+}
+.fld-error {
+  font-size: 0.9375rem;
+  font-weight: 560;
+  color: #b0151a;
+}
+
+/* Contact modal */
+.cm-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgb(17 19 24 / 0.55);
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  animation: cm-in 0.2s ease both;
+}
+.cm {
+  position: relative;
+  width: 100%;
+  max-width: 520px;
+  background: var(--paper);
+  border: 2px solid var(--ink);
+  box-shadow: 0 30px 80px -30px rgb(17 19 24 / 0.6);
+  animation: cm-up 0.45s var(--ease-out) both;
+}
+.cm-lines {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  height: 10px;
+}
+.cm-lines i {
+  display: block;
+}
+.cm-close {
+  position: absolute;
+  top: 1.35rem;
+  right: 1rem;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  border: 2px solid var(--ink);
+  background: var(--paper);
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+.cm-close:hover {
+  background: var(--ink);
+  color: var(--paper);
+}
+.cm-form,
+.cm-done {
+  padding: 2rem clamp(1.25rem, 4vw, 2.25rem) 2.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+.cm-form .heading,
+.cm-done .heading {
+  font-size: clamp(1.75rem, 4vw, 2.25rem);
+  padding-right: 3.5rem;
+}
+.cm-done p {
+  color: var(--ink-2);
+}
+.cm-done .pill {
+  align-self: flex-start;
+}
+.cm-send {
+  justify-content: center;
+  margin-top: 0.25rem;
+}
+
+@keyframes cm-in {
+  from { opacity: 0; }
+}
+@keyframes cm-up {
+  from { opacity: 0; transform: translateY(24px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cm-scrim,
+  .cm {
+    animation: none;
+  }
+}

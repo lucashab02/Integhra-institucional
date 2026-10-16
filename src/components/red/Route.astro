@@ -1,0 +1,122 @@
+---
+import type { Station, Line } from '../../layouts/Base.astro';
+
+interface Props { stations: Station[]; line: Line }
+const { stations, line } = Astro.props;
+---
+
+<!-- The train: fixed on the page route, the sections slide past it -->
+<span class="train" aria-hidden="true" style={`--tc: var(--${line})`}></span>
+
+<!-- Station plate, docked in the header bar -->
+<p class="plate" data-plate aria-live="polite">
+  <span class="plate__dot" aria-hidden="true"></span>
+  <span class="plate__k">Estación</span>
+  <span class="plate__v sign" data-plate-name>{stations[0]?.label}</span>
+</p>
+
+<script type="application/json" data-stations set:html={JSON.stringify(stations.map((s) => ({ id: s.id, label: s.label, line: s.line ?? line })))} />
+
+<style>
+  .train {
+    position: fixed;
+    z-index: 30;
+    left: calc(var(--rx) + var(--rw) / 2);
+    top: 55%;
+    width: calc(var(--rw) + 10px);
+    height: 48px;
+    translate: -50% -50%;
+    border-radius: 999px;
+    background: var(--tc);
+    border: 3px solid var(--ink);
+    box-shadow: 0 0 0 3px var(--paper);
+    transition: background-color 0.35s ease;
+    pointer-events: none;
+  }
+
+  .plate {
+    position: fixed;
+    z-index: 45;
+    top: 0;
+    left: calc(var(--wrap-x) + 168px);
+    height: 72px;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    pointer-events: none;
+    transition: opacity 0.3s ease, translate 0.4s var(--ease-out);
+  }
+  .plate.is-idle,
+  :global(html.menu-open) .plate {
+    opacity: 0;
+    translate: 0 -8px;
+  }
+  .plate__dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 3px solid var(--ink);
+    background: var(--pc, var(--ink));
+    transition: background-color 0.3s ease;
+  }
+  .plate__k {
+    color: var(--ink-3);
+    font-weight: 500;
+  }
+  .plate__v {
+    font-size: 0.9375rem;
+  }
+  @media (max-width: 900px) {
+    .plate {
+      height: 64px;
+      left: auto;
+      right: calc(var(--gutter) + 60px);
+    }
+  }
+  @media (max-width: 600px) {
+    .plate__k {
+      display: none;
+    }
+  }
+  @media (max-width: 1100px) and (min-width: 901px) {
+    .plate {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  type S = { id: string; label: string; line: string };
+  const data: S[] = JSON.parse(document.querySelector('[data-stations]')?.textContent || '[]');
+  const plate = document.querySelector<HTMLElement>('[data-plate]');
+  const name = document.querySelector<HTMLElement>('[data-plate-name]');
+  const train = document.querySelector<HTMLElement>('.train');
+  const sections = data
+    .map((s) => ({ s, el: document.getElementById(s.id) }))
+    .filter((x): x is { s: S; el: HTMLElement } => !!x.el);
+
+  let current = '';
+  const setActive = (id: string) => {
+    if (id === current) return;
+    current = id;
+    const hit = data.find((d) => d.id === id);
+    if (!hit) return;
+    plate?.classList.toggle('is-idle', id === data[0]?.id);
+    if (name) name.textContent = hit.label;
+    plate?.style.setProperty('--pc', `var(--${hit.line})`);
+    train?.style.setProperty('--tc', `var(--${hit.line})`);
+  };
+
+  if (sections.length && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver(
+      (entries) => {
+        const visible = entries.filter((e) => e.isIntersecting);
+        if (visible.length) setActive((visible[visible.length - 1].target as HTMLElement).id);
+      },
+      { rootMargin: '-55% 0px -44% 0px' },
+    );
+    sections.forEach(({ el }) => io.observe(el));
+    setActive(sections[0].s.id);
+  }
+</script>

@@ -1,0 +1,175 @@
+---
+const stops = [
+  { name: 'Inspiración', title: ['Buscás ', 'inspiración.'], text: 'Explorás proyectos reales de profesionales de la construcción. Filtrás por estilo, escala y zona.' },
+  { name: 'Encuentro', title: ['Algo te ', 'representa.'], text: 'Encontrás la obra que imaginabas. El profesional que la hizo está a un mensaje.' },
+  { name: 'Consulta', title: ['La consulta ', 'llega.'], text: 'El profesional recibe el contacto directo. Sin intermediarios, sin agencias en el medio.' },
+  { name: 'Materiales', title: ['El profesional ', 'elige.'], text: 'Accede a proveedores y materiales desde la misma plataforma. Todo en un lugar.' },
+  { name: 'Conexión', title: ['Todo ', 'coordinado.'], text: 'Clientes, profesionales, proveedores y gremios en el momento exacto en que se necesitan.' },
+  { name: 'Obra', title: ['Así se hace ', 'una obra.'], text: 'De la idea a la realidad. Sin intermediarios, sin vueltas.', terminus: true },
+];
+---
+
+<section id="recorrido" class="trip seg-arq" aria-labelledby="trip-title" data-seg data-stn style="--stn: calc(clamp(5rem, 12vh, 8.5rem) + 2.2rem)">
+  <header class="trip__head wrap">
+    <h2 id="trip-title" class="heading" data-reveal>Así va a funcionar <span>Integhra ARQ</span></h2>
+    <p class="lede" data-reveal style="--i: 1">
+      La plataforma que conecta a todos los actores de la construcción y el diseño en un único ecosistema digital. Un recorrido de seis estaciones.
+    </p>
+  </header>
+
+  <div class="trip__board wrap">
+    <div class="trip__rail" aria-hidden="true"><span></span></div>
+    <ol class="trip__stops">
+      {stops.map((s, i) => (
+        <li class:list={['trip__stop', { 'is-terminus': s.terminus }]} style={`--i: ${i}`} data-reveal>
+          <span class="trip__dot" aria-hidden="true"></span>
+          <h3 class="trip__title">{s.title[0]}<em>{s.title[1]}</em></h3>
+          <p class="trip__text">{s.text}</p>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .trip {
+    padding-block: clamp(5rem, 12vh, 8.5rem);
+    border-top: 2px solid var(--ink);
+    overflow: hidden;
+  }
+  .trip__head {
+    display: grid;
+    gap: 1.5rem;
+    margin-bottom: clamp(3rem, 8vh, 5.5rem);
+  }
+  .trip__head .heading {
+    font-size: clamp(2.5rem, 5.6vw, 5rem);
+    max-width: 14ch;
+  }
+  .trip__head .heading span {
+    color: var(--arq);
+  }
+
+  .trip__board {
+    position: relative;
+  }
+  .trip__stops {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    column-gap: clamp(1rem, 2vw, 2rem);
+    position: relative;
+  }
+  .trip__stop {
+    position: relative;
+    display: grid;
+    align-content: start;
+    gap: 0.6rem;
+    padding-top: 4.25rem;
+  }
+  .trip__dot {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #fff;
+    border: 6px solid var(--ink);
+  }
+  .is-terminus .trip__dot {
+    width: 72px;
+    border-radius: 999px;
+    background: var(--arq);
+  }
+  .trip__title {
+    font-size: clamp(1.35rem, 1.8vw, 1.75rem);
+    font-weight: 750;
+    font-variation-settings: 'wdth' 110;
+    letter-spacing: -0.02em;
+    line-height: 1.08;
+    padding-bottom: 0.1em;
+  }
+  .trip__title em {
+    font-style: italic;
+  }
+  .trip__text {
+    color: var(--ink-2);
+    font-size: 1rem;
+    max-width: 30ch;
+  }
+
+  /* The line itself: violet with the dashed white core of a line in works */
+  .trip__rail {
+    position: absolute;
+    left: var(--gutter);
+    right: var(--gutter);
+    top: 13px;
+    height: 14px;
+    border-radius: 14px;
+    background: var(--arq);
+    overflow: hidden;
+  }
+  .trip__rail span {
+    position: absolute;
+    inset: 5px 0;
+    background: repeating-linear-gradient(to right, #fff 0 16px, transparent 16px 30px);
+  }
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .trip__rail {
+        transform-origin: left center;
+        animation: build linear both;
+        animation-timeline: view();
+        animation-range: entry 40% cover 55%;
+      }
+    }
+  }
+  @keyframes build {
+    from { transform: scaleX(0.04); }
+    to { transform: scaleX(1); }
+  }
+
+  @media (max-width: 1100px) {
+    .trip__stops {
+      grid-template-columns: 1fr;
+      row-gap: 2.5rem;
+      padding-left: 4.25rem;
+    }
+    .trip__stop {
+      padding-top: 0;
+    }
+    .trip__dot {
+      left: -4.25rem;
+    }
+    .is-terminus .trip__dot {
+      width: 40px;
+      height: 72px;
+    }
+    .trip__rail {
+      left: calc(var(--gutter) + 13px);
+      right: auto;
+      top: 0;
+      bottom: 1rem;
+      width: 14px;
+      height: auto;
+    }
+    .trip__rail span {
+      inset: 0 5px;
+      background: repeating-linear-gradient(to bottom, #fff 0 16px, transparent 16px 30px);
+    }
+    @supports (animation-timeline: view()) {
+      @media (prefers-reduced-motion: no-preference) {
+        .trip__rail {
+          transform-origin: center top;
+          animation-name: build-y;
+          animation-range: entry 20% cover 70%;
+        }
+      }
+    }
+  }
+  @keyframes build-y {
+    from { transform: scaleY(0.04); }
+    to { transform: scaleY(1); }
+  }
+</style>

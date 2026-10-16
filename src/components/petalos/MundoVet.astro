@@ -1,0 +1,410 @@
+---
+import Isologo from '../marca/Isologo.astro';
+const BASE = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+const IMG = `${BASE}images/institucional/`;
+
+// Offers as they appear in the Integhra VET app (lab pages and the veterinarian home).
+const ofertas = [
+  { lab: 'Holliday', prod: 'Colirios (Oftalday) + taza Holliday', bm: '60%', quedan: null },
+  { lab: 'Brouwer', prod: 'Promociones del laboratorio', bm: '600%', quedan: null, hasta: true },
+  { lab: 'Holliday', prod: 'Total Full + lona playera', bm: '200%', quedan: 10 },
+  { lab: 'Intervet', prod: 'Promociones del laboratorio', bm: '135%', quedan: null, hasta: true },
+  { lab: 'Holliday', prod: 'Echtonil + obsequios', bm: '126%', quedan: null },
+  { lab: 'Zoetis', prod: 'Promociones del laboratorio', bm: '60%', quedan: null, hasta: true },
+];
+// Illustrative countdowns, in hours from page load
+const horas = [26, 300, 71, 158, 12, 222];
+---
+
+<section id="vet" class="vet" aria-labelledby="vet-title">
+  <Isologo part="vet" class="vet__pair" />
+
+  <div class="wrap vet__intro" id="productos">
+    <div class="vet__copy">
+      <p class="vet__lock"><span>Integhra</span> VET</p>
+      <h2 id="vet-title" class="vet__title">El ecosistema digital de la industria veterinaria.</h2>
+      <p class="vet__body">
+        Conecta laboratorios, distribuidores y veterinarias en una plataforma diseñada para impulsar la transformación digital del sector y fortalecer toda su cadena de valor. Desde la promoción de productos hasta la gestión comercial, todo integrado.
+      </p>
+      <ul class="vet__facts">
+        <li>En servicio desde 2024</li>
+        <li>Argentina</li>
+        <li>Laboratorios, distribuidores y veterinarias</li>
+      </ul>
+    </div>
+    <figure class="vet__shot" data-reveal>
+      <img
+        src={`${IMG}Captura-de-pantalla-2025-07-08-121809.png`}
+        alt="Integhra VET: página de un laboratorio con banners de productos y ofertas exclusivas con bonificación máxima y vencimiento."
+        width="1919"
+        height="969"
+        loading="lazy"
+        decoding="async"
+      />
+    </figure>
+  </div>
+
+  <!-- Vidriera: the offers moving the way they move in the app -->
+  <div class="vid" aria-labelledby="vid-title">
+    <div class="wrap vid__head">
+      <h3 id="vid-title" class="vid__title">Las ofertas, en vivo</h3>
+      <p>Así ven las veterinarias las promociones de cada laboratorio en Integhra VET.</p>
+    </div>
+    <div class="vid__rail" tabindex="0" aria-label="Ofertas de ejemplo, desplazables">
+      <ul class="vid__track">
+        {[0, 1].map((copy) =>
+          ofertas.map((o, i) => (
+            <li class="offer" aria-hidden={copy === 1 ? 'true' : undefined}>
+              <p class="offer__lab">{o.lab}</p>
+              <p class="offer__prod">{o.prod}</p>
+              <p class="offer__bm"><span>{o.hasta ? 'Hasta' : 'Máx.'}</span> {o.bm} BM</p>
+              <p class="offer__time tnum" data-hours={horas[i]}>Vence en —</p>
+              {o.quedan && <p class="offer__left">Quedan {o.quedan} ofertas</p>}
+            </li>
+          )),
+        )}
+      </ul>
+    </div>
+    <p class="wrap vid__note">Ofertas tomadas de la app. Las cuentas regresivas son ilustrativas.</p>
+  </div>
+
+  <!-- What the platform does, four cells -->
+  <div class="wrap vet__grid">
+    <article class="cell cell--shot" data-reveal>
+      <img src={`${IMG}vademecum.jpg`} alt="Catálogo de productos con filtros por laboratorio y por categoría." width="1600" height="800" loading="lazy" decoding="async" />
+      <h3>Catálogos digitales para distribuidores y laboratorios</h3>
+    </article>
+    <article class="cell cell--orange" data-reveal style="--i: 1">
+      <h3>Conexión directa sin intermediarios</h3>
+      <p>El laboratorio publica, la veterinaria lo ve. Sin vueltas.</p>
+    </article>
+    <article class="cell cell--teal" data-reveal style="--i: 2">
+      <h3>Pedidos, cotizaciones y gestión comercial unificada</h3>
+      <p>Del catálogo al pedido sin salir de la plataforma.</p>
+    </article>
+    <article class="cell cell--news" data-reveal style="--i: 3">
+      <img src={`${IMG}news.jpg`} alt="Sección de noticias veterinarias dentro de Integhra VET." width="1600" height="800" loading="lazy" decoding="async" />
+      <div>
+        <h3>Red de veterinarias conectadas</h3>
+        <p>Novedades, promociones y noticias del sector en el mismo lugar.</p>
+      </div>
+    </article>
+  </div>
+
+  <div class="wrap vet__cta">
+    <a class="vbtn vbtn--solid" href={`${BASE}general`}>
+      Conocé Integhra VET
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+    </a>
+    <a class="vbtn" href="#" data-contact>Contacto</a>
+  </div>
+</section>
+
+<style>
+  .vet {
+    --o: #ff4a1c;
+    --t: #0fa3b1;
+    --t-ink: #0b6e77;
+    --warm: #fff3ec;
+    position: relative;
+    overflow: hidden;
+    background: #fff;
+    color: var(--ink);
+    font-family: 'Figtree', var(--font);
+    padding-block: clamp(5rem, 12vh, 8rem) clamp(4rem, 10vh, 6rem);
+  }
+  .vet ::selection {
+    background: var(--o);
+    color: var(--ink);
+  }
+
+  /* The VET pair hangs off the corner of the world */
+  .vet :global(.vet__pair) {
+    position: absolute;
+    left: -9vw;
+    top: -4rem;
+    width: clamp(260px, 32vw, 520px);
+    opacity: 0.12;
+    pointer-events: none;
+  }
+
+  .vet__intro {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: clamp(2rem, 5vw, 5rem);
+    align-items: center;
+  }
+  .vet__copy {
+    display: grid;
+    gap: 1.25rem;
+  }
+  .vet__lock {
+    font-weight: 800;
+    font-size: 1.125rem;
+    color: var(--o);
+    letter-spacing: -0.01em;
+  }
+  .vet__lock span {
+    color: var(--ink);
+  }
+  .vet__title {
+    font-size: clamp(2.4rem, 4.6vw, 4.25rem);
+    font-weight: 800;
+    line-height: 1.02;
+    letter-spacing: -0.035em;
+    text-wrap: balance;
+  }
+  .vet__body {
+    font-size: 1.125rem;
+    line-height: 1.6;
+    color: #3d3a38;
+    max-width: 50ch;
+  }
+  .vet__facts {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .vet__facts li {
+    padding: 0.45rem 0.95rem;
+    border-radius: 999px;
+    background: var(--warm);
+    font-weight: 650;
+    font-size: 0.9375rem;
+  }
+  .vet__facts li:first-child {
+    background: var(--t);
+    color: #fff;
+  }
+  .vet__shot {
+    margin: 0;
+  }
+  .vet__shot img {
+    width: 100%;
+    height: auto;
+    border-radius: 24px;
+    box-shadow:
+      0 1px 0 rgb(255 74 28 / 0.08),
+      0 30px 60px -28px rgb(140 40 10 / 0.35);
+  }
+
+  /* Vidriera */
+  .vid {
+    margin-top: clamp(5rem, 12vh, 8rem);
+    padding-block: clamp(3rem, 7vh, 4.5rem);
+    background: var(--warm);
+    border-radius: 40px;
+    margin-inline: clamp(0.75rem, 2vw, 2rem);
+  }
+  .vid__head {
+    display: grid;
+    gap: 0.6rem;
+    margin-bottom: 2rem;
+  }
+  .vid__title {
+    font-size: clamp(2rem, 3.6vw, 3.25rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+  }
+  .vid__head p {
+    color: #5a4a42;
+    max-width: 52ch;
+  }
+  .vid__rail {
+    overflow: hidden;
+    mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+  }
+  .vid__rail:focus-visible {
+    outline: 3px solid var(--ink);
+    outline-offset: -3px;
+  }
+  .vid__track {
+    list-style: none;
+    display: flex;
+    gap: 1rem;
+    width: max-content;
+    padding: 0.5rem 1rem 1rem;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .vid__track {
+      animation: shelf 46s linear infinite;
+    }
+    .vid__rail:hover .vid__track,
+    .vid__rail:focus-within .vid__track {
+      animation-play-state: paused;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .vid__rail {
+      overflow-x: auto;
+    }
+  }
+  @keyframes shelf {
+    to { transform: translateX(-50%); }
+  }
+  .offer {
+    width: 270px;
+    flex: none;
+    background: #fff;
+    border-radius: 22px;
+    padding: 1.2rem 1.3rem 1.3rem;
+    display: grid;
+    gap: 0.35rem;
+    align-content: start;
+    box-shadow: 0 18px 36px -24px rgb(140 40 10 / 0.35);
+  }
+  .offer__lab {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--t-ink);
+  }
+  .offer__prod {
+    font-weight: 700;
+    font-size: 1.0625rem;
+    line-height: 1.25;
+    min-height: 2.5em;
+  }
+  .offer__bm {
+    justify-self: start;
+    margin-top: 0.4rem;
+    padding: 0.3rem 0.8rem;
+    border-radius: 999px;
+    background: var(--o);
+    color: var(--ink);
+    font-weight: 800;
+    font-size: 1.125rem;
+  }
+  .offer__bm span {
+    font-weight: 600;
+    font-size: 0.875rem;
+  }
+  .offer__time {
+    font-weight: 700;
+    color: #c2370f;
+  }
+  .offer__left {
+    font-size: 0.875rem;
+    color: #5a4a42;
+  }
+  .vid__note {
+    margin-top: 1rem;
+    font-size: 0.8125rem;
+    color: #6b5a52;
+  }
+
+  /* Four cells */
+  .vet__grid {
+    margin-top: clamp(4rem, 10vh, 6.5rem);
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    grid-auto-rows: minmax(220px, auto);
+    gap: 1rem;
+  }
+  .cell {
+    border-radius: 28px;
+    padding: clamp(1.4rem, 2.5vw, 2rem);
+    display: grid;
+    gap: 0.6rem;
+    align-content: end;
+    overflow: hidden;
+    position: relative;
+  }
+  .cell h3 {
+    font-size: clamp(1.35rem, 1.9vw, 1.75rem);
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    line-height: 1.1;
+    max-width: 18ch;
+  }
+  .cell p {
+    max-width: 34ch;
+  }
+  .cell--shot {
+    grid-column: span 7;
+    grid-row: span 2;
+    background: var(--warm);
+    align-content: start;
+  }
+  .cell--shot img,
+  .cell--news img {
+    width: 100%;
+    height: auto;
+    border-radius: 16px;
+    margin-bottom: 0.75rem;
+  }
+  .cell--orange {
+    grid-column: span 5;
+    background: var(--o);
+  }
+  .cell--orange p {
+    color: #2a0c03;
+  }
+  .cell--teal {
+    grid-column: span 5;
+    background: var(--t);
+    color: #fff;
+  }
+  .cell--teal h3 {
+    color: #fff;
+  }
+  .cell--teal p {
+    color: #e3fbfd;
+  }
+  .cell--news {
+    grid-column: span 12;
+    background: #fff;
+    border: 2px solid var(--warm);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: center;
+    gap: 2rem;
+  }
+  .cell--news img {
+    margin: 0;
+  }
+
+  .vet__cta {
+    margin-top: clamp(3rem, 7vh, 4.5rem);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  @media (max-width: 960px) {
+    .vet__intro {
+      grid-template-columns: 1fr;
+    }
+    .cell--shot,
+    .cell--orange,
+    .cell--teal,
+    .cell--news {
+      grid-column: span 12;
+      grid-row: auto;
+    }
+    .cell--news {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<script>
+  // Live countdowns for the illustrative offers
+  const els = Array.from(document.querySelectorAll<HTMLElement>('.offer__time'));
+  const start = Date.now();
+  const pad = (n: number) => String(n).padStart(2, '0');
+  const tick = () => {
+    const elapsed = (Date.now() - start) / 1000;
+    for (const el of els) {
+      const total = Math.max(0, Number(el.dataset.hours) * 3600 - elapsed);
+      const d = Math.floor(total / 86400);
+      const h = Math.floor((total % 86400) / 3600);
+      const m = Math.floor((total % 3600) / 60);
+      const s = Math.floor(total % 60);
+      el.textContent = 'Vence en ' + d + 'd ' + pad(h) + 'h ' + pad(m) + 'm ' + pad(s) + 's';
+    }
+  };
+  tick();
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) setInterval(tick, 1000);
+</script>

@@ -1,0 +1,77 @@
+---
+// Integhra isologotipo as vectors: four flat petals in two pairs.
+// VET pair = naranja + turquesa, ARQ pair = azul + violeta. Every petal is its own path,
+// so it can move, rotate and scale on its own (transform-box: fill-box).
+// A single petal can also be drawn on its own, framed to its bounding box.
+import { petals, viewBox } from './petalos';
+
+type PetalId = 'naranja' | 'turquesa' | 'azul' | 'violeta';
+
+interface Props {
+  part?: 'all' | 'vet' | 'arq' | PetalId;
+  /** Keep the full-mark viewBox even for a single pair, so two pairs stack into the whole mark. */
+  fullFrame?: boolean;
+  class?: string;
+  label?: string;
+}
+const { part = 'all', fullFrame = false, class: cls, label } = Astro.props;
+const byId = Object.fromEntries(petals.map((p) => [p.id, p.d])) as Record<PetalId, string>;
+
+// Tight viewBox per part (petal boxes come from the trace, padded by 6)
+const boxes: Record<string, string> = {
+  all: viewBox,
+  vet: '0 0 600 872',
+  arq: '500 40 360 750',
+  naranja: '1 1 509 824',
+  turquesa: '217 364 377 499',
+  azul: '524 45 210 423',
+  violeta: '506 110 348 672',
+};
+const single = ['naranja', 'turquesa', 'azul', 'violeta'].includes(part);
+const show = (id: PetalId) =>
+  part === 'all' || part === id || (part === 'vet' && (id === 'naranja' || id === 'turquesa')) || (part === 'arq' && (id === 'azul' || id === 'violeta'));
+---
+
+<svg
+  class:list={['iso', 'iso--' + part, cls]}
+  viewBox={fullFrame ? boxes.all : boxes[part]}
+  role={label ? 'img' : undefined}
+  aria-label={label}
+  aria-hidden={label ? undefined : 'true'}
+  focusable="false"
+>
+  {single ? (
+    <path class={'iso__p iso__p--' + part} d={byId[part as PetalId]} />
+  ) : (
+    <>
+      {(show('naranja') || show('turquesa')) && (
+        <g class="iso__pair iso__pair--vet">
+          {show('naranja') && <path class="iso__p iso__p--naranja" d={byId.naranja} />}
+          {show('turquesa') && <path class="iso__p iso__p--turquesa" d={byId.turquesa} />}
+        </g>
+      )}
+      {(show('azul') || show('violeta')) && (
+        <g class="iso__pair iso__pair--arq">
+          {show('azul') && <path class="iso__p iso__p--azul" d={byId.azul} />}
+          {show('violeta') && <path class="iso__p iso__p--violeta" d={byId.violeta} />}
+        </g>
+      )}
+    </>
+  )}
+</svg>
+
+<style is:global>
+  .iso {
+    display: block;
+    overflow: visible;
+  }
+  .iso__pair,
+  .iso__p {
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+  .iso__p--naranja { fill: var(--iso-naranja, #ff5a1f); }
+  .iso__p--turquesa { fill: var(--iso-turquesa, #12afc0); }
+  .iso__p--azul { fill: var(--iso-azul, #0c9be6); }
+  .iso__p--violeta { fill: var(--iso-violeta, #b62fc6); }
+</style>

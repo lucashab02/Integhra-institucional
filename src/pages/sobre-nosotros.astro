@@ -1,158 +1,396 @@
 ---
-import NavArq from '../components/shared/NavArq';
-import SobreNosotros from '../components/sobre-nosotros/SobreNosotros';
+import Base from '../layouts/Base.astro';
+import Isologo from '../components/marca/Isologo.astro';
+
+const ciclo = ['naranja', 'turquesa', 'azul', 'violeta', 'naranja'] as const;
+
+const objetivos = [
+  { t: 'Integrar a todos los actores del mercado', d: 'Proveedores, distribuidores, minoristas y profesionales en un solo ecosistema.' },
+  { t: 'Impulsar la innovación tecnológica', d: 'Herramientas de última generación para transformar la industria.' },
+  { t: 'Optimizar procesos de compra y logística', d: 'Eficiencia en cada punto de la cadena de suministro.' },
+  { t: 'Promover transparencia y confianza', d: 'Información clara y verificable en cada interacción de la plataforma.' },
+  { t: 'Expandir a distintos sectores y regiones', d: 'Crecer más allá de la industria veterinaria hacia nuevos mercados.' },
+];
+
+const valores = [
+  { t: 'Transparencia', d: 'Información clara y confiable en toda la plataforma.' },
+  { t: 'Innovación', d: 'Tecnología y soluciones creativas que facilitan la gestión.' },
+  { t: 'Confianza', d: 'Relaciones sólidas y seguras entre todos los actores.' },
+  { t: 'Eficiencia', d: 'Optimización de procesos de compra, logística y comunicación.' },
+  { t: 'Colaboración', d: 'Trabajo conjunto entre proveedores, distribuidores y consumidores.' },
+];
 ---
 
-<!doctype html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Integhra — Nuestra misión, visión y valores." />
-  <title>Sobre Nosotros — Integhra</title>
+<Base
+  title="Sobre nosotros | Integhra"
+  description="Integhra: nuestra misión, visión, objetivos estratégicos y valores."
+  line="nos"
+  world="petalos"
+  stations={[]}
+>
+  <div class="madre">
+    <!-- Hero: the whole mark, turning with the page -->
+    <section id="nosotros" class="mh" aria-labelledby="mh-title">
+      <div class="wrap mh__grid">
+        <div class="mh__copy">
+          <h1 id="mh-title" class="display mh__title">Nuestra misión y visión</h1>
+          <p class="lede">
+            Conectar a todos los actores del mercado en una plataforma tecnológica eficiente, transparente y confiable.
+          </p>
+          <nav class="mh__toc" aria-label="En esta página">
+            <a href="#mision">Misión y visión</a>
+            <a href="#objetivos">Objetivos</a>
+            <a href="#valores">Valores</a>
+          </nav>
+        </div>
+        <div class="mh__mark">
+          <Isologo class="mh__iso" label="Isologotipo de Integhra" />
+        </div>
+      </div>
+    </section>
 
-  <!-- 👇 GOOGLE ANALYTICS -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-X6934N6WRC"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-X6934N6WRC');
-  </script>
-   <!-- GOOGLE ANALYTICS -->
+    <!-- Misión y visión -->
+    <section id="mision" class="mv" aria-label="Misión y visión">
+      <div class="wrap mv__grid">
+        <article data-reveal>
+          <h2 class="mv__k"><Isologo part="vet" class="mv__pair" />Misión</h2>
+          <p>
+            Conectar proveedores, distribuidores, minoristas, profesionales, gremios y consumidores finales mediante una plataforma tecnológica eficiente, transparente y confiable, facilitando el acceso a promociones, productos, servicios y soluciones que optimicen la cadena de suministro en múltiples sectores.
+          </p>
+        </article>
+        <article data-reveal style="--i: 1">
+          <h2 class="mv__k"><Isologo part="arq" class="mv__pair" />Visión</h2>
+          <p>
+            Ser la plataforma líder de referencia a nivel nacional e internacional para la integración de todos los actores del mercado, reconocida por su innovación, confiabilidad y capacidad de transformar la manera en que se comercializan y distribuyen productos y servicios en cualquier industria.
+          </p>
+        </article>
+      </div>
+    </section>
 
-  <link rel="icon" type="image/png" href={`${import.meta.env.BASE_URL}/logo-integhra.png`.replace('//', '/')} />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
-  <style is:global>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body { font-family: 'Inter', sans-serif; background: #fff; color: #111; -webkit-font-smoothing: antialiased; }
-    section { min-height: auto !important; display: block !important; }
-    a { text-decoration: none; }
+    <!-- Objetivos -->
+    <section id="objetivos" class="obj" aria-labelledby="obj-title">
+      <div class="wrap obj__grid">
+        <h2 id="obj-title" class="heading obj__title">Objetivos estratégicos</h2>
+        <ol class="obj__list">
+          {objetivos.map((o, i) => (
+            <li data-reveal style={`--i: ${i}`}>
+              <Isologo part={ciclo[i]} class="obj__petal" />
+              <div>
+                <h3>{o.t}</h3>
+                <p>{o.d}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
 
-    .inst-nav {
-      position: fixed; top: 0; left: 0; width: 100%; z-index: 50;
-      background: rgba(255,255,255,0.92); backdrop-filter: blur(16px);
-      border-bottom: 1px solid rgba(0,0,0,0.06);
-    }
-    .inst-nav-inner {
-      max-width: 1100px; margin: 0 auto; padding: 0 2rem;
-      display: flex; align-items: center; justify-content: space-between; height: 68px;
-    }
-    .inst-nav-logo img { height: 36px; width: auto; }
-    .inst-nav-links { display: flex; align-items: center; gap: 2rem; }
-    .inst-nav-link { font-size: 0.82rem; font-weight: 500; color: #555; letter-spacing: 0.02em; transition: color .2s; }
-    .inst-nav-link:hover { color: #02836c; }
-    .inst-nav-link.active { color: #02836c; font-weight: 600; }
-    .inst-btn-nav {
-      font-size: 0.82rem; font-weight: 600; color: #fff; background: #02836c;
-      padding: 0.55rem 1.4rem; border-radius: 100px; transition: background .2s;
-    }
-    .inst-btn-nav:hover { background: #016b57; }
+    <!-- Valores: each one wears a petal color -->
+    <section id="valores" class="val" aria-labelledby="val-title">
+      <div class="wrap">
+        <h2 id="val-title" class="heading val__title" data-reveal>Valores de Integhra</h2>
+        <ul class="val__list">
+          {valores.map((v, i) => (
+            <li class={'val__row val__row--' + ciclo[i]} data-reveal style={`--i: ${i}`}>
+              <h3>{v.t}</h3>
+              <p>{v.d}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
 
-    .inst-wrap { max-width: 1100px; margin: 0 auto; padding: 0 2rem; }
+    <!-- Cierre: the petals come together -->
+    <section id="sumate" class="join" aria-labelledby="join-title">
+      <div class="wrap join__grid">
+        <div class="join__stage">
+          <Isologo class="join__iso" />
+        </div>
+        <div class="join__copy">
+          <h2 id="join-title" class="display join__title">¿Listo para ser parte de Integhra?</h2>
+          <p class="lede">Sumate a la plataforma que está transformando la cadena comercial de la industria veterinaria.</p>
+          <a href="#" class="pill" data-contact>
+            Contacto
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+          </a>
+        </div>
+      </div>
+    </section>
+  </div>
+</Base>
 
-    .sn-hero {
-      padding: 9rem 2rem 7rem; text-align: center;
-      background: linear-gradient(155deg, #02836c 0%, #025f4f 50%, #7b33cc 100%);
-      position: relative; overflow: hidden;
-    }
-    .sn-hero::before {
-      content: ''; position: absolute; inset: 0;
-      background: radial-gradient(ellipse at 75% 30%, rgba(255,255,255,0.08) 0%, transparent 55%);
-    }
-    .sn-hero-inner { position: relative; z-index: 1; max-width: 700px; margin: 0 auto; }
-    .sn-eyebrow {
-      display: inline-block; font-size: 0.7rem; font-weight: 700;
-      letter-spacing: 0.18em; text-transform: uppercase;
-      color: rgba(255,255,255,0.55); margin-bottom: 1.25rem;
-    }
-    .sn-hero h1 {
-      font-size: clamp(2.5rem, 6vw, 4rem); font-weight: 800; color: #fff;
-      line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 1.25rem;
-    }
-    .sn-hero p { font-size: 1.05rem; color: rgba(255,255,255,0.72); line-height: 1.7; }
-    .wave-white { line-height: 0; }
-    .wave-white svg { display: block; }
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
-    .sn-mv { padding: 6rem 0; background: #fff; }
-    .sn-mv-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; }
-    @media (max-width: 700px) { .sn-mv-grid { grid-template-columns: 1fr; } }
-    .sn-mv-card { padding: 2.5rem; border-radius: 20px; border: 1px solid #eee; }
-    .sn-mv-card-icon {
-      width: 48px; height: 48px; border-radius: 14px;
-      display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;
-    }
-    .sn-mv-card h2 { font-size: 1.5rem; font-weight: 800; color: #111; margin-bottom: 1rem; letter-spacing: -0.01em; }
-    .sn-mv-card p { font-size: 0.9rem; color: #555; line-height: 1.75; }
+  gsap.registerPlugin(ScrollTrigger);
+  const mm = gsap.matchMedia();
 
-    .sn-obj { padding: 6rem 0; background: #f9fafb; }
-    .sn-section-header { text-align: center; margin-bottom: 3.5rem; }
-    .sn-section-header h2 {
-      font-size: clamp(1.9rem, 4vw, 2.75rem); font-weight: 800; color: #111;
-      letter-spacing: -0.02em; line-height: 1.15;
+  mm.add('(prefers-reduced-motion: no-preference)', () => {
+    // Hero: the mark turns a quarter while the hero scrolls away, each petal drifting outward
+    const hero = document.querySelector('.mh');
+    const iso = document.querySelector('.mh__iso');
+    if (hero && iso) {
+      const p = (n: string) => iso.querySelector('.iso__p--' + n);
+      gsap
+        .timeline({ scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: 0.6 } })
+        .to(iso, { rotate: 90, ease: 'none' }, 0)
+        .to(p('naranja'), { x: -24, y: 18, ease: 'none' }, 0)
+        .to(p('turquesa'), { x: -10, y: 34, ease: 'none' }, 0)
+        .to(p('azul'), { x: 22, y: -26, ease: 'none' }, 0)
+        .to(p('violeta'), { x: 30, y: -8, ease: 'none' }, 0);
     }
-    .sn-section-header h2 span { color: #02836c; }
-    .sn-obj-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; }
-    .sn-obj-item {
-      background: #fff; border-radius: 16px; padding: 2rem; border: 1px solid #eee;
-      display: flex; gap: 1.25rem; align-items: flex-start;
-      transition: border-color .2s, box-shadow .2s;
-    }
-    .sn-obj-item:hover { border-color: #02836c; box-shadow: 0 4px 20px rgba(2,131,108,0.08); }
-    .sn-obj-num {
-      width: 40px; height: 40px; border-radius: 12px; flex-shrink: 0;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 0.72rem; font-weight: 800; letter-spacing: 0.05em;
-    }
-    .sn-obj-item h4 { font-size: 0.95rem; font-weight: 700; color: #111; margin-bottom: 0.35rem; line-height: 1.35; }
-    .sn-obj-item p { font-size: 0.82rem; color: #777; line-height: 1.6; }
 
-    .sn-vals { padding: 6rem 0; background: #fff; }
-    .sn-vals-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1.25rem; }
-    @media (max-width: 900px) { .sn-vals-grid { grid-template-columns: repeat(3, 1fr); } }
-    @media (max-width: 560px) { .sn-vals-grid { grid-template-columns: repeat(2, 1fr); } }
-    .sn-val {
-      padding: 2rem 1.25rem; border-radius: 20px; border: 1px solid #eee;
-      text-align: center; transition: border-color .2s, box-shadow .2s;
+    // Closing: the four petals arrive from four directions and lock into the mark
+    const join = document.querySelector('.join__stage');
+    const mark = document.querySelector('.join__iso');
+    if (join && mark) {
+      const q = (n: string) => mark.querySelector('.iso__p--' + n);
+      gsap
+        .timeline({
+          defaults: { ease: 'power3.out' },
+          scrollTrigger: { trigger: join, start: 'top 85%', end: 'center 55%', scrub: 0.7 },
+        })
+        .from(q('naranja'), { x: -180, y: 60, rotate: -40, opacity: 0 }, 0)
+        .from(q('turquesa'), { x: -60, y: 200, rotate: 35, opacity: 0 }, 0.08)
+        .from(q('azul'), { x: 120, y: -200, rotate: 50, opacity: 0 }, 0.16)
+        .from(q('violeta'), { x: 200, y: 40, rotate: -30, opacity: 0 }, 0.24);
     }
-    .sn-val:hover { box-shadow: 0 4px 24px rgba(0,0,0,0.07); }
-    .sn-val-icon {
-      width: 52px; height: 52px; border-radius: 16px; margin: 0 auto 1.25rem;
-      display: flex; align-items: center; justify-content: center;
-    }
-    .sn-val h4 { font-size: 0.92rem; font-weight: 700; color: #111; margin-bottom: 0.5rem; }
-    .sn-val p { font-size: 0.78rem; color: #888; line-height: 1.55; }
+  });
+</script>
 
-    .sn-cta {
-      padding: 6rem 2rem; text-align: center;
-      background: linear-gradient(135deg, #02836c, #7b33cc);
-    }
-    .sn-cta h2 { font-size: clamp(1.8rem, 4vw, 2.75rem); font-weight: 800; color: #fff; margin-bottom: 1rem; letter-spacing: -0.02em; }
-    .sn-cta p { font-size: 1rem; color: rgba(255,255,255,0.72); margin-bottom: 2.5rem; max-width: 480px; margin-left: auto; margin-right: auto; line-height: 1.65; }
-    .sn-btn-white {
-      display: inline-block; font-size: 0.9rem; font-weight: 700; color: #02836c;
-      background: #fff; padding: 0.9rem 2.25rem; border-radius: 100px;
-      transition: background .2s, transform .15s; box-shadow: 0 4px 20px rgba(0,0,0,0.18);
-    }
-    .sn-btn-white:hover { background: #f0f0f0; transform: translateY(-2px); }
+<style>
+  .madre {
+    background: var(--paper);
+    overflow: clip;
+  }
 
-    .inst-footer { background: #111; padding: 3.5rem 0 2.5rem; }
-    .inst-footer-inner { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1.5rem; margin-bottom: 2.5rem; }
-    .inst-footer-logo { display: flex; align-items: center; gap: 10px; }
-    .inst-footer-logo img { height: 32px; width: auto; filter: brightness(0) invert(1); }
-    .inst-footer-logo span { font-size: 1rem; font-weight: 700; color: #fff; }
-    .inst-footer-links { display: flex; gap: 2rem; }
-    .inst-footer-links a { font-size: 0.82rem; color: #666; transition: color .2s; }
-    .inst-footer-links a:hover { color: #fff; }
-    .inst-footer-email { font-size: 0.85rem; color: #4ecba8; transition: color .2s; }
-    .inst-footer-email:hover { color: #fff; }
-    .inst-footer-copy { font-size: 0.72rem; color: #333; text-align: center; padding-top: 2rem; border-top: 1px solid #1e1e1e; }
-  </style>
-</head>
-<body>
-  <NavArq client:load />
-  <SobreNosotros client:load />
-</body>
-</html>
+  /* Hero */
+  .mh {
+    padding-block: clamp(2.5rem, 8vh, 6rem) clamp(4rem, 10vh, 7rem);
+    border-bottom: 2px solid var(--ink);
+  }
+  .mh__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: clamp(2rem, 5vw, 5rem);
+    align-items: center;
+  }
+  .mh__copy {
+    display: grid;
+    gap: 1.5rem;
+    justify-items: start;
+  }
+  .mh__title {
+    font-size: clamp(2.9rem, 6.6vw, 6rem);
+    max-width: 11ch;
+  }
+  .mh__toc {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+  .mh__toc a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 1.1rem;
+    border: 2px solid var(--ink);
+    border-radius: 999px;
+    font-weight: 620;
+    text-decoration: none;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+  .mh__toc a:hover {
+    background: var(--ink);
+    color: var(--paper);
+  }
+  .mh__mark {
+    display: grid;
+    place-items: center;
+  }
+  .mh__mark :global(.mh__iso) {
+    width: min(100%, 460px);
+    height: auto;
+  }
+
+  /* Misión y visión */
+  .mv {
+    padding-block: clamp(4.5rem, 11vh, 8rem);
+    border-bottom: 2px solid var(--ink);
+  }
+  .mv__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(2.5rem, 6vw, 6rem);
+  }
+  .mv__k {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    font-size: clamp(2rem, 3.4vw, 3rem);
+    font-weight: 800;
+    font-variation-settings: 'wdth' 120;
+    letter-spacing: -0.03em;
+    margin-bottom: 1.25rem;
+  }
+  .mv__k :global(.mv__pair) {
+    height: 1.1em;
+    width: auto;
+  }
+  .mv p {
+    font-size: clamp(1.15rem, 1.55vw, 1.4rem);
+    line-height: 1.5;
+    max-width: 40ch;
+    color: var(--ink-2);
+  }
+
+  /* Objetivos */
+  .obj {
+    padding-block: clamp(4.5rem, 11vh, 8rem);
+    border-bottom: 2px solid var(--ink);
+  }
+  .obj__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: clamp(2rem, 5vw, 5rem);
+    align-items: start;
+  }
+  .obj__title {
+    font-size: clamp(2.4rem, 5vw, 4.5rem);
+    max-width: 10ch;
+    position: sticky;
+    top: 110px;
+  }
+  .obj__list {
+    list-style: none;
+  }
+  .obj__list li {
+    display: grid;
+    grid-template-columns: 56px 1fr;
+    gap: 1.25rem;
+    align-items: start;
+    padding-block: 1.5rem;
+  }
+  .obj__list li + li {
+    border-top: 1px solid var(--rule);
+  }
+  .obj__list :global(.obj__petal) {
+    height: 56px;
+    width: auto;
+    justify-self: center;
+    transition: transform 0.6s var(--ease-out);
+  }
+  .obj__list li:hover :global(.obj__petal) {
+    transform: rotate(-24deg) scale(1.08);
+  }
+  .obj__list h3 {
+    font-size: clamp(1.4rem, 2vw, 1.85rem);
+    font-weight: 750;
+    font-variation-settings: 'wdth' 110;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
+  .obj__list p {
+    margin-top: 0.4rem;
+    color: var(--ink-2);
+    max-width: 46ch;
+  }
+
+  /* Valores: the one deliberately dark band of the parent world */
+  .val {
+    background: #121419;
+    color: #eef1f6;
+    padding-block: clamp(4.5rem, 11vh, 8rem);
+  }
+  .val ::selection {
+    background: #eef1f6;
+    color: #121419;
+  }
+  .val__title {
+    font-size: clamp(2.4rem, 5vw, 4.5rem);
+    margin-bottom: clamp(2rem, 5vh, 3rem);
+  }
+  .val__list {
+    list-style: none;
+  }
+  .val__row {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: 1rem 2rem;
+    align-items: baseline;
+    padding-block: clamp(0.75rem, 2vh, 1.25rem);
+    border-top: 1px solid #2a303b;
+  }
+  .val__row h3 {
+    font-size: clamp(2.4rem, 6.4vw, 5.75rem);
+    font-weight: 800;
+    font-variation-settings: 'wdth' 118;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    padding-bottom: 0.06em;
+    color: var(--c);
+    transition: transform 0.5s var(--ease-out);
+  }
+  .val__row:hover h3 {
+    transform: translateX(0.6rem);
+  }
+  .val__row p {
+    color: #c3c9d4;
+    max-width: 34ch;
+  }
+  .val__row--naranja { --c: #ff6a35; }
+  .val__row--turquesa { --c: #22c3d4; }
+  .val__row--azul { --c: #3aa9f0; }
+  .val__row--violeta { --c: #d266e2; }
+
+  /* Cierre */
+  .join {
+    padding-block: clamp(5rem, 14vh, 9rem);
+  }
+  .join__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: clamp(2rem, 5vw, 5rem);
+    align-items: center;
+  }
+  .join__stage {
+    display: grid;
+    place-items: center;
+  }
+  .join__stage :global(.join__iso) {
+    width: min(100%, 380px);
+    height: auto;
+  }
+  .join__copy {
+    display: grid;
+    gap: 1.5rem;
+    justify-items: start;
+  }
+  .join__title {
+    font-size: clamp(2.6rem, 5.4vw, 5rem);
+    max-width: 13ch;
+  }
+
+  @media (max-width: 960px) {
+    .mh__grid,
+    .mv__grid,
+    .obj__grid,
+    .join__grid {
+      grid-template-columns: 1fr;
+    }
+    .mh__mark :global(.mh__iso) {
+      width: min(70%, 320px);
+    }
+    .obj__title {
+      position: static;
+    }
+    .val__row {
+      grid-template-columns: 1fr;
+    }
+    .join__stage :global(.join__iso) {
+      width: min(60%, 260px);
+    }
+  }
+</style>
