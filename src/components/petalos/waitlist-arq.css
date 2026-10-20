@@ -36,7 +36,8 @@
   gap: 0.5rem;
 }
 .wla-form label {
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-family: var(--font);
+    font-variant-numeric: tabular-nums;
   font-size: 0.8125rem;
   text-transform: uppercase;
   color: #a9b1be;

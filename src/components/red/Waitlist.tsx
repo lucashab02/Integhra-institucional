@@ -46,12 +46,11 @@ export default function Waitlist() {
     >
       <div className="wl-inner wrap">
         <table className="wl-board tnum">
-          <caption className="sr-only">Próxima apertura de la red Integhra</caption>
+          <caption className="sr-only">Próxima línea de la red Integhra</caption>
           <thead>
             <tr>
               <th scope="col">Línea</th>
               <th scope="col">Destino</th>
-              <th scope="col">Apertura</th>
               <th scope="col">Estado</th>
             </tr>
           </thead>
@@ -59,7 +58,6 @@ export default function Waitlist() {
             <tr>
               <td><span className="wl-bullet">ARQ</span></td>
               <td>Construcción y diseño</td>
-              <td>Sept. 2026</td>
               <td><span className="wl-state">En obra</span></td>
             </tr>
           </tbody>

@@ -1,10 +1,11 @@
 ---
 import WaitlistArq from './WaitlistArq';
 import Isologo from '../marca/Isologo.astro';
+import Planta from './Planta.astro';
 
 const BASE = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 
-const actores = ['Proveedores', 'Distribuidores', 'Minoristas', 'Profesionales', 'Gremios', 'Inmobiliarias', 'Artistas', 'Clientes'];
+const actores = ['Proveedores', 'Profesionales', 'Consumidores'];
 const materiales = ['Mármol', 'Roble', 'Hormigón', 'Bronce', 'Cuarzo', 'Nogal', 'Acero', 'Travertino', 'Lino'];
 
 const laminas = [
@@ -12,7 +13,7 @@ const laminas = [
   { code: 'A-02', name: 'Encuentro', title: ['Algo te ', 'representa.'], text: 'Encontrás la obra que imaginabas. El profesional que la hizo está a un mensaje.' },
   { code: 'A-03', name: 'Consulta', title: ['La consulta ', 'llega.'], text: 'El profesional recibe el contacto directo. Sin intermediarios, sin agencias en el medio.' },
   { code: 'A-04', name: 'Materiales', title: ['El profesional ', 'elige.'], text: 'Accede a proveedores y materiales desde la misma plataforma. Todo en un lugar.', materiales: true },
-  { code: 'A-05', name: 'Conexión', title: ['Todo ', 'coordinado.'], text: 'Clientes, profesionales, proveedores y gremios en el momento exacto en que se necesitan.' },
+  { code: 'A-05', name: 'Conexión', title: ['Todo ', 'coordinado.'], text: 'Consumidores, profesionales y proveedores en el momento exacto en que se necesitan.' },
   { code: 'A-06', name: 'Obra', title: ['Así se hace ', 'una obra.'], text: 'De la idea a la realidad. Sin intermediarios, sin vueltas.' },
 ];
 ---
@@ -26,49 +27,15 @@ const laminas = [
       </p>
       <h2 id="arq-title" class="arq__title">El ecosistema digital de la construcción y el diseño.</h2>
       <p class="arq__body">
-        Conecta proveedores, distribuidores, minoristas, profesionales, gremios, inmobiliarias, artistas y consumidores finales en una única plataforma. Desde la inspiración y el diseño hasta la ejecución de la obra.
+        Conecta proveedores, profesionales y consumidores en una única plataforma. Desde la inspiración y el diseño hasta la ejecución de la obra.
       </p>
       <dl class="arq__spec">
         <div><dt>Estado</dt><dd>En desarrollo</dd></div>
         <div><dt>Mercado inicial</dt><dd>Argentina</dd></div>
-        <div><dt>Apertura</dt><dd>Septiembre 2026</dd></div>
       </dl>
     </div>
 
-    <figure class="plan" aria-labelledby="plan-cap">
-      <svg viewBox="0 0 600 460" role="img" aria-labelledby="plan-cap">
-        <g class="plan__walls">
-          <path pathLength="1" d="M40 40 H560 V380 H40 Z" />
-          <path pathLength="1" d="M300 40 V200 M300 260 V380" />
-          <path pathLength="1" d="M40 220 H180 M230 220 H300" />
-          <path pathLength="1" d="M300 200 H420 M470 200 H560" />
-          <path pathLength="1" d="M420 200 V380" />
-        </g>
-        <g class="plan__doors">
-          <path pathLength="1" d="M180 220 A50 50 0 0 1 230 170" />
-          <path pathLength="1" d="M300 200 A60 60 0 0 0 360 260" />
-          <path pathLength="1" d="M420 200 A50 50 0 0 1 470 250" />
-        </g>
-        <g class="plan__dims">
-          <path pathLength="1" d="M40 410 H560 M40 402 V418 M560 402 V418" />
-          <path pathLength="1" d="M584 40 V380 M576 40 H592 M576 380 H592" />
-        </g>
-        <g class="plan__labels">
-          <text x="170" y="130">LIVING</text>
-          <text x="105" y="305">DORM. 1</text>
-          <text x="360" y="125">COCINA</text>
-          <text x="345" y="300">DORM. 2</text>
-          <text x="470" y="300">BAÑO</text>
-          <text class="plan__dim" x="300" y="440" text-anchor="middle">8.40</text>
-          <text class="plan__dim" x="572" y="214" text-anchor="end">6.20</text>
-        </g>
-      </svg>
-      <figcaption id="plan-cap" class="plan__block">
-        <span>RES 001/25</span>
-        <span>Planta · Esc 1:50</span>
-        <span>Integhra 2026</span>
-      </figcaption>
-    </figure>
+    <Planta />
   </div>
 
   <div class="wrap arq__actors">
@@ -82,7 +49,6 @@ const laminas = [
       {laminas.map((l, i) => (
         <li class="lam__sheet" data-reveal style={`--i: ${i}`}>
           <p class="lam__code">
-            <span>{l.code}</span>
             <span>{l.name}</span>
           </p>
           <h4>{l.title[0]}<em>{l.title[1]}</em></h4>
@@ -159,7 +125,8 @@ const laminas = [
   }
   .arq__spec {
     border-top: 1px solid var(--line);
-    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-family: var(--font);
+    font-variant-numeric: tabular-nums;
     font-size: 0.875rem;
   }
   .arq__spec div {
@@ -176,85 +143,6 @@ const laminas = [
   .arq__spec dd {
     color: var(--b);
     text-transform: uppercase;
-  }
-
-  /* The plan draws itself as it crosses the viewport */
-  .plan {
-    margin: 0;
-    border: 1px solid var(--line);
-    padding: clamp(1rem, 2vw, 1.75rem);
-    background:
-      linear-gradient(var(--line) 1px, transparent 1px) 0 0 / 40px 40px,
-      linear-gradient(90deg, var(--line) 1px, transparent 1px) 0 0 / 40px 40px;
-    background-color: #14171d;
-  }
-  .plan svg {
-    width: 100%;
-    height: auto;
-  }
-  .plan path {
-    fill: none;
-    stroke-linecap: square;
-  }
-  .plan__walls path {
-    stroke: #eef1f6;
-    stroke-width: 5;
-  }
-  .plan__doors path {
-    stroke: var(--v);
-    stroke-width: 2;
-  }
-  .plan__dims path {
-    stroke: var(--b);
-    stroke-width: 1.5;
-  }
-  .plan__labels text {
-    font-family: 'JetBrains Mono', ui-monospace, monospace;
-    font-size: 13px;
-    fill: var(--mut);
-    letter-spacing: 0.05em;
-  }
-  .plan__labels .plan__dim {
-    fill: var(--b);
-  }
-  @supports (animation-timeline: view()) {
-    @media (prefers-reduced-motion: no-preference) {
-      .plan path {
-        stroke-dasharray: 1;
-        animation: plan-draw linear both;
-        animation-timeline: view();
-        animation-range: entry 10% cover 55%;
-      }
-      .plan__labels {
-        animation: plan-ink linear both;
-        animation-timeline: view();
-        animation-range: cover 35% cover 55%;
-      }
-    }
-  }
-  @keyframes plan-draw {
-    from { stroke-dashoffset: 1; }
-    to { stroke-dashoffset: 0; }
-  }
-  @keyframes plan-ink {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
-  .plan__block {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-end;
-    gap: 0;
-    margin-top: 1rem;
-    font-family: 'JetBrains Mono', ui-monospace, monospace;
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    color: var(--mut);
-  }
-  .plan__block span {
-    padding: 0.35rem 0.75rem;
-    border: 1px solid var(--line);
-    margin-left: -1px;
   }
 
   .arq__actors {
@@ -321,14 +209,12 @@ const laminas = [
   }
   .lam__code {
     display: flex;
-    justify-content: space-between;
-    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    justify-content: flex-start;
+    font-family: var(--font);
+    font-variant-numeric: tabular-nums;
     font-size: 0.8125rem;
     text-transform: uppercase;
     color: var(--mut);
-  }
-  .lam__code span:first-child {
-    color: var(--v);
   }
   .lam__sheet h4 {
     font-size: clamp(1.5rem, 2.2vw, 2rem);
@@ -353,7 +239,8 @@ const laminas = [
     margin-top: 0.25rem;
   }
   .lam__mat li {
-    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-family: var(--font);
+    font-variant-numeric: tabular-nums;
     font-size: 0.75rem;
     text-transform: uppercase;
     padding: 0.25rem 0.55rem;
@@ -361,11 +248,6 @@ const laminas = [
     color: #d7dce4;
   }
 
-  @media (max-width: 600px) {
-    .plan__labels text {
-      font-size: 22px;
-    }
-  }
   @media (max-width: 960px) {
     .arq__intro {
       grid-template-columns: 1fr;

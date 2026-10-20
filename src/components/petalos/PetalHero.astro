@@ -33,7 +33,7 @@ import Isologo from '../marca/Isologo.astro';
       <a class="door door--arq" href="#arq">
         <span class="door__name">Integhra ARQ</span>
         <span class="door__line">Construcción y diseño.</span>
-        <span class="door__state">En obra · Apertura 09/2026</span>
+        <span class="door__state">En obra</span>
         <span class="door__go">
           Entrar a ARQ
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
@@ -119,6 +119,14 @@ import Isologo from '../marca/Isologo.astro';
     text-decoration: none;
     max-width: 290px;
   }
+  /* The doors belong to the opened mark: hidden (and not clickable) until the scroll opens it.
+     GSAP reveals them; with reduced motion or without JS the opened state is the resting state. */
+  @media (prefers-reduced-motion: no-preference) {
+    :global(.js) .door {
+      opacity: 0;
+      visibility: hidden;
+    }
+  }
   .door__name {
     font-size: clamp(1.6rem, 2.3vw, 2.25rem);
     line-height: 1;
@@ -152,11 +160,11 @@ import Isologo from '../marca/Isologo.astro';
     transform: scale(0.98);
   }
 
-  /* VET door: Figtree, warm, round */
+  /* VET door: Carving Soft, warm, round */
   .door--vet {
     left: max(var(--gutter), 47vw);
     bottom: 13%;
-    font-family: 'Figtree', var(--font);
+    font-family: var(--font);
     color: var(--ink);
   }
   .door--vet .door__name {
@@ -172,10 +180,10 @@ import Isologo from '../marca/Isologo.astro';
     color: var(--ink);
   }
 
-  /* ARQ door: Archivo + mono, cold, square */
+  /* ARQ door: Carving Soft, cold, square, cold, square */
   .door--arq {
     right: var(--gutter);
-    top: 58%;
+    top: 62%;
     color: #eef1f6;
     text-align: right;
     justify-items: end;
@@ -189,7 +197,8 @@ import Isologo from '../marca/Isologo.astro';
     color: #c3c9d4;
   }
   .door--arq .door__state {
-    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-family: var(--font);
+    font-variant-numeric: tabular-nums;
     font-size: 0.8125rem;
     letter-spacing: 0.02em;
     color: #8fc8f8;
@@ -295,14 +304,15 @@ import Isologo from '../marca/Isologo.astro';
     const closed = { x: 0, y: 0, xPercent: 0, yPercent: 0, scale: 1, rotate: 0 };
     const petal = (name: string) => root.querySelector('.iso__p--' + name);
 
-    // Each petal bends on its own while the pairs separate (rotate and stretch only;
-    // x and y stay free for the pointer)
+    // Each pair opens the same way: its two petals pull apart and grow a little as they leave
+    // the shared mark. The cold pair mirrors the warm one (small petal out and away, big
+    // petal the other way). Uses percent offsets so x and y stay free for the pointer.
     const shape = (tl: gsap.core.Timeline, at: number) =>
       tl
-        .to(petal('naranja'), { rotate: -9, scaleY: 1.05, duration: 1 }, at)
-        .to(petal('turquesa'), { rotate: 12, scale: 0.94, duration: 1 }, at)
-        .to(petal('azul'), { rotate: 14, scaleY: 1.08, duration: 1 }, at)
-        .to(petal('violeta'), { rotate: -7, scale: 1.04, duration: 1 }, at);
+        .to(petal('naranja'), { rotate: -9, xPercent: -8, yPercent: -6, scale: 1.06, duration: 1 }, at)
+        .to(petal('turquesa'), { rotate: 12, xPercent: 22, yPercent: 14, scale: 1.02, duration: 1 }, at)
+        .to(petal('azul'), { rotate: 16, xPercent: -62, yPercent: -14, scale: 1.1, duration: 1 }, at)
+        .to(petal('violeta'), { rotate: -8, xPercent: 10, yPercent: 0, scale: 1.06, duration: 1 }, at);
 
     // Desktop: pinned stage, the opening scrubs across the extra scroll height
     mm.add('(min-width: 761px) and (prefers-reduced-motion: no-preference)', () => {

@@ -15,7 +15,7 @@ THESIS: The isologotipo is two interlocking petal pairs. Orange + teal is VET, b
 
 OWN-WORLD: Parent: cool paper #F4F5F7, ink #111318, Archivo, the full mark. VET: clinical white, orange #FF4A1C + teal #0FA3B1, Figtree, soft rounded forms (24-28px radius), warm tinted shadows, real app screenshots and real offers in motion. ARQ: graphite #121419, blue #3AA3F5 + violet #C04FD3, Archivo condensed and expanded with JetBrains Mono plan annotations, straight edges (0 radius), hairline plan drawing, "en obra" states.
 
-STORY: The visitor sees one company, watches it split into two industries, understands VET works today (offers live, real screens) and ARQ opens September 2026, then acts: contact or "Conocé Integhra VET" (VET), waitlist (ARQ).
+STORY: The visitor sees one company, watches it split into two industries, understands VET works today (offers live, real screens) and ARQ is in development with no announced date, then acts: contact or "Conocé Integhra VET" (VET), waitlist (ARQ).
 
 FIRST VIEWPORT: Paper ground. "Conectamos cada industria" in expanded Archivo top-left with a 20-word lede. The whole isologotipo large at center-right. On scroll (pinned), the VET pair slides down-left and the ARQ pair up-right, a diagonal seam turns the upper-right of the screen graphite, and each half gains its door: "Integhra VET, en servicio" with "Entrar a VET", and "Integhra ARQ, en obra" with "Entrar a ARQ".
 

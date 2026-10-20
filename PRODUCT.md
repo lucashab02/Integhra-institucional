@@ -15,7 +15,7 @@ Astro 6 + React 19 islands + Tailwind v4 + GSAP (existing project, kept by the u
 Two audiences, weighted equally (confirmed):
 
 - **Integhra VET side:** laboratories, distributors and veterinary practices in Argentina. They evaluate whether to join a platform that is already in production. Job: understand the commercial value (catalogs, offers, advertising, orders) and get in touch.
-- **Integhra ARQ side:** construction and design actors (architects, designers, suppliers, distributors, retailers, trades/gremios, real-estate, artists, end clients). The product is not launched yet. Job: understand how it will work and join the waitlist as an early adopter.
+- **Integhra ARQ side:** construction and design actors, always named as three groups: professionals (architects, designers), suppliers and consumers (end clients). Never enumerate the long list of sub-roles in copy. The product is not launched yet. Job: understand how it will work and join the waitlist as an early adopter.
 
 ## Product Purpose
 
@@ -23,7 +23,7 @@ Integhra is a technology company that builds vertical platforms that digitize an
 
 ## Positioning
 
-One company, one philosophy, applied vertical by vertical: each platform is designed for a full sector's value chain, not a generic marketplace. VET is live and operating in Argentina since 2024; ARQ is the next vertical, launching September 2026, Argentina first.
+One company, one philosophy, applied vertical by vertical: each platform is designed for a full sector's value chain, not a generic marketplace. VET is live and operating in Argentina since 2024; ARQ is the next vertical, in development, Argentina first. There is no public launch date: do not state or imply one.
 
 ## Operating Context
 
@@ -42,13 +42,14 @@ One company, one philosophy, applied vertical by vertical: each platform is desi
 
 - Keep the Integhra isologotipo (four-petal mark) and the wordmark. Files: `public/images/logo-integhra-isologotipo.png`, `public/images/logo-integhra-blanco.png`, `public/images/institucional/INTEGHRA-LOGO-sin-nube-HD.png`.
 - The palette must derive from the isologotipo's colors (user decision): red-orange to amber, cyan/teal, sky blue, magenta/violet.
+- Typeface: Carving Soft (MADE Type), the same family the Flutter app ships, used for all site text. JetBrains Mono stays only for ARQ plan annotations (measurements, dates). Open item: the Carving Soft files are licensed for personal use only; commercial use needs MadeType's OK (madetypeinfo@gmail.com), and the app's DESIGN.md tracks its replacement as DS-02. Font files live in `public/fonts/carving-soft/`.
 - Spanish (Argentina) voice with voseo ("Conocé", "Sumate", "Anotarme"). Keep existing copy unless a rewrite is approved.
 
 ## Evidence on Hand
 
 - Partner logos used on `/general` (`public/images/institucional/`): Zoetis, Boehringer Ingelheim, DFV, Bagó, Brouwer, König, Holliday.
 - Real VET app screens can be captured from the live app (supplier products, offers, enterprise page, veterinarian home).
-- Facts: VET operational, market ARG, started 2024; ARQ in development, initial market ARG, launch September 2026; contact integhra@gmail.com.
+- Facts: VET operational, market ARG, started 2024; ARQ in development, initial market ARG, no launch date yet; contact integhra@gmail.com.
 - Absent: testimonials, user counts, metrics, pricing. Do not invent them.
 
 ## Product Principles

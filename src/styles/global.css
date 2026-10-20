@@ -1,5 +1,49 @@
 @import "tailwindcss";
 
+/* Carving Soft (MADE Type). Same files the Flutter app ships. License: personal use; commercial use needs MadeType's OK (madetypeinfo@gmail.com). */
+@font-face {
+  font-family: 'Carving Soft';
+  src: url('/fonts/carving-soft/CarvingSoft-Light.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Carving Soft';
+  src: url('/fonts/carving-soft/CarvingSoft-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Carving Soft';
+  src: url('/fonts/carving-soft/CarvingSoft-Medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Carving Soft';
+  src: url('/fonts/carving-soft/CarvingSoft-SemiBold.otf') format('opentype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Carving Soft';
+  src: url('/fonts/carving-soft/CarvingSoft-Bold.otf') format('opentype');
+  font-weight: 700 800;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Carving Soft';
+  src: url('/fonts/carving-soft/CarvingSoft-Black.otf') format('opentype');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* Integhra · Mapa de red
    Signage-white ground, ink, and the four lines of the isologotipo. */
 :root {
@@ -26,7 +70,7 @@
 
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 
-  --font: 'Archivo', ui-sans-serif, system-ui, sans-serif;
+  --font: 'Carving Soft', ui-sans-serif, system-ui, sans-serif;
 }
 
 *,
@@ -399,7 +443,7 @@ html {
 
 /* ---------- Petal worlds ---------- */
 
-/* VET world: clinical white, orange + teal, Figtree, round */
+/* VET world: clinical white, orange + teal, Carving Soft, round */
 .w-vet {
   --o: #ff4a1c;
   --t: #0fa3b1;
@@ -407,7 +451,7 @@ html {
   --warm: #fff3ec;
   background: #fff;
   color: var(--ink);
-  font-family: 'Figtree', var(--font);
+  font-family: var(--font);
 }
 .w-vet ::selection {
   background: var(--o);
@@ -421,7 +465,7 @@ html {
   padding: 0 1.5rem;
   border-radius: 999px;
   border: 2px solid var(--ink);
-  font-family: 'Figtree', var(--font);
+  font-family: var(--font);
   font-weight: 750;
   font-size: 1.0625rem;
   text-decoration: none;
