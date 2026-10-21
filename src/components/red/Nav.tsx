@@ -1,20 +1,15 @@
 import { useEffect, useRef, useState } from 'react';
-import ContactModal from './ContactModal';
+import ContactModal, { type ContactKind } from './ContactModal';
+import IsologoMark from '../marca/IsologoMark';
+import { LINKS } from './links';
 import './nav.css';
 
 const BASE = import.meta.env.BASE_URL.replace(/\/?$/, '/');
-import IsologoMark from '../marca/IsologoMark';
-
-const LINKS = [
-  { href: BASE, label: 'Inicio', line: 'ink', match: (p: string) => p === '' || p === '/' },
-  { href: `${BASE}general`, label: 'Institucional', line: 'inst', match: (p: string) => p.startsWith('/general') },
-  { href: `${BASE}sobre-nosotros`, label: 'Nosotros', line: 'nos', match: (p: string) => p.startsWith('/sobre-nosotros') },
-];
 
 export default function Nav() {
   const [path, setPath] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
-  const [contact, setContact] = useState(false);
+  const [contact, setContact] = useState<ContactKind | null>(null);
   const [lifted, setLifted] = useState(false);
   const sentinel = useRef<HTMLDivElement>(null);
 
@@ -23,7 +18,10 @@ export default function Nav() {
     const p = window.location.pathname;
     setPath(p.startsWith(prefix) ? p.slice(prefix.length) : p);
 
-    const onContact = () => { setOpen(false); setContact(true); };
+    const onContact = (e: Event) => {
+      setOpen(false);
+      setContact((e as CustomEvent<{ kind?: ContactKind }>).detail?.kind ?? 'general');
+    };
     window.addEventListener('integhra:contact', onContact);
 
     let io: IntersectionObserver | undefined;
@@ -70,16 +68,9 @@ export default function Nav() {
                 {l.label}
               </a>
             ))}
-            <a href={`${BASE}#productos`} className="nv-link nv-link--lines">
-              <span className="nv-swatch" aria-hidden="true">
-                <i style={{ background: 'var(--vet)' }} />
-                <i style={{ background: 'var(--arq)' }} />
-              </span>
-              VET · ARQ
-            </a>
           </nav>
 
-          <button className="pill nv-cta" onClick={() => setContact(true)}>Contacto</button>
+          <button className="pill nv-cta" onClick={() => setContact('general')}>Contacto</button>
 
           <button
             className="nv-burger"
@@ -101,17 +92,14 @@ export default function Nav() {
                 </a>
               </li>
             ))}
-            <li style={{ ['--l' as string]: 'var(--vet)' }}>
-              <a href={`${BASE}#productos`} onClick={() => setOpen(false)}>VET · ARQ</a>
-            </li>
           </ol>
-          <button className="pill nv-menu-cta" onClick={() => { setOpen(false); setContact(true); }}>
+          <button className="pill nv-menu-cta" onClick={() => { setOpen(false); setContact('general'); }}>
             Contacto
           </button>
         </div>
       </header>
 
-      {contact && <ContactModal onClose={() => setContact(false)} />}
+      {contact && <ContactModal kind={contact} onClose={() => setContact(null)} />}
     </>
   );
 }

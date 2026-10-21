@@ -87,21 +87,6 @@
 .nv-link[aria-current='page'] {
   color: var(--ink);
 }
-.nv-link--lines::after {
-  display: none;
-}
-
-.nv-swatch {
-  display: inline-flex;
-  flex-direction: column;
-  gap: 3px;
-}
-.nv-swatch i {
-  display: block;
-  width: 18px;
-  height: 5px;
-  border-radius: 5px;
-}
 
 .nv-cta {
   min-height: 44px;

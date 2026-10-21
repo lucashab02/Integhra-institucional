@@ -1,66 +1,99 @@
 ---
+// Home: the mark opens into the two products, and the two products become their cards.
+// One scroll sequence on desktop: the closed mark splits into the VET and ARQ pairs, the dark
+// diagonal straightens into the ARQ card, the light side settles into the VET card and each pair
+// lands at the foot of its card. One message, one set of actions, at the end.
+//
+// Layout modes:
+// - Flow (default, phones, reduced motion, no JS): hero, then the cards as a normal section.
+// - Fused (desktop with JS and motion): the cards sit inside the pinned stage, over the hero.
 import Isologo from '../marca/Isologo.astro';
+
+const BASE = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+const arrow = '<path d="M5 12h14M13 6l6 6-6 6" />';
 ---
 
-<section id="inicio" class="ph" aria-labelledby="ph-title">
+<section class="ph" aria-labelledby="ph-title">
   <div class="ph__stage">
-    <div class="ph__copy wrap">
-      <h1 id="ph-title" class="display ph__title">Conectamos<br />cada industria</h1>
-      <p class="lede ph__lede">
-        Integhra digitaliza y conecta proveedores, profesionales y consumidores. Una plataforma por industria, sin intermediarios.
-      </p>
-    </div>
-
-    <div class="ph__split">
-      <!-- ARQ's ground: the diagonal seam that opens with the mark -->
-      <div class="ph__night" aria-hidden="true"></div>
-
-      <div class="ph__mark" aria-hidden="true">
-        <Isologo part="vet" fullFrame class="ph__half ph__half--vet" />
-        <Isologo part="arq" fullFrame class="ph__half ph__half--arq" />
+    <div class="ph__hero">
+      <div class="ph__copy wrap">
+        <h1 id="ph-title" class="display ph__title">Conectamos<br />cada industria</h1>
+        <p class="lede ph__lede">
+          Integhra digitaliza y conecta proveedores, profesionales y consumidores. Una plataforma por industria, sin intermediarios.
+        </p>
       </div>
 
-      <a class="door door--vet" href="#vet">
-        <span class="door__name">Integhra VET</span>
-        <span class="door__line">La industria veterinaria, conectada.</span>
-        <span class="door__state">En servicio desde 2024</span>
-        <span class="door__go">
-          Entrar a VET
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
-        </span>
-      </a>
+      <div class="ph__split">
+        <!-- ARQ's ground: the diagonal seam that opens with the mark and becomes the ARQ card -->
+        <div class="ph__night" aria-hidden="true"></div>
 
-      <a class="door door--arq" href="#arq">
-        <span class="door__name">Integhra ARQ</span>
-        <span class="door__line">Construcción y diseño.</span>
-        <span class="door__state">En obra</span>
-        <span class="door__go">
-          Entrar a ARQ
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
-        </span>
-      </a>
+        <div class="ph__mark" aria-hidden="true">
+          <Isologo part="vet" fullFrame class="ph__half ph__half--vet" />
+          <Isologo part="arq" fullFrame class="ph__half ph__half--arq" />
+        </div>
+      </div>
+    </div>
+
+    <div id="productos" class="ph__end" aria-labelledby="prod-title">
+      <header class="prod__head">
+        <h2 id="prod-title" class="prod__title">Una plataforma por industria</h2>
+        <p class="prod__lede">Cada producto está diseñado para la cadena de valor completa de su sector.</p>
+      </header>
+
+      <div class="prod__grid">
+        <article class="tile tile--vet" aria-labelledby="tile-vet">
+          <div class="tile__copy">
+            <p class="tile__state">En servicio desde 2024</p>
+            <h3 id="tile-vet" class="tile__name">Integhra <b>VET</b></h3>
+            <p class="tile__line">El ecosistema digital de la industria veterinaria.</p>
+            <div class="tile__acts">
+              <a class="tile__btn tile__btn--main" href={`${BASE}vet`}>
+                Conocer más
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={arrow} />
+              </a>
+              <a class="tile__btn" href="#" data-contact="demo">Solicitar demo</a>
+            </div>
+          </div>
+          <Isologo part="vet" class="tile__mark" />
+        </article>
+
+        <article class="tile tile--arq" aria-labelledby="tile-arq">
+          <div class="tile__copy">
+            <p class="tile__state">En desarrollo</p>
+            <h3 id="tile-arq" class="tile__name">Integhra <b>ARQ</b></h3>
+            <p class="tile__line">El ecosistema digital de la construcción y el diseño.</p>
+            <div class="tile__acts">
+              <a class="tile__btn tile__btn--main" href={`${BASE}arq`}>
+                Conocer más
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={arrow} />
+              </a>
+              <a class="tile__btn" href={`${BASE}arq#waitlist`}>Anotarme</a>
+            </div>
+          </div>
+          <Isologo part="arq" class="tile__mark" />
+        </article>
+      </div>
     </div>
   </div>
 </section>
 
 <style>
-  /* The resting (CSS) state is the opened mark: readable without JS and with reduced motion.
-     The script plays the opening from the closed mark, scrubbed by scroll. */
+  /* ---------- Flow layout (default) ---------- */
   .ph {
     --S: min(58vh, 38vw);
     position: relative;
     background: var(--paper);
-    border-bottom: 2px solid var(--ink);
   }
-  .ph__stage {
+  .ph__hero {
     position: relative;
     height: calc(100dvh - 72px);
     min-height: 620px;
     overflow: hidden;
+    border-bottom: 2px solid var(--ink);
   }
   .ph__copy {
     position: relative;
-    z-index: 3;
+    z-index: 4;
     padding-top: clamp(2.5rem, 7vh, 5rem);
     pointer-events: none;
   }
@@ -87,12 +120,13 @@ import Isologo from '../marca/Isologo.astro';
 
   .ph__mark {
     position: absolute;
-    z-index: 2;
+    z-index: 3;
     left: 70%;
     top: 52%;
     width: var(--S);
     aspect-ratio: 860 / 872;
     translate: -50% -50%;
+    pointer-events: none;
   }
   .ph__mark :global(.ph__half) {
     position: absolute;
@@ -102,7 +136,8 @@ import Isologo from '../marca/Isologo.astro';
     max-width: none;
     will-change: transform;
   }
-  /* Opened positions, in viewport terms so the halves land in their own worlds */
+  /* Opened positions, in viewport terms so the halves land in their own worlds.
+     The script reads these same numbers to plan the landing in the cards. */
   .ph__mark :global(.ph__half--vet) {
     transform: translate(-30vw, 19vh) scale(0.66) rotate(-6deg);
   }
@@ -110,130 +145,249 @@ import Isologo from '../marca/Isologo.astro';
     transform: translate(7vw, -15vh) scale(0.66) rotate(6deg);
   }
 
-  .door {
-    position: absolute;
-    z-index: 3;
+  /* The products, as a section after the hero */
+  .ph__end {
+    position: relative;
+    z-index: 2;
+    padding: clamp(5rem, 12vh, 8rem) var(--wrap-x);
+  }
+  .prod__head {
     display: grid;
-    gap: 0.35rem;
-    justify-items: start;
-    text-decoration: none;
-    max-width: 290px;
+    gap: 1rem;
+    justify-items: center;
+    text-align: center;
+    margin-bottom: clamp(2.5rem, 6vh, 4rem);
   }
-  /* The doors belong to the opened mark: hidden (and not clickable) until the scroll opens it.
-     GSAP reveals them; with reduced motion or without JS the opened state is the resting state. */
-  @media (prefers-reduced-motion: no-preference) {
-    :global(.js) .door {
-      opacity: 0;
-      visibility: hidden;
-    }
+  .prod__title {
+    font-size: clamp(2.4rem, 4.6vw, 4.25rem);
+    font-weight: 800;
+    letter-spacing: -0.035em;
+    line-height: 1;
+    text-wrap: balance;
   }
-  .door__name {
-    font-size: clamp(1.6rem, 2.3vw, 2.25rem);
+  .prod__lede {
+    font-size: 1.1875rem;
+    color: var(--ink-2);
+    max-width: 44ch;
+    text-wrap: balance;
+  }
+  .prod__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  /* A card: copy centered on top, the product's pair rising from the bottom edge */
+  .tile {
+    position: relative;
+    overflow: hidden;
+    min-height: clamp(560px, 70vh, 680px);
+    padding: clamp(2.25rem, 4vw, 3.5rem) clamp(1.5rem, 3vw, 2.5rem) 0;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    justify-items: center;
+    text-align: center;
+  }
+  .tile__copy {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    gap: 0.75rem;
+    justify-items: center;
+  }
+  .tile__state {
+    font-size: 0.9375rem;
+    font-weight: 650;
+  }
+  .tile__name {
+    font-size: clamp(2.4rem, 4vw, 3.5rem);
+    font-weight: 800;
+    letter-spacing: -0.035em;
     line-height: 1;
   }
-  .door__line {
-    font-size: 1.0625rem;
+  .tile__line {
+    font-size: clamp(1.125rem, 1.5vw, 1.3125rem);
+    max-width: 26ch;
+    text-wrap: balance;
   }
-  .door__state {
-    font-size: 0.875rem;
-    margin-bottom: 0.6rem;
+  .tile__acts {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.6rem;
+    margin-top: 0.75rem;
   }
-  .door__go {
+  .tile__btn {
     display: inline-flex;
     align-items: center;
-    gap: 0.55rem;
+    gap: 0.5rem;
     min-height: 48px;
-    padding: 0 1.25rem 0 1.4rem;
-    border-radius: 999px;
-    font-weight: 700;
-    transition: transform 0.3s var(--ease-out), background-color 0.2s ease, color 0.2s ease;
+    padding: 0 1.3rem;
+    font-weight: 750;
+    text-decoration: none;
+    border: 2px solid currentColor;
+    transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s var(--ease-out);
   }
-  .door__go svg {
+  .tile__btn svg {
     width: 18px;
     height: 18px;
     transition: transform 0.3s var(--ease-out);
   }
-  .door:hover .door__go svg {
+  .tile__btn:hover svg {
     transform: translateX(4px);
   }
-  .door:active .door__go {
+  .tile__btn:active {
     transform: scale(0.98);
   }
+  .tile :global(.tile__mark) {
+    align-self: end;
+    width: auto;
+    height: clamp(220px, 32vh, 320px);
+    margin-bottom: -12%;
+  }
 
-  /* VET door: Carving Soft, warm, round */
-  .door--vet {
-    left: max(var(--gutter), 47vw);
-    bottom: 13%;
-    font-family: var(--font);
+  /* VET: warm, round */
+  .tile--vet {
+    border-radius: 32px;
+    background: #fff3ec;
     color: var(--ink);
   }
-  .door--vet .door__name {
-    font-weight: 800;
-    letter-spacing: -0.025em;
-  }
-  .door--vet .door__state {
+  .tile--vet .tile__state {
     color: #0b6e77;
-    font-weight: 600;
   }
-  .door--vet .door__go {
-    background: var(--vet);
-    color: var(--ink);
+  .tile--vet .tile__name b {
+    color: #ff4a1c;
+  }
+  .tile--vet .tile__line {
+    color: #3d3a38;
+  }
+  .tile--vet .tile__btn {
+    border-radius: 999px;
+  }
+  .tile--vet .tile__btn--main {
+    background: #ff4a1c;
+    border-color: #ff4a1c;
+  }
+  .tile--vet .tile__btn--main:hover {
+    background: #ff6a43;
+  }
+  .tile--vet .tile__btn:not(.tile__btn--main):hover {
+    background: #fff;
   }
 
-  /* ARQ door: Carving Soft, cold, square, cold, square */
-  .door--arq {
-    right: var(--gutter);
-    top: 62%;
+  /* ARQ: graphite, square (its card is the diagonal of the hero, straightened) */
+  .tile--arq {
+    background: #121419;
     color: #eef1f6;
-    text-align: right;
-    justify-items: end;
   }
-  .door--arq .door__name {
-    font-weight: 800;
-    font-variation-settings: 'wdth' 120;
-    letter-spacing: -0.03em;
-  }
-  .door--arq .door__line {
-    color: #c3c9d4;
-  }
-  .door--arq .door__state {
-    font-family: var(--font);
-    font-variant-numeric: tabular-nums;
-    font-size: 0.8125rem;
-    letter-spacing: 0.02em;
+  .tile--arq .tile__state {
     color: #8fc8f8;
     text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-size: 0.8125rem;
   }
-  .door--arq .door__go {
+  .tile--arq .tile__name {
+    font-variation-settings: 'wdth' 120;
+  }
+  .tile--arq .tile__name b {
+    color: #c04fd3;
+  }
+  .tile--arq .tile__line {
+    color: #c3c9d4;
+  }
+  .tile--arq .tile__btn {
     border-radius: 0;
-    border: 2px solid #eef1f6;
-    color: #eef1f6;
   }
-  .door--arq:hover .door__go {
+  .tile--arq .tile__btn--main {
+    background: #eef1f6;
+    border-color: #eef1f6;
+    color: #121419;
+  }
+  .tile--arq .tile__btn--main:hover {
+    background: #fff;
+  }
+  .tile--arq .tile__btn:not(.tile__btn--main):hover {
     background: #eef1f6;
     color: #121419;
   }
-  .door--arq:focus-visible {
+  .tile--arq :focus-visible {
     outline-color: #eef1f6;
   }
 
-  /* Desktop: the stage pins while the mark opens */
-  @media (min-width: 761px) {
-    .ph {
-      height: calc(210vh);
+  /* ---------- Fused layout: desktop with JS and motion ---------- */
+  @media (min-width: 761px) and (prefers-reduced-motion: no-preference) {
+    :global(.js) .ph {
+      height: 365vh;
     }
-    .ph__stage {
+    :global(.js) .ph__stage {
       position: sticky;
       top: 72px;
+      height: calc(100dvh - 72px);
+      min-height: 520px;
+      overflow: hidden;
+      border-bottom: 2px solid var(--ink);
+    }
+    :global(.js) .ph__hero {
+      position: absolute;
+      inset: 0;
+      height: auto;
+      min-height: 0;
+      border-bottom: 0;
+    }
+    :global(.js) .ph__end {
+      position: absolute;
+      inset: 0;
+      padding: clamp(1.25rem, 3.5vh, 2.25rem) var(--wrap-x);
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr);
+    }
+    :global(.js) .prod__head {
+      gap: 0.5rem;
+      margin-bottom: clamp(1rem, 3vh, 1.75rem);
+    }
+    :global(.js) .prod__title {
+      font-size: clamp(2rem, 3.4vw, 3.25rem);
+    }
+    :global(.js) .prod__lede {
+      font-size: 1.0625rem;
+    }
+    :global(.js) .prod__grid {
+      min-height: 0;
+    }
+    :global(.js) .tile {
+      min-height: 0;
+      padding-top: clamp(1.5rem, 4vh, 2.75rem);
+    }
+    :global(.js) .tile__copy {
+      gap: 0.5rem;
+    }
+    :global(.js) .tile__name {
+      font-size: clamp(2rem, 3.2vw, 3rem);
+    }
+    :global(.js) .tile :global(.tile__mark) {
+      height: clamp(130px, 26vh, 300px);
+      margin-bottom: -10%;
+    }
+    /* The cards' grounds arrive from the hero: VET's fades in, ARQ's is the night itself */
+    :global(.js) .tile--vet,
+    :global(.js) .tile--arq {
+      background: transparent;
+    }
+    /* Everything of the end state waits for the scroll; the script reveals it */
+    :global(.js) .prod__head,
+    :global(.js) .tile__copy,
+    :global(.js) .tile :global(.tile__mark) {
+      opacity: 0;
+      visibility: hidden;
     }
   }
 
-  /* Phones: copy first, then a square stage where the mark opens as it passes */
+  /* ---------- Phones: copy, a square stage where the mark opens, then the cards ---------- */
   @media (max-width: 760px) {
     .ph {
       --S: min(70vw, 300px);
     }
-    .ph__stage {
+    .ph__hero {
       height: auto;
       min-height: 0;
       overflow: visible;
@@ -244,8 +398,8 @@ import Isologo from '../marca/Isologo.astro';
     .ph__split {
       position: relative;
       inset: auto;
-      height: 128vw;
-      max-height: 640px;
+      height: 110vw;
+      max-height: 560px;
       overflow: hidden;
     }
     .ph__night {
@@ -256,30 +410,23 @@ import Isologo from '../marca/Isologo.astro';
       top: 50%;
     }
     .ph__mark :global(.ph__half--vet) {
-      transform: translate(-16vw, 22vw) scale(0.62) rotate(-6deg);
+      transform: translate(-16vw, 16vw) scale(0.62) rotate(-6deg);
     }
     .ph__mark :global(.ph__half--arq) {
-      transform: translate(16vw, -26vw) scale(0.62) rotate(6deg);
+      transform: translate(16vw, -20vw) scale(0.62) rotate(6deg);
     }
-    .door {
-      max-width: 62%;
+    .ph__end {
+      padding-block: clamp(3.5rem, 10vh, 5rem);
     }
-    .door--arq {
-      top: 1.25rem;
-      right: auto;
-      left: var(--gutter);
-      text-align: left;
-      justify-items: start;
+    .prod__grid {
+      grid-template-columns: 1fr;
     }
-    .door--vet {
-      left: auto;
-      right: var(--gutter);
-      bottom: 1.25rem;
-      text-align: right;
-      justify-items: end;
+    .tile {
+      min-height: 0;
+      gap: 2rem;
     }
-    .door__line {
-      display: none;
+    .tile :global(.tile__mark) {
+      height: 200px;
     }
   }
 </style>
@@ -293,16 +440,25 @@ import Isologo from '../marca/Isologo.astro';
   const root = document.querySelector<HTMLElement>('.ph');
   if (root) {
     const mm = gsap.matchMedia();
+    const q = <T extends Element = HTMLElement>(s: string) => root.querySelector<T>(s)!;
     const parts = {
-      vet: root.querySelector('.ph__half--vet'),
-      arq: root.querySelector('.ph__half--arq'),
-      night: root.querySelector('.ph__night'),
-      doors: root.querySelectorAll('.door'),
-      copy: root.querySelector('.ph__copy'),
+      stage: q('.ph__stage'),
+      hero: q('.ph__hero'),
+      copy: q('.ph__copy'),
+      night: q('.ph__night'),
+      vet: q('.ph__half--vet'),
+      arq: q('.ph__half--arq'),
+      head: q('.prod__head'),
+      tileVet: q('.tile--vet'),
+      tileArq: q('.tile--arq'),
+      tileCopies: root.querySelectorAll('.tile__copy'),
+      tileMarks: root.querySelectorAll('.tile__mark'),
     };
 
     const closed = { x: 0, y: 0, xPercent: 0, yPercent: 0, scale: 1, rotate: 0 };
     const petal = (name: string) => root.querySelector('.iso__p--' + name);
+    const petalsOf = (pair: 'vet' | 'arq') =>
+      pair === 'vet' ? [petal('naranja'), petal('turquesa')] : [petal('azul'), petal('violeta')];
 
     // Each pair opens the same way: its two petals pull apart and grow a little as they leave
     // the shared mark. The cold pair mirrors the warm one (small petal out and away, big
@@ -314,16 +470,74 @@ import Isologo from '../marca/Isologo.astro';
         .to(petal('azul'), { rotate: 16, xPercent: -62, yPercent: -14, scale: 1.1, duration: 1 }, at)
         .to(petal('violeta'), { rotate: -8, xPercent: 10, yPercent: 0, scale: 1.06, duration: 1 }, at);
 
-    // Desktop: pinned stage, the opening scrubs across the extra scroll height
+    // Desktop: one pinned sequence. The mark opens, then the hero becomes the two cards.
     mm.add('(min-width: 761px) and (prefers-reduced-motion: no-preference)', () => {
+      // Geometry, in stage pixels. Read on every refresh so resizes keep the landing exact.
+      const box = (el: Element) => {
+        const s = parts.hero.getBoundingClientRect();
+        const r = el.getBoundingClientRect();
+        return { l: r.left - s.left, t: r.top - s.top, r: r.right - s.left, b: r.bottom - s.top, w: r.width, h: r.height };
+      };
+      const poly = (pts: number[][]) => 'polygon(' + pts.map(([x, y]) => x + 'px ' + y + 'px').join(', ') + ')';
+      const W = () => parts.hero.clientWidth;
+      const H = () => parts.hero.clientHeight;
+      const shut = () => poly([[W(), 0], [W(), 0], [W(), H()], [W(), H()]]);
+      const diagonal = () => poly([[W() * 0.52, 0], [W(), 0], [W(), H()], [W() * 0.74, H()]]);
+      const arqCard = () => {
+        const b = box(parts.tileArq);
+        return poly([[b.l, b.t], [b.r, b.t], [b.r, b.b], [b.l, b.b]]);
+      };
+
+      // Where a pair has to go to sit on its card's mark. The half is the whole mark's frame
+      // (860 x 872) with only its pair drawn; the pair's own box inside it comes from the logo.
+      const pairBox = { vet: [0, 0, 600, 872], arq: [500, 40, 360, 750] };
+      const land = (pair: 'vet' | 'arq', i: number) => {
+        const S = Math.min(innerHeight * 0.58, innerWidth * 0.38);
+        const fw = S;
+        const fh = (S * 872) / 860;
+        const [bx, by, bw, bh] = pairBox[pair];
+        const dx = ((bx + bw / 2) / 860 - 0.5) * fw;
+        const dy = ((by + bh / 2) / 872 - 0.5) * fh;
+        const mark = parts.tileMarks[i];
+        const m = box(mark);
+        const markY = Number(gsap.getProperty(mark, 'y')) || 0;
+        const scale = m.h / ((bh / 872) * fh);
+        const cx = W() * 0.7;
+        const cy = H() * 0.52;
+        return {
+          x: m.l + m.w / 2 - cx - scale * dx,
+          y: m.t - markY + m.h / 2 - cy - scale * dy,
+          scale,
+        };
+      };
+
       const tl = gsap.timeline({
         defaults: { ease: 'power2.inOut' },
         scrollTrigger: { trigger: root, start: 'top 72px', end: 'bottom bottom', scrub: 0.6, invalidateOnRefresh: true },
       });
-      tl.from([parts.vet, parts.arq], { ...closed, duration: 1 }, 0.15)
-        .from(parts.night, { clipPath: 'polygon(100% 0, 100% 0, 100% 100%, 100% 100%)', duration: 1 }, 0.15)
-        .fromTo(parts.doors, { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, stagger: 0.12, duration: 0.45, immediateRender: true }, 0.75);
-      shape(tl, 0.15);
+
+      // 1. The mark opens into the two pairs, the night comes in on the diagonal
+      tl.from([parts.vet, parts.arq], { ...closed, duration: 1 }, 0.1)
+        .fromTo(parts.night, { clipPath: shut }, { clipPath: diagonal, duration: 1 }, 0.1);
+      shape(tl, 0.1);
+
+      // 2. The hero becomes the cards
+      const at = 1.35;
+      const T = 1.35; // the handover to the cards runs slower than the opening, so it can be watched
+      const t = (n: number) => at + n * T;
+      tl.to(parts.copy, { autoAlpha: 0, y: -48, duration: 0.45 * T, ease: 'power2.in' }, at)
+        .to(parts.night, { clipPath: arqCard, duration: T }, at)
+        .fromTo(parts.tileVet, { backgroundColor: 'rgba(255, 243, 236, 0)' }, { backgroundColor: 'rgba(255, 243, 236, 1)', duration: 0.7 * T }, t(0.35))
+        .to(parts.vet, { x: () => land('vet', 0).x, y: () => land('vet', 0).y, scale: () => land('vet', 0).scale, rotate: 0, duration: T }, at)
+        .to(parts.arq, { x: () => land('arq', 1).x, y: () => land('arq', 1).y, scale: () => land('arq', 1).scale, rotate: 0, duration: T }, at)
+        .to([...petalsOf('vet'), ...petalsOf('arq')], { rotate: 0, xPercent: 0, yPercent: 0, scale: 1, duration: T }, at)
+        .fromTo(parts.head, { autoAlpha: 0, y: 36 }, { autoAlpha: 1, y: 0, duration: 0.5 * T, ease: 'power2.out' }, t(0.4))
+        .fromTo(parts.tileCopies, { autoAlpha: 0, y: 28 }, { autoAlpha: 1, y: 0, stagger: 0.12, duration: 0.5 * T, ease: 'power2.out' }, t(0.6))
+        // the pairs hand over to the cards' own marks, which sit exactly where they landed
+        .fromTo(parts.tileMarks, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.2 * T, ease: 'none' }, t(0.95))
+        .to([parts.vet, parts.arq], { autoAlpha: 0, duration: 0.2 * T, ease: 'none' }, t(1.1))
+        // a short hold on the finished cards before the page moves on
+        .to({}, { duration: 0.35 });
     });
 
     // Fine pointers: the petals drift toward the cursor, each at its own depth
@@ -334,17 +548,17 @@ import Isologo from '../marca/Isologo.astro';
         return { d, x: gsap.quickTo(el, 'x', { duration: 0.9, ease: 'power3.out' }), y: gsap.quickTo(el, 'y', { duration: 0.9, ease: 'power3.out' }) };
       });
       const onMove = (e: PointerEvent) => {
-        const r = root.getBoundingClientRect();
+        const r = parts.hero.getBoundingClientRect();
         const nx = (e.clientX - r.left) / r.width - 0.5;
         const ny = (e.clientY - Math.max(r.top, 0)) / window.innerHeight - 0.5;
         movers.forEach((m) => { m.x(nx * m.d); m.y(ny * m.d); });
       };
       const onLeave = () => movers.forEach((m) => { m.x(0); m.y(0); });
-      root.addEventListener('pointermove', onMove);
-      root.addEventListener('pointerleave', onLeave);
+      parts.hero.addEventListener('pointermove', onMove);
+      parts.hero.addEventListener('pointerleave', onLeave);
       return () => {
-        root.removeEventListener('pointermove', onMove);
-        root.removeEventListener('pointerleave', onLeave);
+        parts.hero.removeEventListener('pointermove', onMove);
+        parts.hero.removeEventListener('pointerleave', onLeave);
       };
     });
 
@@ -355,8 +569,7 @@ import Isologo from '../marca/Isologo.astro';
         scrollTrigger: { trigger: root.querySelector('.ph__split'), start: 'top 85%', end: 'center 45%', scrub: 0.5 },
       });
       tl.from([parts.vet, parts.arq], { ...closed, duration: 1 }, 0)
-        .from(parts.night, { clipPath: 'polygon(0 0, 100% 0, 100% 0, 0 0)', duration: 1 }, 0)
-        .fromTo(parts.doors, { autoAlpha: 0, y: 16 }, { autoAlpha: 1, y: 0, stagger: 0.1, duration: 0.4, immediateRender: true }, 0.6);
+        .from(parts.night, { clipPath: 'polygon(0 0, 100% 0, 100% 0, 0 0)', duration: 1 }, 0);
       shape(tl, 0);
     });
   }

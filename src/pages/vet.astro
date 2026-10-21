@@ -1,0 +1,632 @@
+---
+import Base from '../layouts/Base.astro';
+import Isologo from '../components/marca/Isologo.astro';
+
+const BASE = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+const IMG = `${BASE}images/institucional/`;
+
+const impacto = [
+  { t: 'Gestión integral desde un solo lugar', d: 'Organizá todo tu marketing y estrategia comercial en un solo panel. Desde banners y pop-ups hasta reportes y lanzamientos.', tone: 'orange' },
+  { t: 'Campañas comerciales dinámicas', d: 'Activá promociones personalizadas por cliente, región o distribuidor. Segmentá y ejecutá con solo unos clics.', tone: 'teal' },
+  { t: 'Conexión directa con toda la cadena', d: 'Acelerá la comunicación entre proveedor, distribuidor y punto de venta. Todo queda registrado y medible.', tone: 'warm' },
+];
+
+const herramientas = [
+  {
+    id: 'campanas', tab: 'Campañas', t: 'Campañas comerciales en segundos',
+    d: 'Activá tus promociones en el momento justo. Conectá con tu red comercial, medí el impacto y optimizá cada acción.',
+    img: 'rincon-lab.jpg', pos: '50% 100%', w: 1600, h: 800,
+    alt: 'Ofertas exclusivas de un laboratorio en Integhra VET, con bonificación máxima, vencimiento y cuenta regresiva.',
+  },
+  {
+    id: 'publicidad', tab: 'Publicidad', t: 'Espacio publicitario integrado',
+    d: 'Mostrá tus productos donde se toman las decisiones. Banners y pop-ups para captar la atención de veterinarios y distribuidores.',
+    img: 'Captura-de-pantalla-2025-07-08-121809.png', pos: '50% 18%', w: 1919, h: 969,
+    alt: 'Carrusel de banners publicitarios en la página de un laboratorio dentro de Integhra VET.',
+  },
+  {
+    id: 'comunicacion', tab: 'Comunicación', t: 'Mantené a tus clientes siempre al tanto',
+    d: 'Informá de manera rápida y directa sobre novedades, promociones y eventos exclusivos. La confianza se construye con presencia.',
+    img: 'news.jpg', pos: '50% 30%', w: 1600, h: 800,
+    alt: 'Sección de noticias de Integhra VET con artículos de fuentes veterinarias.',
+  },
+];
+
+const lados = [
+  {
+    name: 'Para proveedores', petal: 'naranja',
+    items: [
+      { t: 'Creá ofertas', d: 'Impulsá tu estrategia comercial con promociones en segundos.' },
+      { t: 'Promocioná tu marca', d: 'Destacate en la plataforma con espacios publicitarios integrados.' },
+      { t: 'Clientes informados', d: 'Mantené a tus clientes al tanto con notificaciones directas.' },
+    ],
+  },
+  {
+    name: 'Para veterinarias', petal: 'turquesa',
+    items: [
+      { t: 'Consultá productos', d: 'Accedé a catálogos completos de todos los laboratorios en un clic.' },
+      { t: 'Realizá pedidos', d: 'Gestioná tus pedidos de la forma más fácil y rápida.' },
+      { t: 'Encontrá ofertas', d: 'Descubrí promociones especialmente para lo que buscás.' },
+    ],
+  },
+] as const;
+
+const marcas = [
+  { src: 'logo-zoetis.png', alt: 'Zoetis' },
+  { src: 'Boehringer_Ingelheim_Logo_RGB_Accent_Green.svg.png', alt: 'Boehringer Ingelheim' },
+  { src: 'dfv_logo.png', alt: 'DFV' },
+  { src: 'logo-bago-n.png', alt: 'Bagó' },
+  { src: 'brouwer_sa_logo.jpeg', alt: 'Brouwer' },
+  { src: 'Logo-Konig.jpg', alt: 'König' },
+  { src: 'Artboard-4logos.png', alt: 'Holliday' },
+];
+---
+
+<Base
+  title="Integhra VET | Integrando tus negocios"
+  description="Integhra conecta proveedores, distribuidores y minoristas en un solo espacio. Agilizá tu estrategia comercial y ganá visibilidad donde importa."
+  line="vet"
+  world="petalos"
+  stations={[]}
+>
+  <div class="w-vet gv">
+    <!-- Hero: the VET pair holds the product -->
+    <section id="general" class="gh" aria-labelledby="gh-title">
+      <div class="wrap gh__grid">
+        <div class="gh__copy">
+          <p class="gh__lock"><Isologo part="vet" class="gh__lock-mark" /><span>Integhra <b>VET</b></span></p>
+          <h1 id="gh-title" class="gh__title">Con Integhra, crecer es fácil</h1>
+          <p class="gh__lede">
+            Conectamos proveedores, distribuidores y minoristas en un solo espacio. Agilizá tu estrategia comercial y ganá visibilidad donde importa.
+          </p>
+          <div class="gh__ctas">
+            <a href="#" class="vbtn vbtn--solid" data-contact="demo">
+              Solicitar demo
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+            </a>
+            <a href="#plataforma" class="vbtn">Conocé la plataforma</a>
+          </div>
+        </div>
+
+        <div class="gh__stage" aria-hidden="true">
+          <Isologo part="vet" class="gh__pair" />
+        </div>
+      </div>
+    </section>
+
+    <!-- Impacto: three tiles of different weight -->
+    <section id="impacto" class="imp" aria-labelledby="imp-title">
+      <div class="wrap">
+        <h2 id="imp-title" class="gv__h2" data-reveal>Maximizá tu impacto comercial</h2>
+        <div class="imp__grid">
+          {impacto.map((x, i) => (
+            <article class={'imp__tile imp__tile--' + x.tone} data-reveal style={`--i: ${i}`}>
+              {i === 0 && <Isologo part="naranja" class="imp__petal" />}
+              <h3>{x.t}</h3>
+              <p>{x.d}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Herramientas: tabs over real screens -->
+    <section id="herramientas" class="tools" aria-labelledby="tools-title">
+      <div class="wrap">
+        <h2 id="tools-title" class="gv__h2" data-reveal>Descubrí cómo hacer crecer tu marca en Integhra</h2>
+        <div class="tools__ui" data-tabs>
+          <div class="tools__tabs" role="tablist" aria-label="Herramientas para marcas">
+            {herramientas.map((h, i) => (
+              <button
+                role="tab"
+                id={`tab-${h.id}`}
+                aria-controls={`panel-${h.id}`}
+                aria-selected={i === 0 ? 'true' : 'false'}
+                tabindex={i === 0 ? 0 : -1}
+                class="tools__tab"
+              >
+                {h.tab}
+              </button>
+            ))}
+          </div>
+          {herramientas.map((h, i) => (
+            <div role="tabpanel" id={`panel-${h.id}`} aria-labelledby={`tab-${h.id}`} class="tools__panel" hidden={i !== 0}>
+              <div class="tools__text">
+                <h3>{h.t}</h3>
+                <p>{h.d}</p>
+              </div>
+              <img src={`${IMG}${h.img}`} alt={h.alt} width={h.w} height={h.h} loading="lazy" decoding="async" style={`object-position: ${h.pos}`} />
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Plataforma: the two sides of the VET pair -->
+    <section id="plataforma" class="plat" aria-labelledby="plat-title">
+      <div class="wrap">
+        <h2 id="plat-title" class="gv__h2" data-reveal>Todo lo que necesitás, en un lugar</h2>
+        <div class="plat__sides">
+          {lados.map((l, k) => (
+            <div class={'plat__side plat__side--' + l.petal} data-reveal style={`--i: ${k}`}>
+              <div class="plat__head">
+                <Isologo part={l.petal} class="plat__petal" />
+                <h3>{l.name}</h3>
+              </div>
+              <ul>
+                {l.items.map((it) => (
+                  <li>
+                    <h4>{it.t}</h4>
+                    <p>{it.d}</p>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Marcas: the shelf of labs, moving -->
+    <section id="marcas" class="brands" aria-labelledby="brands-title">
+      <div class="wrap brands__head">
+        <h2 id="brands-title" class="gv__h2" data-reveal>Empresas que nos eligen</h2>
+        <p data-reveal style="--i: 1">Las marcas líderes de la industria ya forman parte de Integhra.</p>
+      </div>
+      <div class="brands__rail">
+        <ul class="brands__track">
+          {[0, 1].map((copy) =>
+            marcas.map((m) => (
+              <li aria-hidden={copy === 1 ? 'true' : undefined}>
+                <img src={`${IMG}${m.src}`} alt={copy === 1 ? '' : m.alt} loading="lazy" decoding="async" />
+              </li>
+            )),
+          )}
+        </ul>
+      </div>
+    </section>
+
+    <!-- Cierre -->
+    <section id="sumate" class="close" aria-labelledby="close-title">
+      <div class="wrap">
+        <div class="close__box">
+          <Isologo part="vet" class="close__pair" />
+          <h2 id="close-title" class="close__title">Sumá tu empresa a Integhra VET</h2>
+          <p>Pedí una demo y te mostramos cómo funciona la plataforma para tu marca.</p>
+          <a href="#" class="vbtn vbtn--ink" data-contact="demo">
+            Solicitar demo
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+          </a>
+        </div>
+      </div>
+    </section>
+  </div>
+</Base>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Tabs: one selected at a time, arrow keys move between them
+  document.querySelectorAll<HTMLElement>('[data-tabs]').forEach((root) => {
+    const tabs = Array.from(root.querySelectorAll<HTMLButtonElement>('[role="tab"]'));
+    const select = (tab: HTMLButtonElement, focus = false) => {
+      tabs.forEach((t) => {
+        const on = t === tab;
+        t.setAttribute('aria-selected', String(on));
+        t.tabIndex = on ? 0 : -1;
+        const panel = document.getElementById(t.getAttribute('aria-controls') || '');
+        if (panel) panel.hidden = !on;
+      });
+      if (focus) tab.focus();
+    };
+    tabs.forEach((t, i) => {
+      t.addEventListener('click', () => select(t));
+      t.addEventListener('keydown', (e) => {
+        const k = e.key;
+        if (k !== 'ArrowRight' && k !== 'ArrowLeft' && k !== 'ArrowDown' && k !== 'ArrowUp') return;
+        e.preventDefault();
+        const step = k === 'ArrowRight' || k === 'ArrowDown' ? 1 : -1;
+        select(tabs[(i + step + tabs.length) % tabs.length], true);
+      });
+    });
+  });
+
+  // The VET pair behind the hero screen bends as the page scrolls past it
+  const mm = gsap.matchMedia();
+  mm.add('(prefers-reduced-motion: no-preference)', () => {
+    const hero = document.querySelector('.gh');
+    const pair = document.querySelector('.gh__pair');
+    if (!hero || !pair) return;
+    gsap
+      .timeline({ scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: 0.6 } })
+      .to(pair.querySelector('.iso__p--naranja'), { rotate: -14, y: -30, ease: 'none' }, 0)
+      .to(pair.querySelector('.iso__p--turquesa'), { rotate: 18, x: 40, y: 20, ease: 'none' }, 0);
+  });
+</script>
+
+<style>
+  .gv {
+    overflow: clip;
+  }
+  .gv__h2 {
+    font-size: clamp(2.2rem, 4.2vw, 3.75rem);
+    font-weight: 800;
+    letter-spacing: -0.035em;
+    line-height: 1.02;
+    text-wrap: balance;
+    max-width: 18ch;
+  }
+
+  /* Hero */
+  .gh {
+    padding-block: clamp(2.5rem, 7vh, 5rem) clamp(4rem, 10vh, 6rem);
+  }
+  .gh__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: clamp(2rem, 5vw, 5rem);
+    align-items: center;
+  }
+  .gh__copy {
+    display: grid;
+    gap: 1.4rem;
+    justify-items: start;
+  }
+  .gh__lock {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-weight: 800;
+    font-size: 1.125rem;
+  }
+  .gh__lock b {
+    color: var(--o);
+  }
+  .gh__lock :global(.gh__lock-mark) {
+    height: 34px;
+    width: auto;
+  }
+  .gh__title {
+    font-size: clamp(2.8rem, 5.4vw, 5rem);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 0.98;
+    text-wrap: balance;
+    max-width: 12ch;
+  }
+  .gh__lede {
+    font-size: 1.1875rem;
+    line-height: 1.55;
+    color: #3d3a38;
+    max-width: 40ch;
+  }
+  .gh__ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 0.4rem;
+  }
+  /* The VET pair alone holds the right side */
+  .gh__stage {
+    display: grid;
+    place-items: center;
+  }
+  .gh__stage :global(.gh__pair) {
+    width: auto;
+    height: clamp(320px, 62vh, 580px);
+    max-width: 100%;
+  }
+
+  /* Impacto */
+  .imp {
+    padding-block: clamp(4rem, 10vh, 6.5rem);
+  }
+  .imp__grid {
+    margin-top: clamp(2rem, 5vh, 3rem);
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    grid-template-rows: auto auto;
+    gap: 1rem;
+  }
+  .imp__tile {
+    position: relative;
+    overflow: hidden;
+    border-radius: 28px;
+    padding: clamp(1.5rem, 3vw, 2.5rem);
+    display: grid;
+    align-content: end;
+    gap: 0.75rem;
+    min-height: 230px;
+  }
+  .imp__tile h3 {
+    font-size: clamp(1.5rem, 2.3vw, 2.1rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    max-width: 16ch;
+    position: relative;
+  }
+  .imp__tile p {
+    max-width: 40ch;
+    position: relative;
+  }
+  .imp__tile--orange {
+    grid-row: span 2;
+    background: var(--o);
+    min-height: 480px;
+  }
+  .imp__tile--orange p {
+    color: #2a0c03;
+  }
+  .imp__tile--orange :global(.imp__petal) {
+    position: absolute;
+    right: -8%;
+    top: -10%;
+    width: 55%;
+    height: auto;
+    --iso-naranja: #ff7a4d;
+  }
+  .imp__tile--teal {
+    background: var(--t);
+    color: #fff;
+  }
+  .imp__tile--teal p {
+    color: #e3fbfd;
+  }
+  .imp__tile--warm {
+    background: var(--warm);
+  }
+
+  /* Herramientas */
+  .tools {
+    padding-block: clamp(4rem, 10vh, 6.5rem);
+  }
+  .tools__ui {
+    margin-top: clamp(2rem, 5vh, 3rem);
+    display: grid;
+    gap: 1.5rem;
+  }
+  .tools__tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 0.4rem;
+    border-radius: 999px;
+    background: var(--warm);
+    justify-self: start;
+  }
+  .tools__tab {
+    min-height: 48px;
+    padding: 0 1.4rem;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    font: inherit;
+    font-weight: 750;
+    font-size: 1.0625rem;
+    color: #5a4a42;
+    cursor: pointer;
+    transition: background-color 0.25s ease, color 0.25s ease;
+  }
+  .tools__tab:hover {
+    color: var(--ink);
+  }
+  .tools__tab[aria-selected='true'] {
+    background: var(--o);
+    color: var(--ink);
+  }
+  .tools__panel {
+    display: grid;
+    grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+    gap: clamp(1.5rem, 4vw, 3.5rem);
+    align-items: center;
+  }
+  .tools__panel[hidden] {
+    display: none;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .tools__panel:not([hidden]) img {
+      animation: panel-in 0.6s var(--ease-out);
+    }
+  }
+  @keyframes panel-in {
+    from { opacity: 0; transform: translateY(16px) scale(0.99); }
+  }
+  .tools__text {
+    display: grid;
+    gap: 0.75rem;
+  }
+  .tools__text h3 {
+    font-size: clamp(1.5rem, 2.3vw, 2rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.08;
+  }
+  .tools__text p {
+    color: #3d3a38;
+    font-size: 1.0625rem;
+  }
+  .tools__panel img {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border-radius: 24px;
+    background: #fff;
+    box-shadow: 0 30px 60px -32px rgb(140 40 10 / 0.35);
+  }
+
+  /* Plataforma */
+  .plat {
+    padding-block: clamp(4rem, 10vh, 6.5rem);
+  }
+  .plat__sides {
+    margin-top: clamp(2rem, 5vh, 3rem);
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+  .plat__side {
+    border-radius: 28px;
+    padding: clamp(1.5rem, 3vw, 2.5rem);
+  }
+  .plat__side--naranja {
+    background: var(--warm);
+  }
+  .plat__side--turquesa {
+    background: #e6f7f8;
+  }
+  .plat__head {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    margin-bottom: 1.5rem;
+  }
+  .plat__head h3 {
+    font-size: clamp(1.4rem, 2vw, 1.75rem);
+    font-weight: 800;
+    letter-spacing: -0.025em;
+  }
+  .plat__head :global(.plat__petal) {
+    height: 48px;
+    width: auto;
+  }
+  .plat__side ul {
+    list-style: none;
+    display: grid;
+    gap: 0;
+  }
+  .plat__side li {
+    padding: 1.1rem 0;
+    display: grid;
+    gap: 0.25rem;
+  }
+  .plat__side li + li {
+    border-top: 1px solid rgb(17 19 24 / 0.1);
+  }
+  .plat__side h4 {
+    font-size: 1.25rem;
+    font-weight: 750;
+    letter-spacing: -0.015em;
+  }
+  .plat__side p {
+    color: #4a4643;
+  }
+
+  /* Marcas */
+  .brands {
+    padding-block: clamp(4rem, 10vh, 6.5rem);
+  }
+  .brands__head {
+    display: grid;
+    gap: 0.75rem;
+  }
+  .brands__head p {
+    color: #5a4a42;
+    font-size: 1.0625rem;
+  }
+  .brands__rail {
+    margin-top: clamp(2rem, 5vh, 3rem);
+    overflow: hidden;
+    mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+  }
+  .brands__track {
+    list-style: none;
+    display: flex;
+    gap: 1rem;
+    width: max-content;
+    padding-block: 0.5rem 1.5rem;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .brands__track {
+      animation: brands 36s linear infinite;
+    }
+    .brands__rail:hover .brands__track {
+      animation-play-state: paused;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .brands__rail {
+      overflow-x: auto;
+    }
+  }
+  @keyframes brands {
+    to { transform: translateX(-50%); }
+  }
+  .brands__track li {
+    flex: none;
+    width: 220px;
+    height: 120px;
+    display: grid;
+    place-items: center;
+    padding: 1.5rem;
+    border-radius: 24px;
+    background: #fff;
+    box-shadow: 0 16px 34px -24px rgb(140 40 10 / 0.35), 0 0 0 1px rgb(17 19 24 / 0.05);
+  }
+  .brands__track img {
+    max-width: 100%;
+    max-height: 64px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+  }
+
+  /* Cierre */
+  .close {
+    padding-block: clamp(3rem, 8vh, 5rem) clamp(5rem, 12vh, 8rem);
+  }
+  .close__box {
+    position: relative;
+    overflow: hidden;
+    border-radius: 40px;
+    background: var(--o);
+    padding: clamp(2.5rem, 6vw, 5rem);
+    display: grid;
+    gap: 1.25rem;
+    justify-items: start;
+  }
+  .close__box :global(.close__pair) {
+    position: absolute;
+    right: -6%;
+    bottom: -28%;
+    width: min(420px, 42%);
+    height: auto;
+    --iso-naranja: #ff7a4d;
+    --iso-turquesa: #ffd0bf;
+  }
+  .close__title {
+    position: relative;
+    font-size: clamp(2.4rem, 5vw, 4.5rem);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 0.98;
+    max-width: 13ch;
+  }
+  .close__box p {
+    position: relative;
+    color: #2a0c03;
+    font-size: 1.125rem;
+    max-width: 40ch;
+  }
+
+  @media (max-width: 960px) {
+    .gh__grid,
+    .tools__panel,
+    .plat__sides {
+      grid-template-columns: 1fr;
+    }
+    .imp__grid {
+      grid-template-columns: 1fr;
+    }
+    .imp__tile--orange {
+      grid-row: auto;
+      min-height: 360px;
+    }
+    .gh__stage :global(.gh__pair) {
+      height: clamp(220px, 55vw, 380px);
+    }
+  }
+</style>

@@ -5,11 +5,24 @@ import './forms.css';
 const FORMSPREE_ID = 'xzdwlyva';
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-interface Props { onClose: () => void }
+export type ContactKind = 'general' | 'demo';
 
-export default function ContactModal({ onClose }: Props) {
+// Each kind keeps its own subject: the inbox triage filters by it
+const KINDS: Record<ContactKind, { subject: string; title: string; message: string }> = {
+  general: { subject: 'INTEGHRA - CONTACTARME', title: '¿En qué podemos ayudarte?', message: '' },
+  demo: {
+    subject: 'INTEGHRA VET - SOLICITAR DEMO',
+    title: 'Solicitá una demo de Integhra VET',
+    message: 'Hola, quiero solicitar una demo de Integhra VET.',
+  },
+};
+
+interface Props { kind?: ContactKind; onClose: () => void }
+
+export default function ContactModal({ kind = 'general', onClose }: Props) {
+  const preset = KINDS[kind];
   const [email, setEmail] = useState('');
-  const [mensaje, setMensaje] = useState('');
+  const [mensaje, setMensaje] = useState(preset.message);
   const [loading, setLoading] = useState(false);
   const [done, setDone] = useState(false);
   const [error, setError] = useState('');
@@ -39,7 +52,7 @@ export default function ContactModal({ onClose }: Props) {
       const res = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify({ email, _subject: 'INTEGHRA - CONTACTARME', mensaje }),
+        body: JSON.stringify({ email, _subject: preset.subject, mensaje }),
       });
       if (res.ok) setDone(true);
       else setError('No pudimos enviar el mensaje. Probá de nuevo en un momento.');
@@ -70,7 +83,7 @@ export default function ContactModal({ onClose }: Props) {
           </div>
         ) : (
           <form className="cm-form" onSubmit={submit} noValidate>
-            <h2 id="cm-title" className="heading">¿En qué podemos ayudarte?</h2>
+            <h2 id="cm-title" className="heading">{preset.title}</h2>
             <div className="fld">
               <label htmlFor="cm-email">Email</label>
               <input

@@ -2,40 +2,33 @@
 import WaitlistArq from './WaitlistArq';
 import Isologo from '../marca/Isologo.astro';
 import Planta from './Planta.astro';
+import Proceso from './Proceso.astro';
 
-const BASE = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+interface Props {
+  /** h1 when the section is the page itself (/arq) */
+  heading?: 'h1' | 'h2';
+}
+const { heading: Heading = 'h2' } = Astro.props;
 
 const actores = ['Proveedores', 'Profesionales', 'Consumidores'];
-const materiales = ['Mármol', 'Roble', 'Hormigón', 'Bronce', 'Cuarzo', 'Nogal', 'Acero', 'Travertino', 'Lino'];
-
-const laminas = [
-  { code: 'A-01', name: 'Inspiración', title: ['Buscás ', 'inspiración.'], text: 'Explorás proyectos reales de profesionales de la construcción. Filtrás por estilo, escala y zona.' },
-  { code: 'A-02', name: 'Encuentro', title: ['Algo te ', 'representa.'], text: 'Encontrás la obra que imaginabas. El profesional que la hizo está a un mensaje.' },
-  { code: 'A-03', name: 'Consulta', title: ['La consulta ', 'llega.'], text: 'El profesional recibe el contacto directo. Sin intermediarios, sin agencias en el medio.' },
-  { code: 'A-04', name: 'Materiales', title: ['El profesional ', 'elige.'], text: 'Accede a proveedores y materiales desde la misma plataforma. Todo en un lugar.', materiales: true },
-  { code: 'A-05', name: 'Conexión', title: ['Todo ', 'coordinado.'], text: 'Consumidores, profesionales y proveedores en el momento exacto en que se necesitan.' },
-  { code: 'A-06', name: 'Obra', title: ['Así se hace ', 'una obra.'], text: 'De la idea a la realidad. Sin intermediarios, sin vueltas.' },
-];
 ---
 
 <section id="arq" class="arq" aria-labelledby="arq-title">
-  <div class="wrap arq__intro">
-    <div class="arq__copy">
+  <!-- Hero, product-page style: the name small, one big line, one short line,
+       and the plan as the object, lying on the table and running off the bottom edge -->
+  <div class="arq__hero">
+    <div class="wrap arq__copy">
       <p class="arq__lock">
         <Isologo part="arq" class="arq__lock-mark" />
         <span>Integhra <b>ARQ</b></span>
       </p>
-      <h2 id="arq-title" class="arq__title">El ecosistema digital de la construcción y el diseño.</h2>
-      <p class="arq__body">
-        Conecta proveedores, profesionales y consumidores en una única plataforma. Desde la inspiración y el diseño hasta la ejecución de la obra.
-      </p>
-      <dl class="arq__spec">
-        <div><dt>Estado</dt><dd>En desarrollo</dd></div>
-        <div><dt>Mercado inicial</dt><dd>Argentina</dd></div>
-      </dl>
+      <Heading id="arq-title" class="arq__title">El ecosistema digital de la construcción y el diseño.</Heading>
+      <p class="arq__body">En desarrollo. <a href="#waitlist">Sumate a la lista de espera</a>.</p>
     </div>
 
-    <Planta />
+    <div class="arq__stage" aria-hidden="true">
+      <Planta hero class="arq__plan" />
+    </div>
   </div>
 
   <div class="wrap arq__actors">
@@ -43,25 +36,7 @@ const laminas = [
     <ul>{actores.map((a) => <li>{a}</li>)}</ul>
   </div>
 
-  <div class="wrap lam" id="recorrido">
-    <h3 class="lam__title">Así va a funcionar Integhra ARQ</h3>
-    <ol class="lam__grid">
-      {laminas.map((l, i) => (
-        <li class="lam__sheet" data-reveal style={`--i: ${i}`}>
-          <p class="lam__code">
-            <span>{l.name}</span>
-          </p>
-          <h4>{l.title[0]}<em>{l.title[1]}</em></h4>
-          <p class="lam__text">{l.text}</p>
-          {l.materiales && (
-            <ul class="lam__mat" aria-label="Materiales">
-              {materiales.map((m) => <li>{m}</li>)}
-            </ul>
-          )}
-        </li>
-      ))}
-    </ol>
-  </div>
+  <Proceso />
 
   <WaitlistArq client:visible />
 </section>
@@ -74,7 +49,6 @@ const laminas = [
     --mut: #a9b1be;
     background: #121419;
     color: #eef1f6;
-    padding-top: clamp(5rem, 12vh, 8rem);
     font-family: var(--font);
   }
   .arq ::selection {
@@ -85,64 +59,124 @@ const laminas = [
     outline-color: #eef1f6;
   }
 
-  .arq__intro {
+  /* ---------- Hero: product-page composition ---------- */
+  .arq__hero {
+    position: relative;
+    /* a fixed height: the sheet is cut by the bottom edge instead of stretching the hero */
+    height: max(640px, calc(100dvh - 72px));
     display: grid;
-    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-    gap: clamp(2rem, 5vw, 5rem);
-    align-items: center;
+    grid-template-rows: auto minmax(0, 1fr);
+    overflow: hidden;
+    background: #0f1115;
+    text-align: center;
   }
   .arq__copy {
+    position: relative;
+    z-index: 2;
     display: grid;
-    gap: 1.25rem;
+    justify-items: center;
+    gap: 1.1rem;
+    padding-top: clamp(3rem, 9vh, 6rem);
   }
   .arq__lock {
     display: inline-flex;
     align-items: center;
-    gap: 0.6rem;
-    font-weight: 700;
-    font-variation-settings: 'wdth' 110;
-    font-size: 1.125rem;
+    gap: 0.55rem;
+    font-size: 1.375rem;
+    font-weight: 800;
+    letter-spacing: -0.01em;
   }
   .arq__lock :global(.arq__lock-mark) {
     width: auto;
-    height: 40px;
+    height: 30px;
   }
   .arq__lock b {
-    color: var(--v);
+    font-weight: 400;
+    color: #eef1f6;
   }
   .arq__title {
-    font-size: clamp(2.4rem, 4.6vw, 4.25rem);
+    font-size: clamp(2.6rem, 5.6vw, 5.5rem);
     font-weight: 800;
-    font-variation-settings: 'wdth' 120;
-    letter-spacing: -0.035em;
+    font-variation-settings: 'wdth' 118;
+    letter-spacing: -0.04em;
     line-height: 0.98;
     text-wrap: balance;
+    max-width: 17ch;
   }
   .arq__body {
+    margin-top: 0.4rem;
     color: #c3c9d4;
-    max-width: 50ch;
-    font-size: 1.0625rem;
+    font-size: 1.125rem;
+    text-wrap: balance;
   }
-  .arq__spec {
-    border-top: 1px solid var(--line);
-    font-family: var(--font);
-    font-variant-numeric: tabular-nums;
-    font-size: 0.875rem;
-  }
-  .arq__spec div {
-    display: flex;
-    justify-content: space-between;
-    gap: 1rem;
-    padding: 0.7rem 0;
-    border-bottom: 1px solid var(--line);
-  }
-  .arq__spec dt {
-    color: var(--mut);
-    text-transform: uppercase;
-  }
-  .arq__spec dd {
+  .arq__body a {
     color: var(--b);
-    text-transform: uppercase;
+    text-decoration: none;
+  }
+  .arq__body a:hover {
+    text-decoration: underline;
+  }
+
+  /* The object: the plan lying on the table, seen in perspective, cut by the bottom edge */
+  .arq__stage {
+    position: relative;
+    z-index: 1;
+    perspective: 1500px;
+    perspective-origin: 50% 0%;
+    margin-top: clamp(1rem, 4vh, 2.5rem);
+  }
+  .arq__stage::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 55%;
+    width: min(1100px, 90vw);
+    height: 60%;
+    translate: -50% -50%;
+    background: radial-gradient(closest-side, rgb(58 163 245 / 0.12), transparent);
+    pointer-events: none;
+  }
+  .arq__hero :global(.arq__plan) {
+    width: min(860px, 70vw);
+    margin: 0 auto;
+    transform-origin: 50% 0%;
+    transform: rotateX(52deg) rotateZ(-24deg);
+  }
+  .arq__hero :global(.arq__plan .pl-rooms),
+  .arq__hero :global(.arq__plan .pl-north),
+  .arq__hero :global(.arq__plan .pl-dims),
+  .arq__hero :global(.arq__plan .pl-dimtxt) {
+    display: none;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .arq__copy > * {
+      animation: arq-rise 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+    .arq__copy > :nth-child(1) { animation-delay: 0.1s; }
+    .arq__copy > :nth-child(2) { animation-delay: 0.2s; }
+    .arq__copy > :nth-child(3) { animation-delay: 0.35s; }
+    /* the sheet settles onto the table as it arrives */
+    .arq__stage {
+      animation: arq-lay 1.6s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
+    }
+    /* and, scrolling on, it lifts toward you a little */
+    @supports (animation-timeline: view()) {
+      .arq__hero :global(.arq__plan) {
+        animation: arq-lift linear both;
+        animation-timeline: view();
+        animation-range: exit 0% exit 80%;
+      }
+    }
+  }
+  @keyframes arq-rise {
+    from { opacity: 0; transform: translateY(18px); }
+  }
+  @keyframes arq-lay {
+    from { opacity: 0; transform: translateY(80px); }
+  }
+  @keyframes arq-lift {
+    to { transform: rotateX(30deg) rotateZ(-12deg); }
   }
 
   .arq__actors {
@@ -174,94 +208,14 @@ const laminas = [
     color: var(--b);
   }
 
-  /* Sheets: the six-step journey as drawing sheets */
-  .lam {
-    margin-top: clamp(5rem, 12vh, 8rem);
-  }
-  .lam__title {
-    font-size: clamp(2.2rem, 4.4vw, 4rem);
-    font-weight: 800;
-    font-variation-settings: 'wdth' 118;
-    letter-spacing: -0.03em;
-    line-height: 1;
-    max-width: 14ch;
-    margin-bottom: clamp(2rem, 5vh, 3rem);
-  }
-  .lam__grid {
-    list-style: none;
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    border-top: 1px solid var(--line);
-    border-left: 1px solid var(--line);
-  }
-  .lam__sheet {
-    border-right: 1px solid var(--line);
-    border-bottom: 1px solid var(--line);
-    padding: clamp(1.25rem, 2.4vw, 2rem);
-    display: grid;
-    gap: 0.75rem;
-    align-content: start;
-    min-height: 260px;
-    transition: background-color 0.3s ease;
-  }
-  .lam__sheet:hover {
-    background: #171a21;
-  }
-  .lam__code {
-    display: flex;
-    justify-content: flex-start;
-    font-family: var(--font);
-    font-variant-numeric: tabular-nums;
-    font-size: 0.8125rem;
-    text-transform: uppercase;
-    color: var(--mut);
-  }
-  .lam__sheet h4 {
-    font-size: clamp(1.5rem, 2.2vw, 2rem);
-    font-weight: 750;
-    font-variation-settings: 'wdth' 112;
-    letter-spacing: -0.025em;
-    line-height: 1.05;
-    padding-bottom: 0.1em;
-  }
-  .lam__sheet em {
-    color: var(--b);
-  }
-  .lam__text {
-    color: #c3c9d4;
-    max-width: 34ch;
-  }
-  .lam__mat {
-    list-style: none;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.35rem;
-    margin-top: 0.25rem;
-  }
-  .lam__mat li {
-    font-family: var(--font);
-    font-variant-numeric: tabular-nums;
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    padding: 0.25rem 0.55rem;
-    border: 1px solid var(--line);
-    color: #d7dce4;
-  }
-
-  @media (max-width: 960px) {
-    .arq__intro {
-      grid-template-columns: 1fr;
+  /* Phones: same order, the sheet bigger so it still reads as an object */
+  @media (max-width: 760px) {
+    .arq__lock {
+      font-size: 1.125rem;
     }
-    .lam__grid {
-      grid-template-columns: 1fr;
-    }
-    .lam__sheet {
-      min-height: 0;
-    }
-  }
-  @media (min-width: 961px) and (max-width: 1180px) {
-    .lam__grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+    .arq__hero :global(.arq__plan) {
+      width: 112vw;
+      margin-left: -6vw;
     }
   }
 </style>

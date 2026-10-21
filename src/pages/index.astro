@@ -1,9 +1,8 @@
 ---
 import Base from '../layouts/Base.astro';
 import PetalHero from '../components/petalos/PetalHero.astro';
-import MundoVet from '../components/petalos/MundoVet.astro';
-import Swap from '../components/petalos/Swap.astro';
-import MundoArq from '../components/petalos/MundoArq.astro';
+
+const BASE = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 ---
 
 <Base
@@ -15,7 +14,10 @@ import MundoArq from '../components/petalos/MundoArq.astro';
   stations={[]}
 >
   <PetalHero />
-  <MundoVet />
-  <Swap />
-  <MundoArq />
 </Base>
+
+<!-- VET and ARQ used to live on this page: old anchors go to their new pages -->
+<script is:inline define:vars={{ BASE }}>
+  var moved = { '#vet': 'vet', '#arq': 'arq', '#recorrido': 'arq#recorrido', '#waitlist': 'arq#waitlist' };
+  if (moved[location.hash]) location.replace(BASE + moved[location.hash]);
+</script>

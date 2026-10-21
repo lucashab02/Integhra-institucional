@@ -1,0 +1,25 @@
+---
+// A moved page: sends visitors (and their #anchor) to the new address. Static hosting has no
+// server redirects, so this is a meta refresh with a script for the hash, and a plain link.
+interface Props { to: string }
+
+const BASE = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+const dest = BASE + Astro.props.to;
+---
+
+<!doctype html>
+<html lang="es-AR">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Integhra</title>
+    <meta name="robots" content="noindex" />
+    <link rel="canonical" href={dest} />
+    <meta http-equiv="refresh" content={`0; url=${dest}`} />
+    <script is:inline define:vars={{ dest }}>
+      location.replace(dest + location.search + location.hash);
+    </script>
+  </head>
+  <body>
+    <p><a href={dest}>Esta página se mudó. Continuar</a></p>
+  </body>
+</html>

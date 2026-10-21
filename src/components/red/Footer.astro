@@ -1,12 +1,8 @@
 ---
 import Isologo from '../marca/Isologo.astro';
+import { LINKS, PRODUCTS } from './links';
 
 const BASE = import.meta.env.BASE_URL.replace(/\/?$/, '/');
-
-const legend = [
-  { part: 'vet', name: 'Integhra VET', state: 'En servicio desde 2024', href: `${BASE}general` },
-  { part: 'arq', name: 'Integhra ARQ', state: 'En desarrollo', href: `${BASE}#arq` },
-] as const;
 ---
 
 <footer class="ft">
@@ -20,15 +16,16 @@ const legend = [
       <a class="ft__mail" href="mailto:integhra@gmail.com">integhra@gmail.com</a>
     </div>
 
-    <nav class="ft__legend" aria-label="Plataformas">
-      <h2 class="ft__h">Plataformas</h2>
+    <nav class="ft__legend" aria-label="Productos">
+      <h2 class="ft__h">Productos</h2>
       <ul>
-        {legend.map((l) => (
+        {PRODUCTS.map((l) => (
           <li>
             <a href={l.href}>
               <Isologo part={l.part} class="ft__pair" />
               <span class="ft__name">{l.name}</span>
               <span class="ft__state">{l.state}</span>
+              <svg class="ft__go" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
             </a>
           </li>
         ))}
@@ -38,10 +35,7 @@ const legend = [
     <nav class="ft__nav" aria-label="Páginas">
       <h2 class="ft__h">Páginas</h2>
       <ul>
-        <li><a href={BASE}>Inicio</a></li>
-        <li><a href={`${BASE}general`}>Institucional</a></li>
-        <li><a href={`${BASE}sobre-nosotros`}>Sobre nosotros</a></li>
-        <li><a href={`${BASE}#waitlist`}>Lista de espera</a></li>
+        {LINKS.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
         <li><a href="#" data-contact>Contacto</a></li>
       </ul>
     </nav>
@@ -107,12 +101,27 @@ const legend = [
   }
   .ft__legend a {
     display: grid;
-    grid-template-columns: 56px 1fr;
+    grid-template-columns: 56px 1fr auto;
     grid-template-rows: auto auto;
     column-gap: 1rem;
     align-items: center;
-    padding: 0.6rem 0;
+    padding: 0.6rem 0.9rem 0.6rem 0;
+    border-radius: 18px;
     text-decoration: none;
+    transition: background-color 0.2s ease;
+  }
+  .ft__legend a:hover {
+    background: rgb(17 19 24 / 0.04);
+  }
+  .ft__go {
+    grid-column: 3;
+    grid-row: 1 / span 2;
+    width: 20px;
+    height: 20px;
+    transition: transform 0.3s var(--ease-out);
+  }
+  .ft__legend a:hover .ft__go {
+    transform: translateX(4px);
   }
   .ft__legend :global(.ft__pair) {
     grid-row: span 2;

@@ -75,12 +75,26 @@ const BASE = import.meta.env.BASE_URL.replace(/\/?$/, '/');
         els.forEach((el) => el.classList.add('is-in'));
       }
 
+      // Arriving with an #anchor: fonts and islands shift the layout after the browser's own jump,
+      // so land on the target again once everything has loaded.
+      if (location.hash.length > 1) {
+        const land = () => {
+          const target = document.getElementById(decodeURIComponent(location.hash.slice(1)));
+          if (target) setTimeout(() => target.scrollIntoView({ block: 'start', behavior: 'instant' }), 0);
+        };
+        // Module scripts can run after load has already fired
+        if (document.readyState === 'complete') land();
+        else window.addEventListener('load', land);
+      }
+
       // Any element with data-contact opens the contact modal owned by the Nav island.
+      // data-contact="demo" opens it as a demo request (preset message and subject).
       document.addEventListener('click', (ev) => {
         const t = (ev.target as HTMLElement).closest('[data-contact]');
         if (t) {
           ev.preventDefault();
-          window.dispatchEvent(new CustomEvent('integhra:contact'));
+          const kind = t.getAttribute('data-contact') === 'demo' ? 'demo' : 'general';
+          window.dispatchEvent(new CustomEvent('integhra:contact', { detail: { kind } }));
         }
       });
     </script>

@@ -1,0 +1,726 @@
+---
+// How ARQ will work, as a set of drawing sheets. On desktop the sheets stack one over the
+// other as the page scrolls (like a set of plans laid on the table) and each scene draws itself
+// as its sheet lands; elsewhere they are a plain list. Sober, not bare: every scene is a small,
+// careful illustration of the step, with no more words than the step already had.
+//
+// Layout modes, as in the home hero:
+// - Flow (default, phones, reduced motion, no JS): the sheets one after another.
+// - Pile (desktop with JS and motion): pinned stage, sheets stack on scroll.
+import { petals } from '../marca/petalos';
+import { walls, windows, FOOTPRINT } from './planta-geo';
+
+const pasos = [
+  { name: 'Inspiración', title: ['Buscás ', 'inspiración.'], text: 'Explorás proyectos reales de profesionales de la construcción. Filtrás por estilo, escala y zona.' },
+  { name: 'Encuentro', title: ['Algo te ', 'representa.'], text: 'Encontrás la obra que imaginabas. El profesional que la hizo está a un mensaje.' },
+  { name: 'Consulta', title: ['La consulta ', 'llega.'], text: 'El profesional recibe el contacto directo. Sin intermediarios, sin agencias en el medio.' },
+  { name: 'Materiales', title: ['El profesional ', 'elige.'], text: 'Accede a proveedores y materiales desde la misma plataforma. Todo en un lugar.' },
+  { name: 'Conexión', title: ['Todo ', 'coordinado.'], text: 'Consumidores, profesionales y proveedores en el momento exacto en que se necesitan.' },
+  { name: 'Obra', title: ['Así se hace ', 'una obra.'], text: 'De la idea a la realidad. Sin intermediarios, sin vueltas.' },
+];
+
+// Project thumbnails: each a tiny plan in an 80 x 60 box, different on purpose
+const plans = [
+  'M8 8 H72 V52 H8 Z M40 8 V30 M8 30 H72',
+  'M8 8 H72 V52 H8 Z M30 8 V52 M30 34 H72',
+  'M8 8 H52 V24 H72 V52 H8 Z M8 32 H52 V52',
+  'M8 8 H72 V52 H8 Z M50 8 V52 M8 26 H50',
+  'M8 8 H72 V52 H8 Z M8 22 H72 M36 22 V52',
+  'M8 14 H72 V52 H8 Z M24 14 V52 M56 14 V52',
+];
+const cards = plans.map((d, i) => ({ d, x: 20 + (i % 3) * 124, y: 54 + Math.floor(i / 3) * 94 }));
+
+// Material samples: flat colour plus a hint of the material itself
+const muestras = [
+  { name: 'Mármol', c: '#dedad2', ink: '#b8b2a6', grain: 'M0 22 C24 12 40 40 64 24 S88 30 96 18 M10 72 C30 52 52 64 70 46 S90 44 96 40' },
+  { name: 'Roble', c: '#a77a50', ink: '#8c6038', grain: 'M0 12 C30 9 60 15 96 11 M0 26 C28 23 62 29 96 25 M0 40 C34 37 58 43 96 39 M0 54 C30 51 62 57 96 53 M0 66 C26 64 64 68 96 65' },
+  { name: 'Hormigón', c: '#8b8e92', ink: '#73767a', dots: [[18, 18], [78, 18], [18, 54], [78, 54]] },
+  { name: 'Bronce', c: '#a8814f', ink: '#bd9562', sheen: 'M0 72 L52 0 H70 L18 72 Z' },
+  { name: 'Cuarzo', c: '#ece8df', ink: '#d5cfc3', specks: [[14, 12], [40, 30], [70, 16], [84, 52], [26, 58], [56, 62], [60, 40]] },
+  { name: 'Nogal', c: '#5f412a', ink: '#4d331f', grain: 'M0 14 C30 10 62 18 96 13 M0 30 C26 26 66 34 96 29 M0 46 C30 43 60 49 96 45 M0 62 C28 58 64 66 96 61' },
+];
+const PICK = 1; // the one the professional chose
+
+// ARQ pair at the centre of the network, from the logo's own petals
+const arqPetals = petals.filter((p) => p.id === 'azul' || p.id === 'violeta');
+const nodos = [
+  { label: 'Profesionales', x: 200, y: 30 },
+  { label: 'Proveedores', x: 72, y: 206 },
+  { label: 'Consumidores', x: 328, y: 206 },
+];
+
+// The last sheet: the apartment of the floor plan, built. An isometric view of the same walls,
+// raised to 2.50 m, with glass in the windows. Faces are sorted back to front so they overlap right.
+const ISO = { s: 0.205, wallH: 250, sill: 90, head: 210 };
+const C30 = Math.cos(Math.PI / 6);
+const iso = (x: number, y: number, z: number) => [(x - y) * C30 * ISO.s, ((x + y) / 2 - z) * ISO.s];
+const poly = (p: number[][]) => p.map(([x, y, z]) => iso(x, y, z).map((n) => n.toFixed(1)).join(',')).join(' ');
+const { w: FW, h: FH } = FOOTPRINT;
+const box = [[0, 0, 0], [FW, 0, 0], [0, FH, 0], [FW, FH, 0], [0, 0, ISO.wallH], [FW, 0, ISO.wallH], [0, FH, ISO.wallH], [FW, FH, ISO.wallH]].map(([x, y, z]) => iso(x, y, z));
+const bx = box.map((p) => p[0]);
+const by = box.map((p) => p[1]);
+const isoShift = [200 - (Math.min(...bx) + Math.max(...bx)) / 2, 124 - (Math.min(...by) + Math.max(...by)) / 2];
+const slab = poly([[0, 0, 0], [FW, 0, 0], [FW, FH, 0], [0, FH, 0]]);
+const H = ISO.wallH;
+const built = [
+  ...walls.map(([x, y, w, h]) => {
+    const [x1, y1] = [x + w, y + h];
+    return {
+      depth: x1 + y1,
+      faces: [
+        { cls: 'iso__s', p: poly([[x, y1, 0], [x1, y1, 0], [x1, y1, H], [x, y1, H]]) },
+        { cls: 'iso__e', p: poly([[x1, y, 0], [x1, y1, 0], [x1, y1, H], [x1, y, H]]) },
+        { cls: 'iso__t', p: poly([[x, y, H], [x1, y, H], [x1, y1, H], [x, y1, H]]) },
+      ],
+    };
+  }),
+  // glass: a pane in the middle of each window opening, between sill and head
+  ...windows.map(([x, y, w, h]) => {
+    const pane = w > h
+      ? poly([[x, y + h / 2, ISO.sill], [x + w, y + h / 2, ISO.sill], [x + w, y + h / 2, ISO.head], [x, y + h / 2, ISO.head]])
+      : poly([[x + w / 2, y, ISO.sill], [x + w / 2, y + h, ISO.sill], [x + w / 2, y + h, ISO.head], [x + w / 2, y, ISO.head]]);
+    return { depth: x + w + y + h, faces: [{ cls: 'iso__glass', p: pane }] };
+  }),
+].sort((a, b) => a.depth - b.depth);
+---
+
+<div class="proc wrap" id="recorrido" aria-labelledby="proc-title">
+  <div class="proc__stage">
+    <div class="proc__side">
+      <h3 id="proc-title" class="proc__title">Así va a funcionar Integhra ARQ</h3>
+      <ol class="proc__index" aria-hidden="true">
+        {pasos.map((p, i) => (
+          <li class:list={[{ 'is-on': i === 0 }]}>
+            <span>{String(i + 1).padStart(2, '0')}</span>
+            {p.name}
+          </li>
+        ))}
+      </ol>
+    </div>
+
+    <ol class="proc__pile">
+      {pasos.map((p, i) => (
+        <li class="sheet">
+          <p class="sheet__head">
+            <span>{p.name}</span>
+            <span class="sheet__n">{String(i + 1).padStart(2, '0')} / 06</span>
+          </p>
+
+          <svg class="sheet__scene" viewBox="0 0 400 248" aria-hidden="true">
+            {i === 0 && (
+              <g>
+                <g data-in>
+                  {['Estilo', 'Escala', 'Zona'].map((f, k) => (
+                    <g class:list={['chip', { 'chip--on': k === 0 }]}>
+                      <rect x={20 + k * 84} y="12" width="74" height="26" rx="13" />
+                      <text x={57 + k * 84} y="29.5" text-anchor="middle">{f}</text>
+                    </g>
+                  ))}
+                </g>
+                {cards.map((c) => (
+                  <g data-in>
+                    <g class="card" transform={`translate(${c.x} ${c.y})`}>
+                      <rect class="card__img" width="112" height="60" rx="4" />
+                      <path class="card__plan draw" pathLength="1" d={c.d} transform="translate(16 0)" />
+                      <rect class="card__bar" y="68" width="74" height="5" rx="2.5" />
+                      <rect class="card__bar card__bar--2" y="78" width="46" height="5" rx="2.5" />
+                    </g>
+                  </g>
+                ))}
+              </g>
+            )}
+
+            {i === 1 && (
+              <g>
+                <!-- the grid of the previous step, stepping back -->
+                <g class="ghosts" data-fade>
+                  {cards.map((c, k) => k !== 4 && (
+                    <rect x={c.x} y={c.y} width="112" height="60" rx="4" />
+                  ))}
+                </g>
+                <!-- the chosen project grows out of its place in that grid -->
+                <g data-grow>
+                  <g class="card card--pick" transform="translate(20 18)">
+                    <rect class="card__img" width="214" height="150" rx="6" />
+                    <path class="card__plan" d={plans[4]} transform="translate(30 10) scale(2.35)" />
+                    <g data-in>
+                      <rect class="card__bar" y="166" width="120" height="6" rx="3" />
+                      <rect class="card__bar card__bar--2" y="180" width="78" height="6" rx="3" />
+                    </g>
+                  </g>
+                </g>
+                <g data-in>
+                  <g class="profile" transform="translate(252 34)">
+                    <rect class="profile__card" width="128" height="168" rx="8" />
+                    <circle class="profile__avatar" cx="64" cy="40" r="22" />
+                    <circle class="profile__glyph" cx="64" cy="34" r="7" />
+                    <path class="profile__glyph" d="M50 54 C52 44 76 44 78 54" />
+                    <text x="64" y="88" text-anchor="middle" class="profile__name">Estudio de</text>
+                    <text x="64" y="104" text-anchor="middle" class="profile__name">arquitectura</text>
+                    <g class="chip chip--on">
+                      <rect x="14" y="124" width="100" height="28" rx="14" />
+                      <text x="64" y="142.5" text-anchor="middle">Escribile</text>
+                    </g>
+                  </g>
+                </g>
+              </g>
+            )}
+
+            {i === 2 && (
+              <g>
+                <g data-in>
+                  <g class="notif">
+                    <rect x="84" y="10" width="232" height="30" rx="15" />
+                    <circle cx="104" cy="25" r="4" />
+                    <text class="notif__t" x="116" y="29.5">Nueva consulta</text>
+                    <text class="notif__time" x="300" y="29.5" text-anchor="end">Ahora</text>
+                  </g>
+                </g>
+                <g data-in>
+                  <g class="bubble bubble--in">
+                    <rect x="24" y="62" width="244" height="54" rx="14" />
+                    <text x="40" y="85">Hola, me encantó tu proyecto.</text>
+                    <text x="40" y="103">¿Podemos hablar del mío?</text>
+                  </g>
+                </g>
+                <g data-in>
+                  <g class="bubble bubble--out">
+                    <rect x="150" y="132" width="226" height="36" rx="14" />
+                    <text x="166" y="154.5">¡Claro! ¿Te llamo mañana?</text>
+                  </g>
+                </g>
+                <g data-in>
+                  <g class="composer">
+                    <rect x="24" y="194" width="352" height="34" rx="17" />
+                    <rect class="composer__bar" x="44" y="208" width="120" height="6" rx="3" />
+                    <circle class="composer__send" cx="358" cy="211" r="11" />
+                    <path class="composer__arrow" d="M353 211 H363 M359 207 L363 211 L359 215" />
+                  </g>
+                </g>
+              </g>
+            )}
+
+            {i === 3 && (
+              <g>
+                {muestras.map((m, k) => (
+                  <g data-in>
+                    <g class:list={['sample', { 'sample--pick': k === PICK }]} transform={`translate(${32 + (k % 3) * 120} ${14 + Math.floor(k / 3) * 116})`}>
+                      <rect class="sample__tile" width="96" height="72" style={`fill: ${m.c}`} />
+                      {m.grain && <path d={m.grain} style={`stroke: ${m.ink}`} class="sample__grain" />}
+                      {m.sheen && <path d={m.sheen} style={`fill: ${m.ink}`} opacity="0.55" />}
+                      {m.dots && m.dots.map(([x, y]) => <circle cx={x} cy={y} r="3.2" style={`fill: ${m.ink}`} />)}
+                      {m.specks && m.specks.map(([x, y]) => <circle cx={x} cy={y} r="1.3" style={`fill: ${m.ink}`} />)}
+                      <text x="0" y="92">{m.name}</text>
+                      {k === PICK && (
+                        <g>
+                          <rect class="sample__ring" x="-5" y="-5" width="106" height="82" />
+                          <circle class="sample__check" cx="96" cy="0" r="10" />
+                          <path class="sample__tick" d="M91 0 L95 4 L101 -4" />
+                        </g>
+                      )}
+                    </g>
+                  </g>
+                ))}
+              </g>
+            )}
+
+            {i === 4 && (
+              <g>
+                <path class="link draw" pathLength="1" d="M200 30 L72 206 L328 206 Z" />
+                {nodos.map((n) => <path class="spoke flow" d={`M200 128 L${n.x} ${n.y}`} />)}
+                <g data-in>
+                  <circle class="hub" cx="200" cy="128" r="34" />
+                  <g transform="translate(200 128) scale(0.075) translate(-680 -415)">
+                    {arqPetals.map((p) => <path d={p.d} class={'hub__petal hub__petal--' + p.id} />)}
+                  </g>
+                </g>
+                {nodos.map((n) => (
+                  <g data-in>
+                    <g class="node">
+                      <rect x={n.x - 62} y={n.y - 15} width="124" height="30" rx="15" />
+                      <text x={n.x} y={n.y + 4.5} text-anchor="middle">{n.label}</text>
+                    </g>
+                  </g>
+                ))}
+              </g>
+            )}
+
+            {i === 5 && (
+              <g class="iso" transform={`translate(${isoShift[0].toFixed(1)} ${isoShift[1].toFixed(1)})`}>
+                <polygon class="iso__slab draw" pathLength="1" points={slab} />
+                {built.map((b) => (
+                  <g data-rise>
+                    {b.faces.map((f) => <polygon class={f.cls} points={f.p} />)}
+                  </g>
+                ))}
+              </g>
+            )}
+          </svg>
+
+          <div class="sheet__copy">
+            <h4>{p.title[0]}<em>{p.title[1]}</em></h4>
+            <p>{p.text}</p>
+          </div>
+          <span class="sheet__veil" aria-hidden="true"></span>
+        </li>
+      ))}
+    </ol>
+  </div>
+</div>
+
+<style>
+  /* ---------- Flow layout (default) ---------- */
+  .proc {
+    margin-top: clamp(5rem, 12vh, 8rem);
+  }
+  .proc__title {
+    font-size: clamp(2.2rem, 4.4vw, 4rem);
+    font-weight: 800;
+    font-variation-settings: 'wdth' 118;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    max-width: 14ch;
+    margin-bottom: clamp(2rem, 5vh, 3rem);
+  }
+  .proc__index {
+    display: none;
+  }
+  .proc__pile {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  /* A sheet: name on the edge, the drawing on a faint grid, then the words */
+  .sheet {
+    position: relative;
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    gap: 1.1rem;
+    padding: clamp(1.25rem, 2.2vw, 1.75rem);
+    background: #161920;
+    border: 1px solid var(--line, #2a303b);
+  }
+  .sheet__head {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8125rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--mut, #a9b1be);
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--line, #2a303b);
+  }
+  .sheet__n {
+    font-variant-numeric: tabular-nums;
+  }
+  .sheet__scene {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 400 / 248;
+    padding: 0.75rem;
+    background:
+      linear-gradient(#1a1e26 1px, transparent 1px) 0 0 / 24px 24px,
+      linear-gradient(90deg, #1a1e26 1px, transparent 1px) 0 0 / 24px 24px;
+    background-color: #13161c;
+    overflow: visible;
+  }
+  .sheet__copy {
+    display: grid;
+    gap: 0.5rem;
+  }
+  .sheet h4 {
+    font-size: clamp(1.5rem, 2.2vw, 2rem);
+    font-weight: 750;
+    font-variation-settings: 'wdth' 112;
+    letter-spacing: -0.025em;
+    line-height: 1.05;
+  }
+  .sheet em {
+    font-style: normal;
+    color: var(--b, #3aa3f5);
+  }
+  .sheet__copy p {
+    color: #c3c9d4;
+    max-width: 46ch;
+  }
+  .sheet__veil {
+    position: absolute;
+    inset: 0;
+    background: #121419;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* ---------- Scene drawing: hairlines, one accent, quiet fills ---------- */
+  .sheet__scene :global(text) {
+    font-family: var(--font);
+    font-size: 13px;
+    fill: var(--mut, #a9b1be);
+  }
+  .chip rect {
+    fill: #161920;
+    stroke: #3a4250;
+    stroke-width: 1;
+  }
+  .chip--on rect {
+    fill: var(--b, #3aa3f5);
+    stroke: var(--b, #3aa3f5);
+  }
+  .sheet__scene :global(.chip--on text) {
+    fill: #121419;
+    font-weight: 700;
+  }
+  .card__img {
+    fill: #1c2029;
+    stroke: #2e3541;
+    stroke-width: 1;
+  }
+  .card__plan {
+    fill: none;
+    stroke: #8a94a4;
+    stroke-width: 1.3;
+  }
+  .card__bar {
+    fill: #3a4250;
+  }
+  .card__bar--2 {
+    fill: #2a303b;
+  }
+  .card--pick .card__img {
+    stroke: var(--b, #3aa3f5);
+    stroke-width: 1.5;
+  }
+  .card--pick .card__plan {
+    stroke: #d9dee6;
+    stroke-width: 1.4;
+    /* keeps the line as fine as the thumbnails' while the card grows */
+    vector-effect: non-scaling-stroke;
+  }
+  .ghosts rect {
+    fill: #1a1e26;
+    stroke: #262c37;
+    opacity: 0.6;
+  }
+  .profile__card {
+    fill: #1a1e26;
+    stroke: #2e3541;
+  }
+  .profile__avatar {
+    fill: #232834;
+  }
+  .profile__glyph {
+    fill: none;
+    stroke: #8a94a4;
+    stroke-width: 1.5;
+  }
+  .sheet__scene :global(.profile__name) {
+    fill: #eef1f6;
+  }
+  .notif rect {
+    fill: #1a1e26;
+    stroke: #2e3541;
+  }
+  .notif circle {
+    fill: var(--b, #3aa3f5);
+  }
+  .sheet__scene :global(.notif__t) {
+    fill: #eef1f6;
+    font-weight: 700;
+  }
+  .sheet__scene :global(.notif__time) {
+    fill: var(--b, #3aa3f5);
+    font-size: 12px;
+  }
+  .bubble--in rect {
+    fill: #222733;
+  }
+  .sheet__scene :global(.bubble--in text) {
+    fill: #d9dee6;
+  }
+  .bubble--out rect {
+    fill: var(--b, #3aa3f5);
+  }
+  .sheet__scene :global(.bubble--out text) {
+    fill: #0f1720;
+    font-weight: 650;
+  }
+  .composer > rect:first-child {
+    fill: none;
+    stroke: #2e3541;
+  }
+  .composer__bar {
+    fill: #2a303b;
+  }
+  .composer__send {
+    fill: #232834;
+  }
+  .composer__arrow {
+    fill: none;
+    stroke: #8a94a4;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .sample__tile {
+    stroke: rgb(255 255 255 / 0.06);
+  }
+  .sample__grain {
+    fill: none;
+    stroke-width: 1.2;
+  }
+  .sample__ring {
+    fill: none;
+    stroke: var(--b, #3aa3f5);
+    stroke-width: 1.5;
+  }
+  .sample__check {
+    fill: var(--b, #3aa3f5);
+  }
+  .sample__tick {
+    fill: none;
+    stroke: #121419;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .sheet__scene :global(.sample--pick text) {
+    fill: #eef1f6;
+  }
+  .link {
+    fill: none;
+    stroke: #2e3541;
+    stroke-width: 1;
+  }
+  .spoke {
+    fill: none;
+    stroke: var(--b, #3aa3f5);
+    stroke-width: 1.2;
+    stroke-dasharray: 3 7;
+    opacity: 0.7;
+  }
+  .hub {
+    fill: #161920;
+    stroke: #2e3541;
+  }
+  .hub__petal--azul {
+    fill: #0c9be6;
+  }
+  .hub__petal--violeta {
+    fill: #b62fc6;
+  }
+  .node rect {
+    fill: #1a1e26;
+    stroke: #3a4250;
+  }
+  .sheet__scene :global(.node text) {
+    fill: #eef1f6;
+  }
+  /* Built view: three tones of the same grey, light from above-left; glass in the brand blue */
+  .iso__slab {
+    fill: #1a1e26;
+    stroke: #2e3541;
+    stroke-width: 1;
+  }
+  .iso__t {
+    fill: #dfe3ea;
+  }
+  .iso__s {
+    fill: #8892a2;
+  }
+  .iso__e {
+    fill: #5f6878;
+  }
+  .iso :is(.iso__t, .iso__s, .iso__e) {
+    stroke: #13161c;
+    stroke-width: 0.4;
+    stroke-linejoin: round;
+  }
+  .iso__glass {
+    fill: rgb(58 163 245 / 0.22);
+    stroke: rgb(58 163 245 / 0.7);
+    stroke-width: 0.6;
+  }
+
+  /* The network breathes: data moving along the spokes, very slowly */
+  @media (prefers-reduced-motion: no-preference) {
+    .flow {
+      animation: flow 2.4s linear infinite;
+    }
+  }
+  @keyframes flow {
+    to { stroke-dashoffset: -20; }
+  }
+
+  /* ---------- Pile layout: desktop with JS and motion ---------- */
+  @media (min-width: 961px) and (prefers-reduced-motion: no-preference) {
+    :global(.js) .proc {
+      height: 680vh;
+    }
+    :global(.js) .proc__stage {
+      position: sticky;
+      top: 72px;
+      height: calc(100dvh - 72px);
+      min-height: 560px;
+      display: grid;
+      grid-template-columns: minmax(0, 4fr) minmax(0, 7fr);
+      gap: clamp(2rem, 5vw, 5rem);
+      align-items: center;
+      overflow: clip;
+    }
+    :global(.js) .proc__index {
+      display: grid;
+      gap: 0.25rem;
+      list-style: none;
+      border-left: 1px solid var(--line, #2a303b);
+    }
+    :global(.js) .proc__index li {
+      display: flex;
+      gap: 0.9rem;
+      padding: 0.45rem 0 0.45rem 1.1rem;
+      margin-left: -1px;
+      border-left: 2px solid transparent;
+      color: #5d6676;
+      font-weight: 650;
+      transition: color 0.3s ease, border-color 0.3s ease;
+    }
+    :global(.js) .proc__index li span {
+      font-variant-numeric: tabular-nums;
+    }
+    :global(.js) .proc__index li.is-on {
+      color: #eef1f6;
+      border-left-color: var(--b, #3aa3f5);
+    }
+    :global(.js) .proc__pile {
+      display: block;
+      position: relative;
+      height: min(620px, calc(100dvh - 72px - 6rem));
+      margin-top: 4.5rem;
+    }
+    :global(.js) .sheet {
+      position: absolute;
+      inset: 0;
+      transform-origin: 50% 0;
+      box-shadow: 0 -18px 40px -24px rgb(0 0 0 / 0.7);
+    }
+    /* Sheets after the first wait below, out of view, until the scroll lays them down */
+    :global(.js) .sheet:not(:first-child) {
+      transform: translateY(115%);
+    }
+    /* In the pile the drawing takes whatever height the sheet leaves it */
+    :global(.js) .sheet__scene {
+      height: 100%;
+      min-height: 0;
+      aspect-ratio: auto;
+    }
+    /* Each scene waits to be drawn until its sheet lands */
+    :global(.js) .sheet :is([data-in], [data-rise]) {
+      opacity: 0;
+    }
+    :global(.js) .sheet .draw {
+      stroke-dasharray: 1;
+      stroke-dashoffset: 1;
+    }
+  }
+
+  @media (max-width: 960px) {
+    .proc__pile {
+      grid-template-columns: 1fr;
+    }
+  }
+  /* Phones: the drawing shrinks, so its words grow a little */
+  @media (max-width: 600px) {
+    .sheet__scene {
+      padding: 0.4rem;
+    }
+    .sheet__scene :global(text) {
+      font-size: 15px;
+    }
+    .sheet__scene :global(.notif__time) {
+      font-size: 13px;
+    }
+  }
+</style>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  const root = document.querySelector<HTMLElement>('.proc');
+  if (root) {
+    const sheets = Array.from(root.querySelectorAll<HTMLElement>('.sheet'));
+    const items = Array.from(root.querySelectorAll<HTMLElement>('.proc__index li'));
+    const mm = gsap.matchMedia();
+
+    mm.add('(min-width: 961px) and (prefers-reduced-motion: no-preference)', () => {
+      const LEAD = 0.5; // the first scene draws as the section settles
+      const STEP = 1.4; // per sheet: it lands, its scene draws, then a moment to read it
+      const HOLD = 0.5; // the last sheet stays a moment before the page moves on
+      const total = LEAD + (sheets.length - 1) * STEP + HOLD;
+      let shown = 0;
+      const mark = (i: number) => {
+        if (i === shown) return;
+        items[shown]?.classList.remove('is-on');
+        items[i]?.classList.add('is-on');
+        shown = i;
+      };
+
+      const tl = gsap.timeline({
+        defaults: { ease: 'power2.out' },
+        scrollTrigger: {
+          trigger: root,
+          start: 'top 72px',
+          end: 'bottom bottom',
+          scrub: 0.6,
+          // a step counts as current once its sheet is more than halfway down
+          onUpdate: (self) => {
+            const t = self.progress * total - LEAD;
+            mark(Math.max(0, Math.min(sheets.length - 1, Math.floor(t / STEP + 0.6))));
+          },
+        },
+      });
+
+      // A scene draws: its lines trace, then its pieces settle in, one after another
+      const scene = (sheet: HTMLElement, at: number) => {
+        const lines = sheet.querySelectorAll('.draw');
+        const pieces = sheet.querySelectorAll('[data-in]');
+        if (lines.length) tl.fromTo(lines, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.5, stagger: 0.04, ease: 'power1.inOut' }, at);
+        // a chosen element grows from where it sat in the previous step (thumbnail 5 of the grid)
+        const grow = sheet.querySelector('[data-grow]');
+        const fade = sheet.querySelector('[data-fade]');
+        let after = 0.05;
+        if (grow) {
+          if (fade) tl.fromTo(fade, { autoAlpha: 1 }, { autoAlpha: 0.35, duration: 0.5, ease: 'power1.inOut' }, at);
+          tl.fromTo(grow, { x: 124, y: 130, scale: 112 / 214, svgOrigin: '20 18' }, { x: 0, y: 0, scale: 1, duration: 0.55, ease: 'power3.inOut' }, at);
+          after = 0.45;
+        }
+        if (pieces.length) tl.fromTo(pieces, { autoAlpha: 0, y: 10 }, { autoAlpha: 1, y: 0, duration: 0.3, stagger: 0.06 }, at + after);
+        // walls of the built view rise from the slab, back to front
+        const rises = sheet.querySelectorAll('[data-rise]');
+        if (rises.length) tl.fromTo(rises, { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: 0.25, stagger: 0.012, ease: 'power2.out' }, at + 0.2);
+      };
+
+      // take over the CSS waiting position, so it isn't counted twice
+      gsap.set(sheets.slice(1), { y: 0, yPercent: 115 });
+
+      scene(sheets[0], 0);
+      sheets.slice(1).forEach((sheet, k) => {
+        const at = LEAD + k * STEP;
+        tl.fromTo(sheet, { yPercent: 115 }, { yPercent: 0, duration: 0.55 }, at);
+        // the sheets underneath step back: up a little, smaller, dimmer (three deep at most)
+        sheets.slice(0, k + 1).forEach((under, j) => {
+          const depth = Math.min(3, k + 1 - j);
+          tl.to(under, { y: -depth * 18, scale: 1 - depth * 0.04, duration: 0.55 }, at);
+          tl.to(under.querySelector('.sheet__veil'), { opacity: Math.min(0.75, depth * 0.3), duration: 0.55 }, at);
+        });
+        scene(sheet, at + 0.45);
+      });
+      tl.to({}, { duration: HOLD });
+
+      return () => mark(0);
+    });
+  }
+</script>
