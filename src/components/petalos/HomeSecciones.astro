@@ -1,0 +1,363 @@
+---
+// Home, after the hero: how an Integhra platform works, who already works with it, and one
+// clear way in. Everything here talks about the platforms and the visitor; who Integhra is,
+// as a company, lives in /nosotros.
+import Isologo from '../marca/Isologo.astro';
+
+const BASE = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+const IMG = `${BASE}images/institucional/`;
+
+// One petal per idea: the mark is made of the same parts the platforms connect
+const ideas = [
+  { petal: 'naranja', t: 'Una plataforma por industria', d: 'Cada una se diseña para la cadena de valor completa de su sector, no como un marketplace genérico.' },
+  { petal: 'turquesa', t: 'Conexión directa', d: 'Proveedores, profesionales y consumidores se encuentran sin intermediarios.' },
+  { petal: 'violeta', t: 'Todo en un lugar', d: 'Catálogos, contacto, pedidos y novedades en la misma plataforma.' },
+] as const;
+
+// Companies already on Integhra VET. The files in /logos are trimmed to the mark itself
+// (no white margins), and every logo is sized to the same visual area rather than the same
+// width or height: wide wordmarks sit lower, compact marks a little taller, capped in height.
+const marcas = [
+  { name: 'zoetis', alt: 'Zoetis', w: 450, h: 167, k: 0.9 }, // heavy letters read larger
+  { name: 'boehringer', alt: 'Boehringer Ingelheim', w: 640, h: 193 },
+  { name: 'dfv', alt: 'DFV', w: 494, h: 320 },
+  { name: 'bago', alt: 'Bagó', w: 554, h: 182 },
+  { name: 'brouwer', alt: 'Brouwer', w: 183, h: 75, k: 0.78 }, // a solid mark with no type reads larger
+  { name: 'konig', alt: 'König', w: 348, h: 131 },
+  { name: 'holliday', alt: 'Holliday', w: 580, h: 320 },
+].map((m: { name: string; alt: string; w: number; h: number; k?: number }) => {
+  const AREA = 7200; // px² of logo on screen
+  const MAX_H = 62;
+  const MAX_W = 160;
+  const ratio = m.w / m.h;
+  let h = Math.sqrt(AREA / ratio);
+  h = Math.min(h, MAX_H, MAX_W / ratio) * (m.k ?? 1);
+  return { ...m, dw: Math.round(h * ratio), dh: Math.round(h) };
+});
+
+const arrow = '<path d="M5 12h14M13 6l6 6-6 6" />';
+---
+
+<!-- How it works -->
+<section class="how" aria-labelledby="how-title">
+  <div class="wrap">
+    <h2 id="how-title" class="hs__h2" data-reveal>Así funciona una plataforma Integhra</h2>
+    <ul class="how__grid">
+      {ideas.map((x, i) => (
+        <li class="how__item" data-reveal style={`--i: ${i}`}>
+          <Isologo part={x.petal} class="how__petal" />
+          <h3>{x.t}</h3>
+          <p>{x.d}</p>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<!-- Who already works with Integhra -->
+<section class="brands" aria-labelledby="brands-title">
+  <div class="wrap brands__head">
+    <h2 id="brands-title" class="hs__h2" data-reveal>Empresas que trabajan con nosotros</h2>
+    <p data-reveal style="--i: 1">Laboratorios y distribuidores líderes ya están en Integhra VET.</p>
+  </div>
+  <div class="brands__rail">
+    <ul class="brands__track">
+      {[0, 1].map((copy) =>
+        marcas.map((m) => (
+          <li aria-hidden={copy === 1 ? 'true' : undefined}>
+            <img src={`${IMG}logos/${m.name}.png`} alt={copy === 1 ? '' : m.alt} width={m.dw} height={m.dh} loading="lazy" decoding="async" draggable="false" />
+          </li>
+        )),
+      )}
+    </ul>
+  </div>
+</section>
+
+<!-- One way in, per product -->
+<section class="cta" aria-labelledby="cta-title">
+  <div class="wrap cta__box">
+    <h2 id="cta-title" class="hs__h2" data-reveal>Conectá tu empresa con Integhra</h2>
+    <div class="cta__acts" data-reveal style="--i: 1">
+      <a href="#" class="cta__btn cta__btn--vet" data-contact="demo">
+        Solicitar demo de VET
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={arrow} />
+      </a>
+      <a href={`${BASE}arq#waitlist`} class="cta__btn cta__btn--arq">Anotarme en ARQ</a>
+    </div>
+    <a href={`${BASE}nosotros`} class="cta__more" data-reveal style="--i: 2">
+      Conocé quiénes somos
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={arrow} />
+    </a>
+  </div>
+</section>
+
+<style>
+  .hs__h2 {
+    font-size: clamp(2.2rem, 4.2vw, 3.75rem);
+    font-weight: 800;
+    letter-spacing: -0.035em;
+    line-height: 1.02;
+    text-wrap: balance;
+    text-align: center;
+    max-width: 18ch;
+    margin-inline: auto;
+  }
+
+  /* How it works: three quiet columns, a petal each */
+  .how {
+    padding-block: clamp(6rem, 14vh, 9rem) clamp(4rem, 10vh, 6rem);
+  }
+  .how__grid {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(2rem, 4vw, 4rem);
+    margin-top: clamp(3rem, 7vh, 4.5rem);
+  }
+  .how__item {
+    display: grid;
+    gap: 0.75rem;
+    justify-items: center;
+    text-align: center;
+  }
+  .how__item :global(.how__petal) {
+    width: auto;
+    height: 64px;
+    margin-bottom: 0.5rem;
+  }
+  .how__item h3 {
+    font-size: clamp(1.35rem, 1.9vw, 1.6rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+  .how__item p {
+    color: var(--ink-2);
+    max-width: 30ch;
+  }
+
+  /* Brands: the shelf of companies, moving slowly */
+  .brands {
+    padding-block: clamp(4rem, 10vh, 6rem);
+  }
+  .brands__head {
+    display: grid;
+    gap: 0.9rem;
+    justify-items: center;
+    text-align: center;
+  }
+  .brands__head p {
+    color: var(--ink-2);
+    font-size: 1.0625rem;
+  }
+  /* One row of logos, no cards, in graphite. The script moves it slowly and lets you grab it:
+     it never stops for you, it carries on from wherever you leave it. */
+  .brands__rail {
+    margin-top: clamp(2.5rem, 6vh, 3.5rem);
+    overflow: hidden;
+    cursor: grab;
+    touch-action: pan-y;
+    user-select: none;
+    mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
+  }
+  .brands__rail.is-dragging {
+    cursor: grabbing;
+  }
+  .brands__track {
+    list-style: none;
+    display: flex;
+    width: max-content;
+    padding-block: 1rem;
+    will-change: transform;
+  }
+  /* spacing lives inside each item (not as a gap) so the two copies tile without a seam */
+  .brands__track li {
+    flex: none;
+    display: grid;
+    place-items: center;
+    height: 88px;
+    padding-inline: clamp(2rem, 4vw, 3.5rem);
+  }
+  .brands__track img {
+    display: block;
+    object-fit: contain;
+    /* the files have no background (see /logos); grayscale turns each mark to graphite */
+    filter: grayscale(1) contrast(1.15);
+    opacity: 0.62;
+    transition: filter 0.35s ease, opacity 0.35s ease;
+    pointer-events: none;
+  }
+  .brands__track li:hover img {
+    filter: none;
+    opacity: 1;
+  }
+
+  /* Closing: one line, two doors, and the way to the company */
+  .cta {
+    padding-block: clamp(4rem, 10vh, 6rem) clamp(6rem, 14vh, 9rem);
+  }
+  .cta__box {
+    display: grid;
+    justify-items: center;
+    gap: 2rem;
+  }
+  .cta__acts {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+  }
+  .cta__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    min-height: 54px;
+    padding: 0 1.5rem;
+    font-weight: 750;
+    font-size: 1.0625rem;
+    text-decoration: none;
+    border: 2px solid var(--ink);
+    transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s var(--ease-out);
+  }
+  .cta__btn svg,
+  .cta__more svg {
+    width: 18px;
+    height: 18px;
+    transition: transform 0.3s var(--ease-out);
+  }
+  .cta__btn:hover svg,
+  .cta__more:hover svg {
+    transform: translateX(4px);
+  }
+  .cta__btn:active {
+    transform: scale(0.98);
+  }
+  /* each door keeps its product's shape: VET round and warm, ARQ square and ink */
+  .cta__btn--vet {
+    border-radius: 999px;
+    background: #ff4a1c;
+    border-color: #ff4a1c;
+    color: var(--ink);
+  }
+  .cta__btn--vet:hover {
+    background: #ff6a43;
+  }
+  .cta__btn--arq {
+    border-radius: 0;
+    color: var(--ink);
+  }
+  .cta__btn--arq:hover {
+    background: var(--ink);
+    color: #fff;
+  }
+  .cta__more {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-weight: 650;
+    color: var(--ink-2);
+    text-decoration: none;
+  }
+  .cta__more:hover {
+    color: var(--ink);
+  }
+
+  @media (max-width: 760px) {
+    .how__grid {
+      grid-template-columns: 1fr;
+      gap: 2.75rem;
+    }
+  }
+</style>
+
+<script>
+  // The brand rail: drifts on its own, and can be grabbed. Dragging (mouse, finger, or a
+  // horizontal trackpad swipe) moves it with your hand; on release it keeps your momentum
+  // and eases back to its own pace. It never stops because you touched it.
+  const rail = document.querySelector<HTMLElement>('.brands__rail');
+  const track = rail?.querySelector<HTMLElement>('.brands__track');
+  if (rail && track) {
+    const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const DRIFT = calm ? 0 : -26; // px per second, leftwards
+    let x = 0; // offset of the track
+    let fling = 0; // extra speed left over from a drag, px per second
+    let half = 0; // width of one copy of the logos
+    let dragging = false;
+    let lastX = 0;
+    let lastT = 0;
+    let running = false;
+    let prev = 0;
+
+    const measure = () => { half = track.scrollWidth / 2; };
+    const wrap = () => {
+      if (!half) return;
+      x = ((x % half) - half) % half; // keep x in (-half, 0]
+    };
+    const paint = () => { track.style.transform = 'translate3d(' + x.toFixed(2) + 'px,0,0)'; };
+
+    const frame = (t: number) => {
+      if (!running) return;
+      const dt = prev ? Math.min(0.05, (t - prev) / 1000) : 0;
+      prev = t;
+      if (!dragging) {
+        x += (DRIFT + fling) * dt;
+        fling *= Math.pow(0.08, dt); // momentum fades over about a second
+      }
+      wrap();
+      paint();
+      requestAnimationFrame(frame);
+    };
+    const start = () => { if (!running) { running = true; prev = 0; requestAnimationFrame(frame); } };
+    const stop = () => { running = false; };
+
+    rail.addEventListener('pointerdown', (e) => {
+      dragging = true;
+      fling = 0;
+      lastX = e.clientX;
+      lastT = performance.now();
+      rail.setPointerCapture(e.pointerId);
+      rail.classList.add('is-dragging');
+    });
+    rail.addEventListener('pointermove', (e) => {
+      if (!dragging) return;
+      const now = performance.now();
+      const dx = e.clientX - lastX;
+      const dt = Math.max(1, now - lastT) / 1000;
+      x += dx;
+      // remember the hand's speed, smoothed, to hand it over on release
+      fling = fling * 0.6 + (dx / dt) * 0.4;
+      lastX = e.clientX;
+      lastT = now;
+      wrap();
+      paint();
+    });
+    const release = () => {
+      if (!dragging) return;
+      dragging = false;
+      if (performance.now() - lastT > 120) fling = 0; // held still before letting go
+      fling = Math.max(-2400, Math.min(2400, fling));
+      rail.classList.remove('is-dragging');
+    };
+    rail.addEventListener('pointerup', release);
+    rail.addEventListener('pointercancel', release);
+
+    // horizontal trackpad swipes move it too; vertical scrolling passes through to the page
+    rail.addEventListener('wheel', (e) => {
+      if (Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return;
+      e.preventDefault();
+      x -= e.deltaX;
+      wrap();
+      paint();
+    }, { passive: false });
+
+    measure();
+    window.addEventListener('resize', measure);
+    track.querySelectorAll('img').forEach((img) => img.addEventListener('load', measure, { once: true }));
+
+    // only run while it's on screen
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(([e]) => (e.isIntersecting ? start() : stop())).observe(rail);
+    } else {
+      start();
+    }
+  }
+</script>

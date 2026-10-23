@@ -43,20 +43,20 @@ const actores = ['Proveedores', 'Profesionales', 'Consumidores'];
 
 <style>
   .arq {
-    --b: #3aa3f5;
-    --v: #c04fd3;
-    --line: #2a303b;
-    --mut: #a9b1be;
-    background: #121419;
-    color: #eef1f6;
+    --b: #1a6fc2;
+    --v: #a33ab5;
+    --line: #d5dbe3;
+    --mut: #5d6676;
+    background: #f3f5f8;
+    color: #14171d;
     font-family: var(--font);
   }
   .arq ::selection {
     background: var(--b);
-    color: #121419;
+    color: #ffffff;
   }
   .arq :focus-visible {
-    outline-color: #eef1f6;
+    outline-color: #14171d;
   }
 
   /* ---------- Hero: product-page composition ---------- */
@@ -67,7 +67,7 @@ const actores = ['Proveedores', 'Profesionales', 'Consumidores'];
     display: grid;
     grid-template-rows: auto minmax(0, 1fr);
     overflow: hidden;
-    background: #0f1115;
+    background: #f3f5f8;
     text-align: center;
   }
   .arq__copy {
@@ -92,7 +92,7 @@ const actores = ['Proveedores', 'Profesionales', 'Consumidores'];
   }
   .arq__lock b {
     font-weight: 400;
-    color: #eef1f6;
+    color: #14171d;
   }
   .arq__title {
     font-size: clamp(2.6rem, 5.6vw, 5.5rem);
@@ -105,7 +105,7 @@ const actores = ['Proveedores', 'Profesionales', 'Consumidores'];
   }
   .arq__body {
     margin-top: 0.4rem;
-    color: #c3c9d4;
+    color: #3a4250;
     font-size: 1.125rem;
     text-wrap: balance;
   }
@@ -123,7 +123,7 @@ const actores = ['Proveedores', 'Profesionales', 'Consumidores'];
     z-index: 1;
     perspective: 1500px;
     perspective-origin: 50% 0%;
-    margin-top: clamp(1rem, 4vh, 2.5rem);
+    margin-top: clamp(2.25rem, 7vh, 4rem);
   }
   .arq__stage::before {
     content: '';
@@ -133,7 +133,7 @@ const actores = ['Proveedores', 'Profesionales', 'Consumidores'];
     width: min(1100px, 90vw);
     height: 60%;
     translate: -50% -50%;
-    background: radial-gradient(closest-side, rgb(58 163 245 / 0.12), transparent);
+    background: radial-gradient(closest-side, rgb(26 111 194 / 0.12), transparent);
     pointer-events: none;
   }
   .arq__hero :global(.arq__plan) {
@@ -141,6 +141,25 @@ const actores = ['Proveedores', 'Profesionales', 'Consumidores'];
     margin: 0 auto;
     transform-origin: 50% 0%;
     transform: rotateX(52deg) rotateZ(-24deg);
+    padding: 3%;
+    /* a blueprint: deep blue paper with a faint grid, the drawing in light lines */
+    background:
+      linear-gradient(rgb(255 255 255 / 0.06) 1px, transparent 1px) 0 0 / 28px 28px,
+      linear-gradient(90deg, rgb(255 255 255 / 0.06) 1px, transparent 1px) 0 0 / 28px 28px,
+      #1b4e8c;
+    box-shadow: 0 50px 80px -40px rgb(20 40 80 / 0.45);
+  }
+  .arq__hero :global(.arq__plan .pl-walls rect) {
+    fill: #eaf2fb;
+  }
+  .arq__hero :global(.arq__plan .pl-win path) {
+    stroke: #eaf2fb;
+  }
+  .arq__hero :global(.arq__plan .pl-door path) {
+    stroke: rgb(234 242 251 / 0.75);
+  }
+  .arq__hero :global(.arq__plan .pl-furn :is(rect, path, ellipse)) {
+    stroke: rgb(234 242 251 / 0.45);
   }
   .arq__hero :global(.arq__plan .pl-rooms),
   .arq__hero :global(.arq__plan .pl-north),

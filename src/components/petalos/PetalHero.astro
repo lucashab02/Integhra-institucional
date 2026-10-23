@@ -81,6 +81,11 @@ const arrow = '<path d="M5 12h14M13 6l6 6-6 6" />';
   /* ---------- Flow layout (default) ---------- */
   .ph {
     --S: min(58vh, 38vw);
+    /* ARQ's world: tracing paper, cool, with a faint drawing grid */
+    --arq-paper:
+      linear-gradient(rgb(26 111 194 / 0.07) 1px, transparent 1px) 0 0 / 32px 32px,
+      linear-gradient(90deg, rgb(26 111 194 / 0.07) 1px, transparent 1px) 0 0 / 32px 32px,
+      #e6ebf1;
     position: relative;
     background: var(--paper);
   }
@@ -114,7 +119,7 @@ const arrow = '<path d="M5 12h14M13 6l6 6-6 6" />';
     position: absolute;
     inset: 0;
     z-index: 1;
-    background: #121419;
+    background: var(--arq-paper);
     clip-path: polygon(52% 0, 100% 0, 100% 100%, 74% 100%);
   }
 
@@ -275,13 +280,13 @@ const arrow = '<path d="M5 12h14M13 6l6 6-6 6" />';
     background: #fff;
   }
 
-  /* ARQ: graphite, square (its card is the diagonal of the hero, straightened) */
+  /* ARQ: tracing paper, square (its card is the diagonal of the hero, straightened) */
   .tile--arq {
-    background: #121419;
-    color: #eef1f6;
+    background: var(--arq-paper);
+    color: #14171d;
   }
   .tile--arq .tile__state {
-    color: #8fc8f8;
+    color: #1a6fc2;
     text-transform: uppercase;
     letter-spacing: 0.04em;
     font-size: 0.8125rem;
@@ -290,28 +295,26 @@ const arrow = '<path d="M5 12h14M13 6l6 6-6 6" />';
     font-variation-settings: 'wdth' 120;
   }
   .tile--arq .tile__name b {
-    color: #c04fd3;
+    color: #a33ab5;
   }
   .tile--arq .tile__line {
-    color: #c3c9d4;
+    color: #3a4250;
   }
   .tile--arq .tile__btn {
     border-radius: 0;
   }
   .tile--arq .tile__btn--main {
-    background: #eef1f6;
-    border-color: #eef1f6;
-    color: #121419;
+    background: #14171d;
+    border-color: #14171d;
+    color: #ffffff;
   }
   .tile--arq .tile__btn--main:hover {
-    background: #fff;
+    background: #1a6fc2;
+    border-color: #1a6fc2;
   }
   .tile--arq .tile__btn:not(.tile__btn--main):hover {
-    background: #eef1f6;
-    color: #121419;
-  }
-  .tile--arq :focus-visible {
-    outline-color: #eef1f6;
+    background: #14171d;
+    color: #ffffff;
   }
 
   /* ---------- Fused layout: desktop with JS and motion ---------- */

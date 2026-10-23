@@ -114,8 +114,8 @@ const { hero = false, class: cls } = Astro.props;
   .pl {
     margin: 0;
     padding: clamp(1.25rem, 2.6vw, 2.25rem);
-    border: 1px solid var(--line, #2a303b);
-    background: #14171d;
+    border: 1px solid var(--line, #d5dbe3);
+    background: #f8f9fb;
     font-variant-numeric: tabular-nums;
   }
   .pl svg {
@@ -126,16 +126,16 @@ const { hero = false, class: cls } = Astro.props;
 
   /* One light ink, one accent (the dimensions), weights by role */
   .pl-walls rect {
-    fill: #d9dee6;
+    fill: #2a303b;
   }
   .pl-win path {
     fill: none;
-    stroke: #d9dee6;
+    stroke: #2a303b;
     stroke-width: 2;
   }
   .pl-door path {
     fill: none;
-    stroke: #8a94a4;
+    stroke: #6f7a8c;
   }
   .pl-door .pl-leaf {
     stroke-width: 2.5;
@@ -147,12 +147,12 @@ const { hero = false, class: cls } = Astro.props;
   }
   .pl-furn :is(rect, path, ellipse) {
     fill: none;
-    stroke: #5d6676;
+    stroke: #a3acb9;
     stroke-width: 1.3;
   }
   .pl-dims path {
     fill: none;
-    stroke: var(--b, #3aa3f5);
+    stroke: var(--b, #1a6fc2);
     stroke-width: 1;
     opacity: 0.85;
   }
@@ -164,19 +164,19 @@ const { hero = false, class: cls } = Astro.props;
     font-family: var(--font);
   }
   .pl-rooms text {
-    fill: #a9b1be;
+    fill: #5d6676;
     font-size: 24px;
     letter-spacing: 0.02em;
   }
   .pl-dimtxt text {
-    fill: var(--b, #3aa3f5);
+    fill: var(--b, #1a6fc2);
     font-size: 23px;
   }
   .pl-north path {
-    fill: #a9b1be;
+    fill: #5d6676;
   }
   .pl-north text {
-    fill: #a9b1be;
+    fill: #5d6676;
     font-size: 18px;
   }
 
@@ -187,9 +187,9 @@ const { hero = false, class: cls } = Astro.props;
     gap: 1rem;
     margin-top: 1.25rem;
     padding-top: 0.9rem;
-    border-top: 1px solid var(--line, #2a303b);
+    border-top: 1px solid var(--line, #d5dbe3);
     font-size: 0.8125rem;
-    color: #a9b1be;
+    color: #5d6676;
   }
 
   /* The drawing builds as it crosses the viewport: walls, openings, furniture, then words */

@@ -5,8 +5,8 @@
 }
 .wla-tape {
   height: 18px;
-  background: repeating-linear-gradient(-45deg, #c04fd3 0 18px, #121419 18px 36px);
-  border-block: 1px solid #2a303b;
+  background: repeating-linear-gradient(-45deg, #a33ab5 0 18px, #ffffff 18px 36px);
+  border-block: 1px solid #d5dbe3;
 }
 .wla-inner {
   padding-top: clamp(3rem, 8vh, 5rem);
@@ -23,11 +23,11 @@
 .wla-sub {
   margin-top: 1.25rem;
   font-size: clamp(1.0625rem, 1.3vw, 1.25rem);
-  color: #c3c9d4;
+  color: #3a4250;
   max-width: 44ch;
 }
 .wla-sub strong {
-  color: #eef1f6;
+  color: #14171d;
 }
 .wla-form {
   margin-top: 2rem;
@@ -40,7 +40,7 @@
     font-variant-numeric: tabular-nums;
   font-size: 0.8125rem;
   text-transform: uppercase;
-  color: #a9b1be;
+  color: #5d6676;
 }
 .wla-row {
   display: flex;
@@ -52,45 +52,45 @@
   padding: 0 1rem;
   font: inherit;
   font-size: 1.0625rem;
-  color: #eef1f6;
-  background: #171a21;
-  border: 1px solid #5b6474;
+  color: #14171d;
+  background: #ffffff;
+  border: 1px solid #9aa4b2;
   border-right: 0;
   border-radius: 0;
   outline: none;
 }
 .wla-row input::placeholder {
-  color: #8a93a2;
+  color: #8a94a4;
 }
 .wla-row input:focus-visible {
-  border-color: #3aa3f5;
-  box-shadow: inset 0 0 0 1px #3aa3f5;
+  border-color: #1a6fc2;
+  box-shadow: inset 0 0 0 1px #1a6fc2;
 }
 .wla-row input[aria-invalid='true'] {
-  border-color: #ff8a7a;
+  border-color: #d92d20;
 }
 .wla-row button {
   min-height: 58px;
   padding: 0 1.75rem;
-  border: 1px solid #eef1f6;
+  border: 1px solid #14171d;
   border-radius: 0;
-  background: #eef1f6;
-  color: #121419;
+  background: #14171d;
+  color: #ffffff;
   font-weight: 750;
   font-size: 1rem;
   cursor: pointer;
   transition: background-color 0.2s ease, color 0.2s ease;
 }
 .wla-row button:hover {
-  background: #3aa3f5;
-  border-color: #3aa3f5;
+  background: #1a6fc2;
+  border-color: #1a6fc2;
 }
 .wla-row button[disabled] {
   opacity: 0.6;
   cursor: progress;
 }
 .wla-error {
-  color: #ffb4a8;
+  color: #b42318;
   font-size: 0.9375rem;
 }
 .wla-again {
@@ -98,8 +98,8 @@
   min-height: 48px;
   padding: 0 1.25rem;
   background: none;
-  border: 1px solid #eef1f6;
-  color: #eef1f6;
+  border: 1px solid #14171d;
+  color: #14171d;
   cursor: pointer;
   font-weight: 650;
 }
@@ -108,7 +108,7 @@
     flex-direction: column;
   }
   .wla-row input {
-    border-right: 1px solid #5b6474;
+    border-right: 1px solid #9aa4b2;
     border-bottom: 0;
   }
 }

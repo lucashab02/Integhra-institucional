@@ -51,15 +51,6 @@ const lados = [
   },
 ] as const;
 
-const marcas = [
-  { src: 'logo-zoetis.png', alt: 'Zoetis' },
-  { src: 'Boehringer_Ingelheim_Logo_RGB_Accent_Green.svg.png', alt: 'Boehringer Ingelheim' },
-  { src: 'dfv_logo.png', alt: 'DFV' },
-  { src: 'logo-bago-n.png', alt: 'Bagó' },
-  { src: 'brouwer_sa_logo.jpeg', alt: 'Brouwer' },
-  { src: 'Logo-Konig.jpg', alt: 'König' },
-  { src: 'Artboard-4logos.png', alt: 'Holliday' },
-];
 ---
 
 <Base
@@ -164,25 +155,6 @@ const marcas = [
             </div>
           ))}
         </div>
-      </div>
-    </section>
-
-    <!-- Marcas: the shelf of labs, moving -->
-    <section id="marcas" class="brands" aria-labelledby="brands-title">
-      <div class="wrap brands__head">
-        <h2 id="brands-title" class="gv__h2" data-reveal>Empresas que nos eligen</h2>
-        <p data-reveal style="--i: 1">Las marcas líderes de la industria ya forman parte de Integhra.</p>
-      </div>
-      <div class="brands__rail">
-        <ul class="brands__track">
-          {[0, 1].map((copy) =>
-            marcas.map((m) => (
-              <li aria-hidden={copy === 1 ? 'true' : undefined}>
-                <img src={`${IMG}${m.src}`} alt={copy === 1 ? '' : m.alt} loading="lazy" decoding="async" />
-              </li>
-            )),
-          )}
-        </ul>
       </div>
     </section>
 
@@ -513,65 +485,6 @@ const marcas = [
   }
   .plat__side p {
     color: #4a4643;
-  }
-
-  /* Marcas */
-  .brands {
-    padding-block: clamp(4rem, 10vh, 6.5rem);
-  }
-  .brands__head {
-    display: grid;
-    gap: 0.75rem;
-  }
-  .brands__head p {
-    color: #5a4a42;
-    font-size: 1.0625rem;
-  }
-  .brands__rail {
-    margin-top: clamp(2rem, 5vh, 3rem);
-    overflow: hidden;
-    mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
-  }
-  .brands__track {
-    list-style: none;
-    display: flex;
-    gap: 1rem;
-    width: max-content;
-    padding-block: 0.5rem 1.5rem;
-  }
-  @media (prefers-reduced-motion: no-preference) {
-    .brands__track {
-      animation: brands 36s linear infinite;
-    }
-    .brands__rail:hover .brands__track {
-      animation-play-state: paused;
-    }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .brands__rail {
-      overflow-x: auto;
-    }
-  }
-  @keyframes brands {
-    to { transform: translateX(-50%); }
-  }
-  .brands__track li {
-    flex: none;
-    width: 220px;
-    height: 120px;
-    display: grid;
-    place-items: center;
-    padding: 1.5rem;
-    border-radius: 24px;
-    background: #fff;
-    box-shadow: 0 16px 34px -24px rgb(140 40 10 / 0.35), 0 0 0 1px rgb(17 19 24 / 0.05);
-  }
-  .brands__track img {
-    max-width: 100%;
-    max-height: 64px;
-    width: auto;
-    height: auto;
-    object-fit: contain;
   }
 
   /* Cierre */
